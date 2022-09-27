@@ -1,20 +1,69 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { firebase } from "./firebase/config";
+import { Provider as PaperProvider } from "react-native-paper";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+// screens
+import StartScreen from "./screens/StartScreen";
+import Login from "./screens/Login";
+import Register from "./screens/Register";
+import ForgotPassword from "./screens/ForgotPassword";
+import DashBoard from "./screens/DashBoard";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "transparent",
   },
-});
+};
+
+const Stack = createStackNavigator();
+
+const App = () => {
+  const [initialize, setInitialize] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  const onAuthStateChanged = (user) => {
+    setUser(user);
+    if (initialize) setInitialize(false);
+  };
+
+  useEffect(() => {
+    const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
+  if (initialize) return null;
+
+  if (!user) {
+    return (
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}
+        initialRouteName="StartScreen"
+      >
+        <Stack.Screen name="StartScreen" component={StartScreen} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      </Stack.Navigator>
+    );
+  }
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="DashBoard" component={DashBoard} />
+    </Stack.Navigator>
+  );
+};
+
+export default () => {
+  return (
+    <PaperProvider>
+      <NavigationContainer theme={theme}>
+        <App />
+      </NavigationContainer>
+    </PaperProvider>
+  );
+};
