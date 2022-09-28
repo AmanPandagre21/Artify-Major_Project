@@ -12,7 +12,12 @@ import { TextInput, Button } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
 import CircleVector from "../components/CircleVector";
 import { useState } from "react";
-import { firebase } from "../firebase/config";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 
 const Login = () => {
   const [passIcon, setPassIcon] = useState("eye");
@@ -22,13 +27,32 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-  const onLogin = async (username, password) => {
-    try {
-      await firebase.auth().signInWithEmailAndPassword(username, password);
-    } catch (error) {
-      alert(error.toString());
-    }
+  const auth = getAuth();
+  const googleProvider = new GoogleAuthProvider();
+
+  const onLogin = (username, password) => {
+    signInWithEmailAndPassword(auth, username, password)
+      .then((response) => {
+        console.log(response.user);
+        sessionStorage.setItem("Token", response.user.accessToken);
+        navigation.navigate("DashBoard");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
   };
+
+  // const signUpWithGoogle = () => {
+  //   signInWithPopup(auth, googleProvider)
+  //     .then((response) => {
+  //       sessionStorage.setItem("Token", response.user.accessToken);
+  //       console.log(response.user);
+  //       navigation.navigate("DashBoard");
+  //     })
+  //     .catch((error) => {
+  //       alert(error.message);
+  //     });
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -104,28 +128,29 @@ const Login = () => {
             style={{
               flex: 1,
               flexDirection: "row",
-              marginTop: 20,
+              marginTop: 10,
             }}
           >
             <Text style={styles.orclass}></Text>
             <Text style={{ marginLeft: 10, marginRight: 10 }}>OR</Text>
             <Text style={styles.orclass}></Text>
           </View>
-          <Button
+          {/* <Button
+            icon="gmail"
             mode="contained"
-            buttonColor={COLORS.PrimaryColor}
-            textColor={COLORS.White}
+            buttonColor={COLORS.SecondaryColor}
+            textColor={COLORS.Black}
             labelStyle={{
               fontSize: 20,
               textTransform: "uppercase",
               letterSpacing: 1,
               textAlign: "center",
             }}
-            style={styles.loginBtn}
-            onPress={() => console.log("hello")}
+            style={styles.gmailLoginBtn}
+            onPress={signUpWithGoogle}
           >
-            SIGN IN
-          </Button>
+            Google
+          </Button> */}
           <View
             style={{
               flexDirection: "row",
@@ -198,6 +223,16 @@ const styles = StyleSheet.create({
     height: 50,
     marginLeft: "auto",
     marginRight: "auto",
+    marginBottom: "2%",
+    justifyContent: "center",
+  },
+  gmailLoginBtn: {
+    marginTop: "8%",
+    width: "87%",
+    height: 50,
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginBottom: "2%",
     justifyContent: "center",
   },
 

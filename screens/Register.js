@@ -11,6 +11,9 @@ import {
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { app, database } from "../firebase/config";
+import { collection, addDoc, doc } from "firebase/firestore";
 
 const Register = () => {
   const navigation = useNavigation();
@@ -21,7 +24,25 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const onRegister = (name, email, phone, password, confirmPassword) => {};
+  const auth = getAuth();
+
+  const onRegister = (name, email, phone, password, confirmPassword) => {
+    if (password != confirmPassword) {
+      alert("password and confirm password are not matched");
+    }
+
+    createUserWithEmailAndPassword(email, password)
+      .then((currentUser) => {
+        collection(database, "users").doc(auth().currentUser.uid).set({
+          name,
+          phone,
+          email,
+        });
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
