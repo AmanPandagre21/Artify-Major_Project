@@ -2,8 +2,8 @@ import { StyleSheet, Text, View } from "react-native";
 
 const DashBoard = () => {
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text style={{ fontSize: 20 }}>Home</Text>
     </View>
   );
 };

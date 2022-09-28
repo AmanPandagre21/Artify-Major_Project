@@ -12,12 +12,7 @@ import { TextInput, Button } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
 import CircleVector from "../components/CircleVector";
 import { useState } from "react";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { firebase } from "../firebase/config";
 
 const Login = () => {
   const [passIcon, setPassIcon] = useState("eye");
@@ -27,19 +22,12 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-  const auth = getAuth();
-  const googleProvider = new GoogleAuthProvider();
-
-  const onLogin = (username, password) => {
-    signInWithEmailAndPassword(auth, username, password)
-      .then((response) => {
-        console.log(response.user);
-        sessionStorage.setItem("Token", response.user.accessToken);
-        navigation.navigate("DashBoard");
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
+  const onLogin = async (username, password) => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(username, password);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   // const signUpWithGoogle = () => {

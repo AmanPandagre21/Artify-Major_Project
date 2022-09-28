@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { firebase } from "./firebase/config";
 import { Provider as PaperProvider } from "react-native-paper";
 
 // screens
@@ -25,13 +25,15 @@ const App = () => {
   const [initialize, setInitialize] = useState(true);
   const [user, setUser] = useState();
 
-  const auth = getAuth();
+  // Handle user state changes
+  const onAuthStateChanged = (user) => {
+    setUser(user);
+    if (initialize) setInitialize(false);
+  };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      if (initialize) setInitialize(false);
-    });
+    const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
   }, []);
 
   if (initialize) return null;
@@ -48,12 +50,13 @@ const App = () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       </Stack.Navigator>
     );
+  } else {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="DashBoard" component={DashBoard} />
+      </Stack.Navigator>
+    );
   }
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="DashBoard" component={DashBoard} />
-    </Stack.Navigator>
-  );
 };
 
 export default () => {
