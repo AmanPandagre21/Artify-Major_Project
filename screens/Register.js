@@ -151,7 +151,7 @@ const Register = () => {
               marginBottom: 14,
             }}
           >
-            <Text>Dont have any account?</Text>
+            <Text>Dont have any account ? </Text>
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
               <Text style={{ color: "#AD40AF", fontWeight: "700" }}>
                 Sign In
@@ -190,7 +190,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     lineHeight: 48,
     color: "#363488",
-    marginTop: "-10%",
   },
 
   loginInput: {

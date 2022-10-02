@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.SecondaryColor,
   },
   forgotPasswordBlock: {
-    width: "90%",
+    width: "100%",
     height: "auto",
-    backgroundColor: "red",
   },
 });

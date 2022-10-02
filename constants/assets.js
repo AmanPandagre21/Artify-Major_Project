@@ -4,6 +4,7 @@ import circleVector_2 from "../assets/circleVector_2.png";
 import circleVector_3 from "../assets/circleVector_3.png";
 import LoginVector from "../assets/login_vector.png";
 import Log from "../assets/login-pana.png";
+import AvatarImg from "../assets/avtar.jpg";
 
 export default {
   Start_Vector,
@@ -12,4 +13,5 @@ export default {
   circleVector_3,
   LoginVector,
   Log,
+  AvatarImg,
 };

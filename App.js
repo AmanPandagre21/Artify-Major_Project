@@ -10,6 +10,7 @@ import Login from "./screens/Login";
 import Register from "./screens/Register";
 import ForgotPassword from "./screens/ForgotPassword";
 import DashBoard from "./screens/DashBoard";
+import ChangePassword from "./screens/ChangePassword";
 
 const theme = {
   ...DefaultTheme,
@@ -48,12 +49,14 @@ const App = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen name="ChangePassword" component={ChangePassword} />
       </Stack.Navigator>
     );
   } else {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="DashBoard" component={DashBoard} />
+        {/* <Stack.Screen name="ForgotPassword" component={ForgotPassword} /> */}
       </Stack.Navigator>
     );
   }

@@ -91,7 +91,7 @@ const Login = () => {
               />
             }
           />
-          <Button onPress={() => navigation.navigate("ForgotPassword")}>
+          <Button onPress={() => navigation.navigate("ChangePassword")}>
             <Text style={{ color: COLORS.PrimaryColor, fontSize: 14 }}>
               Forgot Password ?
             </Text>
@@ -146,7 +146,7 @@ const Login = () => {
               marginBottom: 14,
             }}
           >
-            <Text>Dont have any account?</Text>
+            <Text>Dont have any account ? </Text>
             <TouchableOpacity
               mode="text"
               onPress={() => navigation.navigate("Register")}
@@ -172,21 +172,22 @@ const styles = StyleSheet.create({
   },
   start_img: {
     width: 350,
-    height: 210,
+    height: 220,
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: "-25%",
     marginBottom: 0,
   },
   welcomeText: {
     color: COLORS.PrimaryColor,
     fontSize: 30,
     textAlign: "center",
+    margin: 2,
   },
   inputContainer: {
     width: "100%",
     height: "auto",
     marginTop: 10,
+    marginBottom: "auto",
     backgroundColor: COLORS.White,
     borderTopEndRadius: 30,
     borderTopStartRadius: 30,

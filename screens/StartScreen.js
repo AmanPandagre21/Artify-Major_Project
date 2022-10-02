@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     width: "84%",
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: "-22%",
   },
   app_name: {
     fontSize: SIZES.variable,
