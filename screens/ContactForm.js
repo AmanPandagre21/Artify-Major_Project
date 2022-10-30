@@ -7,28 +7,35 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Alert,
 } from "react-native";
-import graphic from "../assets/images/circleVector_1.png";
+import graphics from "../assets/circleVector_1.png";
 import { TextInput, Button } from "react-native-paper";
-import Profile from "../components/Profile";
+import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clearAllErrors,
   clear_all_errors,
-  send_otp,
+  report_query,
 } from "../slices/user-artist-Slice/artistSlice";
+import { Alert } from "react-native";
 
-const ForgotPassword = ({ navigation }) => {
+const ContactForm = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
+  const [query, setQuery] = useState("");
 
   const { status } = useSelector((state) => state.artist);
 
-  const dispatch = useDispatch();
+  const dataInfo = {
+    name,
+    number,
+    email,
+    query,
+  };
 
-  const nextHandler = () => {
-    dispatch(send_otp(email));
-    // navigation.navigate("OTP");
+  const contactHandler = () => {
+    dispatch(report_query(dataInfo));
   };
 
   useEffect(() => {
@@ -36,13 +43,16 @@ const ForgotPassword = ({ navigation }) => {
       Alert.alert(status.message);
       dispatch(clear_all_errors());
     }
+    if (status && status.type === "idle") {
+      Alert.alert(status.message);
+    }
   }, [status]);
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 0 }}>
         <Image
-          source={graphic}
+          source={graphics}
           style={{ width: 200, height: 150, margin: 0 }}
         />
 
@@ -56,23 +66,51 @@ const ForgotPassword = ({ navigation }) => {
             position: "absolute",
           }}
         >
-          <Text style={styles.headerText}>Forgot Password</Text>
-        </View>
-
-        <View style={{ marginTop: 40 }}>
-          <Profile />
+          <Text style={{ ...styles.headerText, fontSize: 30 }}>
+            Contact Us{" "}
+          </Text>
+          <Text style={styles.headerText}>
+            We would <AntDesign name="heart" size={24} color="red" /> to help
+            You
+          </Text>
         </View>
 
         <View style={styles.footer}>
           <TextInput
-            label="Enter your mail id"
-            name="mailId"
+            label="Enter your Name"
+            name="name"
+            value={name}
+            onChangeText={(name) => setName(name)}
+            style={styles.loginInput}
+            underlineColor="transparent"
+          />
+
+          <TextInput
+            label="Enter your mobile number"
+            name="number"
+            value={number}
+            keyboardType="numeric"
+            onChangeText={(number) => setNumber(number)}
+            style={styles.loginInput}
+            underlineColor="transparent"
+          />
+          <TextInput
+            label="Enter you Email"
+            name="email"
             value={email}
             onChangeText={(email) => setEmail(email)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
 
+          <TextInput
+            label="Your Query"
+            name="query"
+            value={query}
+            onChangeText={(query) => setQuery(query)}
+            style={styles.loginInput}
+            underlineColor="transparent"
+          />
           <Button
             mode="contained"
             buttonColor="#363488"
@@ -82,20 +120,16 @@ const ForgotPassword = ({ navigation }) => {
               textTransform: "uppercase",
               letterSpacing: 1,
               textAlign: "center",
-              top: 10,
             }}
+            onPress={contactHandler}
             style={styles.btn}
-            onPress={nextHandler}
           >
-            Next
+            Send Message
           </Button>
-
-          <View style={{ marginTop: 20, height: 70 }}>
-            {/* <TouchableOpacity>
-              <Text style={{ color: "#363488", fontWeight: "bold",fontSize:17 }}>
-                Forgot Password
-              </Text>
-   </TouchableOpacity> */}
+          <View style={{ height: 150, marginTop: 10 }}>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+              We'll reach You Soon
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -112,44 +146,23 @@ const styles = StyleSheet.create({
   headerText: {
     // fontFamily: 'Poppins',
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 25,
     lineHeight: 48,
     color: "#363488",
     // left: 49,
-    top: 100,
-  },
-  profileView: {
-    marginTop: 50,
-    flexDirection: "row",
-    width: "90%",
-    position: "relative",
-    marginLeft: "auto",
-    marginRight: "auto",
-    height: "auto",
-  },
-  ProfileName: {
-    fontWeight: "bold",
-    fontSize: 22,
-    textAlign: "center",
-    marginTop: "auto",
-    marginBottom: "auto",
-    marginLeft: 20,
-    marginRight: "auto",
-    color: "#363488",
+    top: 80,
   },
 
   footer: {
     width: "100%",
     height: "auto",
-    marginTop: 10,
     backgroundColor: "white",
-    // borderTopEndRadius: 30,
-    // borderTopStartRadius: 30,
-    borderRadius: 30,
+    borderTopEndRadius: 30,
+    borderTopStartRadius: 30,
     padding: 5,
     paddingTop: 25,
     flex: 1,
-    top: 10,
+    top: 65,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -168,4 +181,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
-export default ForgotPassword;
+export default ContactForm;

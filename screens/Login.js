@@ -5,14 +5,20 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { COLORS, assets } from "../constants/Index";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput, Button } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
 import CircleVector from "../components/CircleVector";
-import { useState } from "react";
-import { firebase } from "../firebase/config";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  artistLogin,
+  clear_all_errors,
+  loggedArtist,
+} from "../slices/user-artist-Slice/artistSlice";
 
 const Login = () => {
   const [passIcon, setPassIcon] = useState("eye");
@@ -22,25 +28,25 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-  const onLogin = async (username, password) => {
-    try {
-      await firebase.auth().signInWithEmailAndPassword(username, password);
-    } catch (error) {
-      alert(error);
-    }
+  const { artist, isAuth, status } = useSelector((state) => state.artist);
+  const dispatch = useDispatch();
+
+  const onLogin = (username, password) => {
+    dispatch(artistLogin(username, password));
   };
 
-  // const signUpWithGoogle = () => {
-  //   signInWithPopup(auth, googleProvider)
-  //     .then((response) => {
-  //       sessionStorage.setItem("Token", response.user.accessToken);
-  //       console.log(response.user);
-  //       navigation.navigate("DashBoard");
-  //     })
-  //     .catch((error) => {
-  //       alert(error.message);
-  //     });
-  // };
+  useEffect(() => {
+    if (status && status.type === "error") {
+      Alert.alert(status.message);
+      // dispatch(clear_all_errors());
+    }
+
+    if (isAuth) {
+      navigation.navigate("Home");
+    } else {
+      navigation.navigate("Login");
+    }
+  }, [isAuth, status]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,7 +97,7 @@ const Login = () => {
               />
             }
           />
-          <Button onPress={() => navigation.navigate("ChangePassword")}>
+          <Button onPress={() => navigation.navigate("ForgotPassword")}>
             <Text style={{ color: COLORS.PrimaryColor, fontSize: 14 }}>
               Forgot Password ?
             </Text>

@@ -6,35 +6,34 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
-  TouchableOpacity,
   Alert,
+  TouchableOpacity,
 } from "react-native";
-import graphic from "../assets/images/circleVector_1.png";
+import graphic from "../assets/circleVector_1.png";
+import { useDispatch, useSelector } from "react-redux";
 import { TextInput, Button } from "react-native-paper";
 import Profile from "../components/Profile";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  clearAllErrors,
-  clear_all_errors,
-  send_otp,
-} from "../slices/user-artist-Slice/artistSlice";
+import { verify_otp } from "../slices/user-artist-Slice/artistSlice";
 
-const ForgotPassword = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-
-  const { status } = useSelector((state) => state.artist);
+const EnterOtp = ({ navigation }) => {
+  const [passOtp, setPassOTP] = useState("");
 
   const dispatch = useDispatch();
 
-  const nextHandler = () => {
-    dispatch(send_otp(email));
-    // navigation.navigate("OTP");
+  const { otp, status } = useSelector((state) => state.artist);
+
+  const data = { otp: passOtp, hash: otp.hash, email: otp.email };
+  const otpHandler = () => {
+    dispatch(verify_otp(data));
+    navigation.navigate("ResetPassword");
   };
 
   useEffect(() => {
     if (status && status.type === "error") {
       Alert.alert(status.message);
-      dispatch(clear_all_errors());
+    }
+    if (status && status.type === "idle") {
+      Alert.alert(status.message);
     }
   }, [status]);
 
@@ -56,19 +55,18 @@ const ForgotPassword = ({ navigation }) => {
             position: "absolute",
           }}
         >
-          <Text style={styles.headerText}>Forgot Password</Text>
+          <Text style={styles.headerText}>Enter Otp to Reset Password</Text>
         </View>
 
         <View style={{ marginTop: 40 }}>
           <Profile />
         </View>
-
         <View style={styles.footer}>
           <TextInput
-            label="Enter your mail id"
-            name="mailId"
-            value={email}
-            onChangeText={(email) => setEmail(email)}
+            label="Enter OTP"
+            name="otp"
+            value={passOtp}
+            onChangeText={(passOtp) => setPassOTP(passOtp)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
@@ -85,9 +83,9 @@ const ForgotPassword = ({ navigation }) => {
               top: 10,
             }}
             style={styles.btn}
-            onPress={nextHandler}
+            onPress={otpHandler}
           >
-            Next
+            Submit OTP
           </Button>
 
           <View style={{ marginTop: 20, height: 70 }}>
@@ -112,11 +110,11 @@ const styles = StyleSheet.create({
   headerText: {
     // fontFamily: 'Poppins',
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 22,
     lineHeight: 48,
     color: "#363488",
     // left: 49,
-    top: 100,
+    top: 115,
   },
   profileView: {
     marginTop: 50,
@@ -168,4 +166,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
-export default ForgotPassword;
+export default EnterOtp;

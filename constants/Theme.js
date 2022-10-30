@@ -1,3 +1,7 @@
+import { NFTData } from "./dummy";
+
+export { NFTData };
+
 export const COLORS = {
   PrimaryColor: "#363488",
   SecondaryColor: "#F3F8FE",

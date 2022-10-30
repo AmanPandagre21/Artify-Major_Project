@@ -5,46 +5,35 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  TouchableOpacity,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { COLORS, assets } from "../constants/Index";
 import CircleVector from "../components/CircleVector";
 import { Avatar } from "react-native-paper";
 import { TextInput, Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  change_password,
-  clear_all_errors,
-} from "../slices/user-artist-Slice/artistSlice";
-import { getToken } from "../services/AsyncStorageService";
 
-const ChangePassword = () => {
-  const [oldPass, setOldPass] = useState("");
-  const [pass, setPass] = useState("");
+const ResetPasswordScreen = ({ navigation }) => {
+  const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
 
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.artist);
-  const passInfo = {
-    oldPassword: oldPass,
-    password: pass,
-    confirmPassword: confirmPass,
-  };
-  const changePassHandler = () => {
-    dispatch(change_password(passInfo));
+
+  const resetPasswordHandler = (newPass, confirmPass) => {
+    dispatch(verify_otp(newPass, confirmPass));
+    navigation.navigate("Login");
   };
 
+  const { isAuth, status } = useSelector((state) => state.artist);
+
   useEffect(() => {
-    if (status.type === "error") {
+    if (status && status.type === "error") {
       Alert.alert(status.message);
-      // dispatch(clear_all_errors());
+      // dispatch(clearAllErrors());
     }
-    if (status.type === "idle") {
+    if (status && status.type === "idle") {
       Alert.alert(status.message);
-      setOldPass("");
-      setPass("");
-      setConfirmPass("");
     }
   }, [status]);
 
@@ -70,18 +59,10 @@ const ChangePassword = () => {
    </View> */}
 
           <TextInput
-            label="Old Password"
-            name="oldPassword"
-            value={oldPass}
-            onChangeText={(oldPass) => setOldPass(oldPass)}
-            style={styles.loginInput}
-            underlineColor="transparent"
-          />
-          <TextInput
             label="New Password"
             name="newPassword"
-            value={pass}
-            onChangeText={(pass) => setPass(pass)}
+            value={newPass}
+            onChangeText={(newPass) => setNewPass(newPass)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
@@ -105,7 +86,7 @@ const ChangePassword = () => {
               textAlign: "center",
             }}
             style={styles.btn}
-            onPress={changePassHandler}
+            onPress={() => resetPasswordHandler(newPass, confirmPass)}
           >
             Change Password
           </Button>
@@ -181,4 +162,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-export default ChangePassword;
+export default ResetPasswordScreen;

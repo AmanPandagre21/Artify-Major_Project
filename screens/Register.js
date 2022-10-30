@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { ScrollView } from "react-native-gesture-handler";
 import CircleVector from "../components/CircleVector";
 import { COLORS, assets } from "../constants/Index";
@@ -8,43 +9,44 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { firebase } from "../firebase/config";
+import { artistRegister } from "../slices/user-artist-Slice/artistSlice";
 
 const Register = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState(0);
+  // const [phone, setPhone] = useState(0);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const onRegister = async (name, email, phone, password, confirmPassword) => {
-    if (password != confirmPassword) {
-      alert("password and confirm password are not matched");
+  const data = {
+    name,
+    email,
+    // phone,
+    password,
+    confirmPassword,
+  };
+  const onRegister = () => {
+    dispatch(artistRegister(data));
+  };
+
+  const { status } = useSelector((state) => state.artist);
+  useEffect(() => {
+    if (status && status.type === "error") {
+      Alert.alert(status.message);
     }
 
-    await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(firebase.auth().currentUser.uid)
-          .set({
-            name,
-            phone,
-            email,
-          });
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  };
+    if (status && status.type === "idle") {
+      Alert.alert(status.message);
+      navigation.navigate("Login");
+    }
+  }, [status]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,7 +72,7 @@ const Register = () => {
             style={styles.loginInput}
             underlineColor="transparent"
           />
-          <TextInput
+          {/* <TextInput
             label="Enter you phone number"
             name="phoneno"
             value={phone}
@@ -78,7 +80,7 @@ const Register = () => {
             keyboardType="numeric"
             style={styles.loginInput}
             underlineColor="transparent"
-          />
+          /> */}
           <TextInput
             label="Enter your password"
             name="password"
@@ -110,9 +112,7 @@ const Register = () => {
               textAlign: "center",
             }}
             style={styles.loginBtn}
-            onPress={() =>
-              onRegister(name, email, phone, password, confirmPassword)
-            }
+            onPress={onRegister}
           >
             SIGN UP
           </Button>

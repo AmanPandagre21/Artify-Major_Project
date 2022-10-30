@@ -1,11 +1,26 @@
 import { StyleSheet, SafeAreaView, View, Text, Image } from "react-native";
-import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS, SIZES, assets, SHADOWS } from "../constants/Index";
 import { Button } from "react-native-paper";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loggedArtist } from "../slices/user-artist-Slice/artistSlice";
 
 const StartScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const { artist, isAuth, status } = useSelector((state) => state.artist);
+
+  useEffect(() => {
+    dispatch(loggedArtist());
+    console.log(isAuth);
+    if (isAuth) {
+      navigation.navigate("Home");
+    } else {
+      navigation.navigate("StartScreen");
+    }
+  }, [isAuth, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>

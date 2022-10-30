@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Text,
   View,
@@ -7,37 +7,13 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Alert,
 } from "react-native";
-import graphic from "../assets/images/circleVector_1.png";
+import graphics from "../assets/circleVector_1.png";
+import { Avatar } from "react-native-paper";
+import AvtarImg from "../images/avtar.jpg";
 import { TextInput, Button } from "react-native-paper";
-import Profile from "../components/Profile";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  clearAllErrors,
-  clear_all_errors,
-  send_otp,
-} from "../slices/user-artist-Slice/artistSlice";
-
-const ForgotPassword = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-
-  const { status } = useSelector((state) => state.artist);
-
-  const dispatch = useDispatch();
-
-  const nextHandler = () => {
-    dispatch(send_otp(email));
-    // navigation.navigate("OTP");
-  };
-
-  useEffect(() => {
-    if (status && status.type === "error") {
-      Alert.alert(status.message);
-      dispatch(clear_all_errors());
-    }
-  }, [status]);
-
+import Profile from "./Profile";
+const ForgotPassword = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 0 }}>
@@ -59,16 +35,25 @@ const ForgotPassword = ({ navigation }) => {
           <Text style={styles.headerText}>Forgot Password</Text>
         </View>
 
+        {/* <View style={styles.profileView}>
+   <Avatar.Image size={90} source={AvtarImg} style={{marginLeft:20}}  />
+   
+   <Text style={styles.ProfileName}>Muskan Mishra</Text>
+   </View> */}
         <View style={{ marginTop: 40 }}>
           <Profile />
         </View>
 
         <View style={styles.footer}>
+          {/* <View style={styles.textboxAndbtn}>
+
+   </View> */}
+
           <TextInput
             label="Enter your mail id"
             name="mailId"
-            value={email}
-            onChangeText={(email) => setEmail(email)}
+            // value={email}
+            // onChangeText={(email) => setEmail(email)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
@@ -85,7 +70,6 @@ const ForgotPassword = ({ navigation }) => {
               top: 10,
             }}
             style={styles.btn}
-            onPress={nextHandler}
           >
             Next
           </Button>
