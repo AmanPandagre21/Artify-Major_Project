@@ -1,15 +1,26 @@
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { COLORS, SIZES, SHADOWS, assets, FONTS } from "../constants/Theme";
+import { COLORS, SIZES, SHADOWS } from "../constants/Theme";
 import { RectButton } from "../components/Button";
-import { NFTTitle } from "../components/SubInfo";
-
+import { WishlistTitle } from "../components/SubInfo";
 import person04 from "../assets/images/person04.png";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+import { remove_item } from "../slices/whislistSlice";
+import { useDispatch } from "react-redux";
 
-const Wishlistcard = (data) => {
+const Wishlistcard = ({ data }) => {
   const navigation = useNavigation();
-  return (
+  const dispatch = useDispatch();
+
+  const deleteItemHandler = (id) => {
+    dispatch(remove_item(id));
+  };
+
+  return !data ? (
+    <ActivityIndicator animating={true} color={MD2Colors.red800} />
+  ) : (
     <View
       style={{
         backgroundColor: COLORS.white,
@@ -19,41 +30,44 @@ const Wishlistcard = (data) => {
         ...SHADOWS.dark,
       }}
     >
-      <View style={{ width: "100%", height: 20 }}>
-        {/* <Image
-          source={nft07}
-          resizeMode="cover"
-          style={{
-            width:"100%",
-            height:"100%",
-            borderTopLeftRadius: SIZES.font,
-            borderTopRightRadius: SIZES.font,
-          }}
-          /> */}
-        {/* <CircleButton imgUrl={assets.heart} right = {10} top={10} /> */}
-      </View>
-      {/* <SubInfo /> */}
-
       <View style={{ width: "100%", padding: SIZES.font }}>
-        <NFTTitle
-          title={data.name}
-          subTitle={data.creator}
-          titleSize={SIZES.large}
-          subTitleSize={SIZES.small}
-        />
+        <View>
+          <Text
+            style={{
+              // fontFamily: FONTS.semiBold,
+              // fontSize: titleSize,
+              color: COLORS.primary,
+            }}
+          >
+            {data.postId.title}
+          </Text>
+          <Text
+            style={{
+              // fontFamily: FONTS.regular,
+              // fontSize: subTitleSize,
+              color: COLORS.primary,
+            }}
+          >
+            {/* by {subTitle} */}
+          </Text>
+        </View>
+
         <View
           style={{
             marginTop: SIZES.font,
             flexDirection: "row",
             justifyContent: "space-between",
-            alignItems: "center",
+            aligndatas: "center",
           }}
         >
           {/* <EthPrice price = {data.price}/> */}
 
           <Image
-            source={person04}
+            source={{ uri: data && data.postId.image.url }}
             style={{
+              width: "20%",
+              borderRadius: 50,
+              height: "200%",
               marginBottom: SIZES.font - 20,
               marginTop: SIZES.font - 110,
             }}
@@ -65,15 +79,15 @@ const Wishlistcard = (data) => {
               fontSize: SIZES.extraLarge,
             }}
           >
-            <Text>Canva Paint</Text>
+            <Text></Text>
             <Text
               style={{
                 textAlign: "left",
               }}
             >
-              🗒️ Here the text written depicts.....
+              {data && data.postId.description}
             </Text>
-            <Text>20$</Text>
+            <Text>{data && data.postId.amount}$</Text>
           </View>
           <View>
             <TouchableOpacity
@@ -82,6 +96,7 @@ const Wishlistcard = (data) => {
                 marginLeft: -170,
                 marginTop: -4,
               }}
+              onPress={() => deleteItemHandler(data._id)}
             >
               {/* <MaterialCommunityIcons name = "delete-empty" size={35} color='#363488' /> */}
               <MaterialCommunityIcons
@@ -94,12 +109,15 @@ const Wishlistcard = (data) => {
               minWidth={120}
               // fontSize = {SIZES.font}
               marginLeft={-110}
-              handlePress={() => navigation.navigate("Details", { data })}
+              handlePress={() =>
+                navigation.navigate("Details", {
+                  postId: data && data.postId._id,
+                })
+              }
             />
           </View>
         </View>
       </View>
-      {/* <Text>Beautiful Product</Text> */}
     </View>
   );
 };

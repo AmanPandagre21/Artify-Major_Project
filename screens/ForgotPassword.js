@@ -26,17 +26,20 @@ const ForgotPassword = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  const nextHandler = () => {
-    dispatch(send_otp(email));
-    // navigation.navigate("OTP");
+  const nextHandler = async () => {
+    await dispatch(send_otp(email));
   };
 
   useEffect(() => {
-    if (status && status.type === "error") {
+    if (status.type === "error") {
       Alert.alert(status.message);
-      dispatch(clear_all_errors());
+      // dispatch(clear_all_errors());
     }
-  }, [status]);
+
+    if (status.type === "idle") {
+      navigation.navigate("OTP");
+    }
+  }, [status.type, Alert, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -90,13 +93,7 @@ const ForgotPassword = ({ navigation }) => {
             Next
           </Button>
 
-          <View style={{ marginTop: 20, height: 70 }}>
-            {/* <TouchableOpacity>
-              <Text style={{ color: "#363488", fontWeight: "bold",fontSize:17 }}>
-                Forgot Password
-              </Text>
-   </TouchableOpacity> */}
-          </View>
+          <View style={{ marginTop: 20, height: 70 }}></View>
         </View>
       </ScrollView>
     </SafeAreaView>

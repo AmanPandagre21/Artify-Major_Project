@@ -20,7 +20,7 @@ const initialState = {
     email: "",
   },
   artistProfile: null,
-  posts: [],
+  myPosts: [],
   status: { type: STATUES.IDLE, message: null },
 };
 
@@ -50,10 +50,10 @@ export const artistSlice = createSlice({
       state.artist = action.payload;
     },
     getMyPosts(state, action) {
-      state.posts = action.payload;
+      state.myPosts = action.payload;
     },
     getArtistPosts(state, action) {
-      state.posts = action.payload;
+      state.myPosts = action.payload;
     },
     getArtistProfile(state, action) {
       state.artistProfile = action.payload;
@@ -354,9 +354,14 @@ export function my_posts() {
         })
       );
     } catch (error) {
-      dispatch(
-        setStatus({ type: STATUES.ERROR, message: error.response.data.message })
-      );
+      if (error.response.data) {
+        dispatch(
+          setStatus({
+            type: STATUES.ERROR,
+            message: error.response.data.message,
+          })
+        );
+      }
     }
   };
 }

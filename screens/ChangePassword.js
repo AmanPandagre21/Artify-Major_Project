@@ -25,7 +25,7 @@ const ChangePassword = () => {
   const [confirmPass, setConfirmPass] = useState("");
 
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.artist);
+  const { artist, status } = useSelector((state) => state.artist);
   const passInfo = {
     oldPassword: oldPass,
     password: pass,
@@ -59,11 +59,11 @@ const ChangePassword = () => {
         <View style={styles.profileView}>
           <Avatar.Image
             size={90}
-            source={assets.AvatarImg}
+            source={{ uri: artist.avatar && artist.avatar.url }}
             style={{ marginLeft: 20 }}
           />
 
-          <Text style={styles.ProfileName}>Muskan Mishra</Text>
+          <Text style={styles.ProfileName}>{artist && artist.name}</Text>
         </View>
         <View style={styles.footer}>
           {/* <View style={styles.textboxAndbtn}>

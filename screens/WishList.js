@@ -1,41 +1,45 @@
-import React, { useState } from "react";
-import { View, SafeAreaView, FlatList } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, SafeAreaView, FlatList, Text, Alert } from "react-native";
 
 import { FocusedStatusBar } from "../components/FocusedStatusBar";
 import Wishlistcard from "../components/Wishlistcard";
 import Wishlistheader from "../components/Wishlistheader";
 import { COLORS } from "../constants/Theme";
 import { NFTData } from "../constants/dummy";
+import { useDispatch, useSelector } from "react-redux";
+import { clear_all_errors, get_items } from "../slices/whislistSlice";
+
 const Wishlist = () => {
-  const [nftData, setNftData] = useState(NFTData);
+  const dispatch = useDispatch();
 
-  const handleSearch = (value) => {
-    if (value.length === 0) {
-      setNftData(NFTData);
+  const { list, status } = useSelector((state) => state.wishlist);
+
+  useEffect(() => {
+    dispatch(get_items());
+
+    if (status.type === "error") {
+      Alert.alert(status.message);
+      dispatch(clear_all_errors());
     }
 
-    const filteredData = NFTData.filter((item) =>
-      item.name.toLowerCase().includes(value.toLowerCase())
-    );
-
-    if (filteredData.length === 0) {
-      setNftData(NFTData);
-    } else {
-      setNftData(filteredData);
+    if (status.type === "idle") {
+      Alert.alert(status.message);
+      dispatch(clear_all_errors());
     }
-  };
+  }, [dispatch]);
 
-  return (
+  return status.type === "loading" ? (
+    <Text>Loading</Text>
+  ) : (
     <SafeAreaView style={{ flex: 1 }}>
-      {/* <FocusedStatusBar backgroundColor={COLORS.primary} /> */}
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
           <FlatList
-            data={nftData}
+            data={list && list}
             renderItem={({ item }) => <Wishlistcard data={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id}
             showsVerticalScrollIndicator={false}
-            ListHeaderComponent={<Wishlistheader onSearch={handleSearch} />}
+            // ListHeaderComponent={<Wishlistheader onSearch={} />}
           />
         </View>
 

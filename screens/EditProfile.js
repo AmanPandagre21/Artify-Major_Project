@@ -29,8 +29,9 @@ import {
 
 const EditProfile = ({ navigation, route }) => {
   const { artist, status } = useSelector((state) => state.artist);
+  const url = artist.image && artist.image.url;
 
-  const [userAvatar, setUserAvatar] = useState(artist && artist.avatar.url);
+  const [userAvatar, setUserAvatar] = useState(url);
   const [name, setName] = useState(artist && artist.name);
   const [phone, setPhone] = useState(artist && artist.phone);
   const [bio, setBio] = useState(artist && artist.bio);

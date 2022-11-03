@@ -1,10 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import api from "../../services/apiService";
-import {
-  getToken,
-  removeToken,
-  storeToken,
-} from "../../services/AsyncStorageService";
+import api from "../services/apiService";
+import { getToken } from "../services/AsyncStorageService";
 
 export const STATUES = Object.freeze({
   IDLE: "idle",
@@ -13,15 +9,15 @@ export const STATUES = Object.freeze({
 });
 
 const initialState = {
-  list: null,
+  list: [],
   status: { type: STATUES.IDLE, message: null },
 };
 
-export const artistSlice = createSlice({
-  name: "wishlist",
+export const wishlistSlice = createSlice({
+  name: "Wishlist",
   initialState,
   reducers: {
-    addItem(state, action) {},
+    addItems(state, action) {},
     removeItem(state, action) {},
     getAllItems(state, action) {
       state.list = action.payload;
@@ -36,33 +32,100 @@ export const artistSlice = createSlice({
   },
 });
 
-export const { getAllItems, removeItem, addItem, setStatus, clearAllErrors } =
-  artistSlice.actions;
-export default artistSlice.reducer;
+export const { getAllItems, removeItem, addItems, setStatus, clearAllErrors } =
+  wishlistSlice.actions;
+export default wishlistSlice.reducer;
 
-// artist Register
-export function artistRegister(name, email, password, confirmPassword) {
-  return async function artistRegistrationThunk(dispatch, getState) {
+//  add item
+export function add_item_to_wishlist(post_id) {
+  return async function addItemToWishlistThunk(dispatch, getState) {
     dispatch(setStatus({ type: STATUES.LOADING, message: "Loading" }));
     try {
+      const token = await getToken();
       const { data } = await api.post(
-        "/register",
-        name,
-        email,
-        password,
-        confirmPassword
+        `/me/add-item/${post_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      dispatch(register());
+      dispatch(addItems());
+      dispatch(
+        setStatus({ type: STATUES.IDLE, message: "Item added Successfully" })
+      );
+    } catch (error) {
+      if (error) {
+        dispatch(
+          setStatus({
+            type: STATUES.ERROR,
+            message: error.response.data.message,
+          })
+        );
+      }
+    }
+  };
+}
+
+//  get item
+export function get_items() {
+  return async function getItemsThunk(dispatch, getState) {
+    dispatch(setStatus({ type: STATUES.LOADING, message: "Loading" }));
+    try {
+      const token = await getToken();
+      const { data } = await api.get("/me/items", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getAllItems(data.lists));
       dispatch(
         setStatus({
           type: STATUES.IDLE,
-          message: "artist register Successfully",
+          message: "data get Successfully",
         })
       );
     } catch (error) {
+      if (error) {
+        dispatch(
+          setStatus({
+            type: STATUES.ERROR,
+            message: error.response.data.message,
+          })
+        );
+      }
+    }
+  };
+}
+
+//  remove item
+export function remove_item(postId) {
+  return async function removeItemThunk(dispatch, getState) {
+    dispatch(setStatus({ type: STATUES.LOADING, message: "Loading" }));
+    try {
+      const token = await getToken();
+      const { data } = await api.delete(`/me/remove-item/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(removeItem());
       dispatch(
-        setStatus({ type: STATUES.ERROR, message: error.response.data.message })
+        setStatus({
+          type: STATUES.IDLE,
+          message: "Item removed Successfully",
+        })
       );
+    } catch (error) {
+      if (error.response.data) {
+        dispatch(
+          setStatus({
+            type: STATUES.ERROR,
+            message: error.response.data.message,
+          })
+        );
+      }
     }
   };
 }

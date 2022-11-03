@@ -6,34 +6,94 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Alert,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import React from "react";
 import CircleVector from "../components/CircleVector";
 import SelectList from "react-native-dropdown-select-list";
-import { Avatar } from "react-native-paper";
+import { Avatar, Switch } from "react-native-paper";
 import { FontAwesome } from "@expo/vector-icons";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { get_categories } from "../slices/categorySlice";
+import mime from "mime";
+import { add_post } from "../slices/postSlice";
 
-const CreatePost = ({ navigate, route }) => {
+const AddPost = ({ navigation, route }) => {
+  // use State
   const [selected, setSelected] = React.useState("");
   const [post, setPost] = React.useState("");
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  // const [categoryId, setCategoryId] = React.useState("");
+  const [amount, setAmount] = React.useState("");
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
 
+  // Store
   const dispatch = useDispatch();
   const { category } = useSelector((state) => state.category);
+  const { status } = useSelector((state) => state.posts);
 
-  const handleImage = () => {
+  // handlers
+
+  const postHandler = async () => {
+    const myForm = new FormData();
+
+    myForm.append("title", title);
+    myForm.append("description", description);
+    myForm.append("category", selected);
+    myForm.append("isForSell", isSwitchOn ? true : false);
+    if (isSwitchOn) myForm.append("amount", amount);
+    myForm.append("image", {
+      uri: post,
+      type: mime.getType(post),
+      name: post.split("/").pop(),
+    });
+
+    await dispatch(add_post(myForm));
+  };
+
+  const imageHandler = () => {
     navigation.navigate("camera", {
       updateProfile: false,
     });
   };
 
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
+  // useEffect
   useEffect(() => {
+    if (status && status.type === "error") {
+      Alert.alert(status.message);
+      // dispatch(clear_all_errors());
+    }
+    if (status && status.type === "idle") {
+      Alert.alert(status.message);
+      setPost("");
+      setTitle("");
+      setDescription("");
+      setSelected("Categories");
+      setAmount("");
+      setIsSwitchOn(false);
+      navigation.navigate("Home");
+    }
+
     dispatch(get_categories());
-  }, []);
-  // const Categories = category.map;
+
+    if (route.params) {
+      if (route.params.image) {
+        setPost(route.params.image);
+      }
+    }
+  }, [status, dispatch, route]);
+
+  // set Categories
+  const catArr = [];
+  category.map((ele, ind) => {
+    catArr.push({ key: ele._id, value: ele.name });
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -66,17 +126,17 @@ const CreatePost = ({ navigate, route }) => {
               style={{ marginLeft: 20 }}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleImage}>
-            <Text style={{ color: "#900" }}>Add Photo</Text>
+          <TouchableOpacity onPress={imageHandler}>
+            <Text style={{ color: "#900" }}>Change Photo</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.footer}>
           <TextInput
             label="Title Of Your Post"
-            name="name"
-            placeholder="Leather oriented shoes"
-            // onChangeText={(email) => setEmail(email)}
+            name="title"
+            value={title}
+            onChangeText={(title) => setTitle(title)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
@@ -84,26 +144,17 @@ const CreatePost = ({ navigate, route }) => {
           <TextInput
             label="Description"
             multiline={true}
-            name="name"
-            placeholder="Leather oriented shoes"
-            // onChangeText={(email) => setEmail(email)}
+            name="description"
+            value={description}
+            onChangeText={(description) => setDescription(description)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
 
-          <TextInput
-            label="Price of Your Product"
-            multiline={true}
-            name="name"
-            placeholder="30$"
-            // onChangeText={(email) => setEmail(email)}
-            style={styles.loginInput}
-            underlineColor="transparent"
-          />
           <SelectList
-            // onSelect={() => alert(selected)}
+            // onSelect={(selected) => setCategoryId(selected)}
             setSelected={setSelected}
-            // data={category && categor}
+            data={catArr}
             placeholder="Categories"
             arrowicon={
               <FontAwesome
@@ -132,9 +183,26 @@ const CreatePost = ({ navigate, route }) => {
               marginLeft: "auto",
               marginRight: "auto",
               marginTop: "5%",
-            }} //override default styles
-            // defaultOption={{ key:'1', value:'Jammu & Kashmir' }}   //default selected option
+            }}
           />
+
+          <Text>Do You Want to add pricing</Text>
+          <Switch value={isSwitchOn} onValueChange={onToggleSwitch}></Switch>
+
+          {isSwitchOn ? (
+            <TextInput
+              label="Price of Your Product"
+              multiline={true}
+              name="amount"
+              value={amount}
+              onChangeText={(amount) => setAmount(amount)}
+              style={styles.loginInput}
+              underlineColor="transparent"
+            />
+          ) : (
+            ""
+          )}
+
           <View style={{ height: 200, width: "100%" }}>
             <TouchableOpacity
               style={{
@@ -145,6 +213,7 @@ const CreatePost = ({ navigate, route }) => {
                 marginTop: "10%",
                 marginLeft: "6%",
               }}
+              onPress={postHandler}
             >
               <View>
                 <Text
@@ -165,7 +234,7 @@ const CreatePost = ({ navigate, route }) => {
     </SafeAreaView>
   );
 };
-export default CreatePost;
+export default AddPost;
 
 const styles = StyleSheet.create({
   container: {

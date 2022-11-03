@@ -13,7 +13,10 @@ import {
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { artistRegister } from "../slices/user-artist-Slice/artistSlice";
+import {
+  artistRegister,
+  clear_all_errors,
+} from "../slices/user-artist-Slice/artistSlice";
 
 const Register = () => {
   const navigation = useNavigation();
@@ -40,13 +43,14 @@ const Register = () => {
   useEffect(() => {
     if (status && status.type === "error") {
       Alert.alert(status.message);
+      dispatch(clear_all_errors());
     }
 
     if (status && status.type === "idle") {
       Alert.alert(status.message);
       navigation.navigate("Login");
     }
-  }, [status]);
+  }, [status.type, Alert, navigation, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -152,7 +156,10 @@ const Register = () => {
             }}
           >
             <Text>Dont have any account ? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Login")}
+              disabled={status.type === "loading" ? "disabled" : ""}
+            >
               <Text style={{ color: "#AD40AF", fontWeight: "700" }}>
                 Sign In
               </Text>

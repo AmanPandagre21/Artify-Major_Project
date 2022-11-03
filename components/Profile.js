@@ -10,17 +10,24 @@ import {
 import { Avatar } from "react-native-paper";
 import AvtarImg from "../assets/avtar.jpg";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const Profile = () => {
-  const { artist } = useSelector((state) => state.artist);
+  const { artist, status } = useSelector((state) => state.artist);
 
-  return (
+  return status.type === "loading" ? (
+    <Text>Loading</Text>
+  ) : (
     <View style={styles.profileView}>
-      <Avatar.Image
-        size={90}
-        source={{ uri: artist && artist.avatar.url }}
-        style={{ marginLeft: 20 }}
-      />
+      {artist ? (
+        <Avatar.Image
+          size={90}
+          source={{ uri: artist.avatar && artist.avatar.url }}
+          style={{ marginLeft: 20 }}
+        />
+      ) : (
+        <Avatar.Image size={90} source={AvtarImg} style={{ marginLeft: 20 }} />
+      )}
 
       <Text style={styles.ProfileName}>{artist && artist.name}</Text>
     </View>

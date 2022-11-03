@@ -46,9 +46,21 @@ export const get_categories = () => {
         })
       );
     } catch (error) {
-      dispatch(
-        setStatus({ type: STATUES.ERROR, message: error.response.data.message })
-      );
+      if (error) {
+        dispatch(
+          setStatus({
+            type: STATUES.ERROR,
+            message: error.response.data.message,
+          })
+        );
+      }
     }
   };
 };
+
+// clear Users
+export function clear_all_errors() {
+  return async function clearErrorsThunk(dispatch, getState) {
+    dispatch(setStatus({ type: STATUES.Idle, message: null }));
+  };
+}

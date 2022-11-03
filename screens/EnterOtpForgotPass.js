@@ -13,7 +13,10 @@ import graphic from "../assets/circleVector_1.png";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput, Button } from "react-native-paper";
 import Profile from "../components/Profile";
-import { verify_otp } from "../slices/user-artist-Slice/artistSlice";
+import {
+  clear_all_errors,
+  verify_otp,
+} from "../slices/user-artist-Slice/artistSlice";
 
 const EnterOtp = ({ navigation }) => {
   const [passOtp, setPassOTP] = useState("");
@@ -31,11 +34,12 @@ const EnterOtp = ({ navigation }) => {
   useEffect(() => {
     if (status && status.type === "error") {
       Alert.alert(status.message);
+      dispatch(clear_all_errors());
     }
     if (status && status.type === "idle") {
       Alert.alert(status.message);
     }
-  }, [status]);
+  }, [status.type, Alert, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>

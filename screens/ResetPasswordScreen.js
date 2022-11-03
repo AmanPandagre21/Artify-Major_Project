@@ -13,6 +13,7 @@ import CircleVector from "../components/CircleVector";
 import { Avatar } from "react-native-paper";
 import { TextInput, Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
+import { clear_all_errors } from "../slices/user-artist-Slice/artistSlice";
 
 const ResetPasswordScreen = ({ navigation }) => {
   const [newPass, setNewPass] = useState("");
@@ -30,12 +31,12 @@ const ResetPasswordScreen = ({ navigation }) => {
   useEffect(() => {
     if (status && status.type === "error") {
       Alert.alert(status.message);
-      // dispatch(clearAllErrors());
+      dispatch(clear_all_errors());
     }
     if (status && status.type === "idle") {
       Alert.alert(status.message);
     }
-  }, [status]);
+  }, [status.type, Alert, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>

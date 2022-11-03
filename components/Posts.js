@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import ArtImage1 from "../assets/images/shirt1.jpg";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 const Row = ({ children }) => {
   return <View style={styles.row}>{children}</View>;
@@ -8,28 +8,31 @@ const Row = ({ children }) => {
 const Col = ({ children }) => {
   return <View style={styles.col}>{children}</View>;
 };
-const Post = () => {
-  return (
-    <View style={styles.app}>
-      <Row>
-        <Col>
-          <TouchableOpacity>
-            <Image source={ArtImage1} style={styles.img} />
-          </TouchableOpacity>
-        </Col>
-        <Col>
-          <TouchableOpacity>
-            <Image source={ArtImage1} style={styles.img} />
-          </TouchableOpacity>
-        </Col>
-        <Col>
-          <TouchableOpacity>
-            <Image source={ArtImage1} style={styles.img} />
-          </TouchableOpacity>
-        </Col>
-      </Row>
-    </View>
-  );
+const Post = ({ post, status }) => {
+  {
+    return post ? (
+      <View style={styles.app}>
+        <Row>
+          {status.type === "loading" ? (
+            <ActivityIndicator animating={true} color={MD2Colors.red800} />
+          ) : (
+            post &&
+            post.map((ele) => {
+              return (
+                <Col key={ele._id}>
+                  <TouchableOpacity>
+                    <Image source={{ uri: ele.image.url }} style={styles.img} />
+                  </TouchableOpacity>
+                </Col>
+              );
+            })
+          )}
+        </Row>
+      </View>
+    ) : (
+      <Text>NO Posts available</Text>
+    );
+  }
 };
 const styles = StyleSheet.create({
   app: {

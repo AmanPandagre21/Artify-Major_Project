@@ -9,7 +9,7 @@ import {
 import { Text, Button } from "react-native-paper";
 import HeaderText from "../components/HeaderText";
 import CircleVector from "../components/CircleVector";
-import Avtar from "../assets/avtar.jpg";
+import AvtarImg from "../assets/avtar.jpg";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -18,24 +18,39 @@ import Post from "../components/Posts";
 import BuyProduct from "../components/BuyProduct";
 import BuyingHistory from "../components/BuyingHistory";
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { my_posts } from "../slices/user-artist-Slice/artistSlice";
 
 const UserProfile = ({ navigation }) => {
   const [showpost, setshowpost] = useState(true);
   const [currBuyProduct, setCurrBuyProduct] = useState(false);
   const [buyingHistory, setBuyingHistory] = useState(false);
+  const dispatch = useDispatch();
 
-  const { artist } = useSelector((state) => state.artist);
+  const { artist, myPosts, status } = useSelector((state) => state.artist);
 
-  return (
+  useEffect(() => {
+    dispatch(my_posts());
+  }, [artist, dispatch]);
+
+  return status.type === "loading" ? (
+    <Text>Loading</Text>
+  ) : (
     <ScrollView style={styles.container}>
       <View>
         <CircleVector />
         <HeaderText content="Profile" />
         <View style={styles.profileInfo}>
-          <Image
-            source={{ uri: artist && artist.avatar.url }}
-            style={styles.avtar}
-          />
+          {artist.avatar ? (
+            <Image
+              source={{
+                uri: artist && artist.avatar.url,
+              }}
+              style={styles.avtar}
+            />
+          ) : (
+            <Image source={AvtarImg} style={styles.avtar} />
+          )}
 
           <View style={styles.profileText}>
             <Text style={{ fontWeight: "bold", fontSize: 19 }}>
@@ -58,7 +73,6 @@ const UserProfile = ({ navigation }) => {
             style={{ ...styles.btn }}
             onPress={() => navigation.navigate("EditProfile")}
           >
-            {" "}
             Edit Profile
           </Button>
 
@@ -76,7 +90,6 @@ const UserProfile = ({ navigation }) => {
             style={{ ...styles.btn, marginLeft: "45%" }}
             onPress={() => navigation.navigate("ContactForm")}
           >
-            {" "}
             Contact Us
           </Button>
         </View>
@@ -143,7 +156,7 @@ const UserProfile = ({ navigation }) => {
       <BuyingHistory/> */}
 
         {showpost ? (
-          <Post />
+          <Post post={myPosts} status={status} />
         ) : currBuyProduct ? (
           <BuyProduct />
         ) : buyingHistory ? (

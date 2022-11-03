@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,18 +10,35 @@ import {
   Button,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
+import * as Linking from "expo-linking";
 import CircleVector from "../components/CircleVector";
 import { Avatar } from "react-native-paper";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import AvtarImg from "../assets/images/person01.png";
 import { COLORS, SIZES, assets, SHADOWS, FONTS } from "../constants/Theme";
 import { Ionicons } from "@expo/vector-icons";
 import product from "../assets/images/shoes.jpg";
 // import { CircleButton, RectButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "../components";
 import Accordion from "../components/Accordion";
+import { useDispatch, useSelector } from "react-redux";
+import { get_post_details } from "../slices/postSlice";
 
-const Details = ({ navigation }) => {
-  return (
+const Details = ({ navigation, route }) => {
+  const dispatch = useDispatch();
+
+  const { post, status } = useSelector((state) => state.posts);
+
+  useEffect(() => {
+    if (route.params.postId) {
+      dispatch(get_post_details(route.params.postId));
+    }
+  }, [route, dispatch]);
+
+  return !post ? (
+    <ActivityIndicator animating={true} color={MD2Colors.red800} />
+  ) : (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
@@ -49,21 +66,30 @@ const Details = ({ navigation }) => {
           <View style={styles.profileView}>
             <Avatar.Image
               size={30}
-              source={AvtarImg}
+              source={{ uri: post && post.image.url }}
               style={{ marginLeft: 20 }}
             />
 
-            <Text style={styles.ProfileName}>Harish Gehlot</Text>
+            <Text style={styles.ProfileName}>{post && post.artist.name}</Text>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(`tel:${post && post.artist.phone}`)
+              }
+            >
               <Ionicons name="call-outline" size={24} color="#363488" />
             </TouchableOpacity>
           </View>
 
           <View style={{ alignItems: "center", marginTop: "5%" }}>
-            <Image source={product} style={styles.productImage} />
-            <Text style={styles.productTitle}>Leather Shoes</Text>
-            <Text style={{ fontSize: 20, color: "#363488" }}>800$</Text>
+            <Image
+              source={{ uri: post && post.image.url }}
+              style={styles.productImage}
+            />
+            <Text style={styles.productTitle}>{post && post.title}</Text>
+            <Text style={{ fontSize: 20, color: "#363488" }}>
+              {post && post.amount}$
+            </Text>
           </View>
 
           <View style={{ width: "100%", height: 40, marginTop: "2%" }}>
@@ -87,8 +113,7 @@ const Details = ({ navigation }) => {
                 fontStyle: "italic",
               }}
             >
-              {" "}
-              Footwears
+              {post && post.category.name}
             </Text>
           </View>
           <View
@@ -101,9 +126,7 @@ const Details = ({ navigation }) => {
           >
             <Accordion
               title={"Description"}
-              bodyText={
-                "Description about shoesa;lksdfja;sdlfjdskfdjfkdfkdkdfkdfjkdfjkdfkjfkdjfkfkda"
-              }
+              bodyText={post && post.description}
             />
           </View>
 

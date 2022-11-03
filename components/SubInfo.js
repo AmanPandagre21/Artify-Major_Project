@@ -3,7 +3,7 @@ import { View, Image, Text } from "react-native";
 
 import { SIZES, FONTS, COLORS, SHADOWS, assets } from "../constants/Theme";
 
-export const NFTTitle = ({ title, subTitle, titleSize, subTitleSize }) => {
+export const wishlistTitle = ({ title, subTitle, titleSize, subTitleSize }) => {
   return (
     <View>
       <Text

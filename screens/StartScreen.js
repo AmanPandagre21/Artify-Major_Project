@@ -14,7 +14,6 @@ const StartScreen = () => {
 
   useEffect(() => {
     dispatch(loggedArtist());
-    console.log(isAuth);
     if (isAuth) {
       navigation.navigate("Home");
     } else {

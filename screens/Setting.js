@@ -10,7 +10,6 @@ import {
 } from "react-native";
 
 import { FocusedStatusBar } from "../components/FocusedStatusBar";
-
 import { COLORS, FONTS } from "../constants/Theme";
 import {
   Ionicons,
@@ -23,20 +22,26 @@ import {
   AntDesign,
 } from "@expo/vector-icons";
 
-import SwitchComponent from "../components/SwitchComponent";
 import Profile from "../components/Profile";
 import CircleVector from "../components/CircleVector";
-import { Button } from "react-native-paper";
-import { useDispatch } from "react-redux";
+import { Switch } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
 import { artistLogout } from "../slices/user-artist-Slice/artistSlice";
 
 const Setting = ({ navigation }) => {
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
+
   const dispatch = useDispatch();
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
+  const { status } = useSelector((state) => state.artist);
 
   const logoutHandler = () => {
     dispatch(artistLogout());
   };
-  return (
+  return status.type === "loading" ? (
+    <Text>Loading</Text>
+  ) : (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       {/* <FocusedStatusBar backgroundColor={COLORS.primary} /> */}
 
@@ -90,9 +95,7 @@ const Setting = ({ navigation }) => {
           >
             Dark Mode
           </Text>
-
-          {/* <Entypo name="switch" size={40} color="#363488" style = {{ marginTop : 10, marginLeft:160}}/> */}
-          <SwitchComponent />
+          <Switch value={isSwitchOn} onValueChange={onToggleSwitch}></Switch>
         </View>
 
         <TouchableOpacity onPress={() => navigation.navigate("ChangePassword")}>
