@@ -6,16 +6,17 @@ import person04 from "../assets/images/person04.png";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { remove_item } from "../slices/whislistSlice";
+import { useState, useEffect } from "react";
+import { get_items, remove_item } from "../slices/whislistSlice";
 import { useDispatch } from "react-redux";
 
 const Wishlistcard = ({ data }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const deleteItemHandler = (id) => {
-    dispatch(remove_item(id));
+  console.log("oo");
+  const deleteItemHandler = async (id) => {
+    await dispatch(remove_item(id));
+    dispatch(get_items());
   };
 
   return !data ? (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -15,7 +15,37 @@ import CircleVector from "../components/CircleVector";
 // import { FocusedStatusBar } from '../components';
 // import COLORS from '../constants';
 
-const CreditPayment = () => {
+const ShippingAddress = ({ route, navigation }) => {
+  const [address, setAddress] = useState();
+  const [city, setCity] = useState();
+  const [state, setState] = useState();
+  const [pinCode, setPinCode] = useState();
+
+  const { sellerId, itemId, amount } = route.params;
+
+  let shippingCharges = 0;
+  if (amount !== 0) {
+    shippingCharges = amount > 500 ? 0 : 100;
+  }
+  const tax = Math.floor(amount * 0.1);
+
+  const totalAmount = amount + shippingCharges + tax;
+
+  const shipping = {
+    seller: sellerId,
+    orderItem: itemId,
+    itemsPrice: amount,
+    taxPrice: tax,
+    shippingPrice: shippingCharges,
+    totalPrice: totalAmount,
+    shippingInfo: {
+      address,
+      city,
+      state,
+      pinCode,
+    },
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -43,40 +73,39 @@ const CreditPayment = () => {
 
         <View style={styles.footer}>
           <TextInput
-            label="First Name"
-            name="name"
-            placeholder="Harish Gehlot"
-            // onChangeText={(email) => setEmail(email)}
+            label="Address"
+            name="address"
+            value={address}
+            onChangeText={(address) => setAddress(address)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
           <TextInput
-            label="Account Number"
-            name="acno"
-            placeholder="19104*******"
-            keyboardType="numeric"
-            // onChangeText={(email) => setEmail(email)}
+            label="City"
+            name="city"
+            value={city}
+            onChangeText={(city) => setCity(city)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
           <TextInput
-            label="CVV"
-            name="cvv"
-            placeholder="_ _ _"
-            keyboardType="numeric"
-            // onChangeText={(email) => setEmail(email)}
+            label="State"
+            name="state"
+            value={state}
+            onChangeText={(state) => setState(state)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
           <TextInput
-            label="Valid Until"
-            name="cvv"
-            placeholder="mm/yyyy"
+            label="PinCode"
+            name="pincode"
             keyboardType="numeric"
-            // onChangeText={(email) => setEmail(email)}
+            value={pinCode}
+            onChangeText={(pinCode) => setPinCode(pinCode)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
+
           <View
             style={{
               width: "100%",
@@ -96,6 +125,9 @@ const CreditPayment = () => {
                 textAlign: "center",
               }}
               style={styles.btn}
+              onPress={() =>
+                navigation.navigate("Checkout", { shipping: shipping })
+              }
             >
               Pay
             </Button>
@@ -170,4 +202,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
-export default CreditPayment;
+export default ShippingAddress;

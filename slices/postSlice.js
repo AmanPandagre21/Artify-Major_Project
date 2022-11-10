@@ -78,17 +78,16 @@ export function add_post(formData) {
 }
 
 //get Post
-export function get_posts() {
+export function get_posts(keyword = "") {
   return async function getPostsThunk(dispatch, getState) {
     dispatch(setStatus({ type: STATUS.LOADING, message: "Loading" }));
     try {
       const token = await getToken();
-      const { data } = await api.get("/posts", {
+      const { data } = await api.get(`/posts?keyword=${keyword}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
       dispatch(getPosts(data.posts));
       dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
     } catch (error) {

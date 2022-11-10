@@ -43,7 +43,7 @@ const Register = () => {
   useEffect(() => {
     if (status && status.type === "error") {
       Alert.alert(status.message);
-      dispatch(clear_all_errors());
+      // dispatch(clear_all_errors());
     }
 
     if (status && status.type === "idle") {

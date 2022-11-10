@@ -13,7 +13,10 @@ import CircleVector from "../components/CircleVector";
 import { Avatar } from "react-native-paper";
 import { TextInput, Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import { clear_all_errors } from "../slices/user-artist-Slice/artistSlice";
+import {
+  clear_all_errors,
+  reset_password,
+} from "../slices/user-artist-Slice/artistSlice";
 
 const ResetPasswordScreen = ({ navigation }) => {
   const [newPass, setNewPass] = useState("");
@@ -22,7 +25,7 @@ const ResetPasswordScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const resetPasswordHandler = (newPass, confirmPass) => {
-    dispatch(verify_otp(newPass, confirmPass));
+    dispatch(reset_password(newPass, confirmPass));
     navigation.navigate("Login");
   };
 
@@ -31,7 +34,7 @@ const ResetPasswordScreen = ({ navigation }) => {
   useEffect(() => {
     if (status && status.type === "error") {
       Alert.alert(status.message);
-      dispatch(clear_all_errors());
+      // dispatch(clear_all_errors());
     }
     if (status && status.type === "idle") {
       Alert.alert(status.message);
@@ -46,7 +49,7 @@ const ResetPasswordScreen = ({ navigation }) => {
           <Text style={styles.headerText}>Change Password</Text>
         </View>
 
-        <View style={styles.profileView}>
+        {/* <View style={styles.profileView}>
           <Avatar.Image
             size={90}
             source={assets.AvatarImg}
@@ -54,7 +57,7 @@ const ResetPasswordScreen = ({ navigation }) => {
           />
 
           <Text style={styles.ProfileName}>Muskan Mishra</Text>
-        </View>
+        </View> */}
         <View style={styles.footer}>
           {/* <View style={styles.textboxAndbtn}>
    </View> */}

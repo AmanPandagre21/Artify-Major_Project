@@ -6,36 +6,58 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CircleVector from "../components/CircleVector";
-import { FONTS } from "../constants/Theme";
 import SelectList from "react-native-dropdown-select-list";
 import { FontAwesome } from "@expo/vector-icons";
+import { useStripe } from "@stripe/stripe-react-native";
+import api from "../services/apiService";
+import { getToken } from "../services/AsyncStorageService";
 
-const Checkout = ({ navigation }) => {
-  const [selected, setSelected] = React.useState("");
-  const data = [
-    { key: "1", value: "PhonePe" },
-    { key: "2", value: "Google Pay" },
-    { key: "3", value: "razor" },
-  ];
+const Checkout = ({ navigation, route }) => {
+  const { shipping } = route.params;
 
-  const banking = [
-    { key: "1", value: "State Bank of India" },
-    { key: "2", value: "ICICI" },
-    { key: "3", value: "Bank of Baroda" },
-    { key: "4", value: "Canara Bank" },
-    { key: "5", value: "Dena Bank" },
-  ];
+  const stripe = useStripe();
+  console.log(stripe);
+  const subscribe = async () => {
+    try {
+      const amount = Math.floor(shipping.totalPrice * 100);
 
-  const credit = [
-    { key: "1", value: "State Bank of India" },
-    { key: "2", value: "ICICI" },
-    { key: "3", value: "Bank of Baroda" },
-    { key: "4", value: "Canara Bank" },
-    { key: "5", value: "Dena Bank" },
-  ];
+      const token = await getToken();
+      const response = await fetch(
+        "https://artify-app-server.herokuapp.com/api/v1/payment/process",
+        {
+          method: "POST",
+          body: JSON.stringify({ amount: amount }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) return Alert.alert(data.message);
+      const clientSecret = data.clientSecret;
+      console.log(`nnf => ${clientSecret}`);
+      const initSheet = await stripe.initPaymentSheet({
+        paymentIntentClientSecret: clientSecret,
+      });
+      console.log(initSheet);
+      if (initSheet.error) return Alert.alert(initSheet.error.message);
+      const presentSheet = await stripe.presentPaymentSheet({
+        clientSecret,
+      });
+
+      if (presentSheet.error) return Alert.alert(presentSheet.error.message);
+      else {
+        console.log("sdfsf");
+      }
+    } catch (error) {
+      Alert.alert(error);
+    }
+  };
 
   return (
     <SafeAreaView>
@@ -67,19 +89,6 @@ const Checkout = ({ navigation }) => {
             <Text style={{ fontSize: 22, marginTop: "5%", marginLeft: "5%" }}>
               Shipping Address
             </Text>
-            <TouchableOpacity style={styles.editButton}>
-              <View>
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    marginTop: "7%",
-                  }}
-                >
-                  Edit
-                </Text>
-              </View>
-            </TouchableOpacity>
           </View>
 
           <View
@@ -99,9 +108,10 @@ const Checkout = ({ navigation }) => {
                 marginLeft: "5%",
               }}
             >
-              <Text style={{ fontSize: 16 }}>Harish Gehlot</Text>
-              <Text style={{ marginLeft: "20%", fontSize: 16 }}>
-                8319855397
+              <Text style={{ fontSize: 16 }}>
+                {shipping.shippingInfo.address} -{" "}
+                {shipping.shippingInfo.pinCode}, {shipping.shippingInfo.city},
+                {shipping.shippingInfo.state}
               </Text>
             </View>
 
@@ -112,7 +122,9 @@ const Checkout = ({ navigation }) => {
                 marginLeft: "5%",
               }}
             >
-              <Text style={{ fontSize: 16 }}>58, Telephone Nagar</Text>
+              <Text style={{ fontSize: 16 }}>
+                Amount = {shipping.itemsPrice}
+              </Text>
             </View>
 
             <View
@@ -123,110 +135,35 @@ const Checkout = ({ navigation }) => {
                 marginLeft: "5%",
               }}
             >
-              <Text style={{ fontSize: 16 }}>452018</Text>
+              <Text style={{ fontSize: 16 }}>
+                Shipping Price = {shipping.shippingPrice}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: ".5%",
+                marginBottom: "6%",
+                marginLeft: "5%",
+              }}
+            >
+              <Text style={{ fontSize: 16 }}>
+                Tax Price = {shipping.taxPrice}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: ".5%",
+                marginBottom: "6%",
+                marginLeft: "5%",
+              }}
+            >
+              <Text style={{ fontSize: 16 }}>
+                Total Price= {shipping.totalPrice}
+              </Text>
             </View>
           </View>
-
-          <Text
-            style={{
-              fontSize: 25,
-              fontStyle: FONTS.bold,
-              textAlign: "center",
-              marginTop: "8%",
-            }}
-          >
-            Payment Methods
-          </Text>
-
-          <SelectList
-            // onSelect={() => alert(selected)}
-            setSelected={setSelected}
-            data={data}
-            placeholder="UPI options"
-            arrowicon={
-              <FontAwesome name="chevron-down" size={12} color={"black"} />
-            }
-            searchicon={<FontAwesome name="search" size={12} color={"black"} />}
-            search={false}
-            dropdownStyles={{
-              borderColor: "white",
-              backgroundColor: "#F5F5F5",
-              width: "90%",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            dropdownTextStyles={{ color: "#363488" }}
-            boxStyles={{
-              borderColor: "white",
-              borderRadius: 50,
-              backgroundColor: "#F5F5F5",
-              width: "90%",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginTop: "5%",
-            }} //override default styles
-            // defaultOption={{ key:'1', value:'Jammu & Kashmir' }}   //default selected option
-          />
-
-          <SelectList
-            // onSelect={() => alert(selected)}
-            setSelected={setSelected}
-            data={banking}
-            placeholder="Bank Transfer"
-            arrowicon={
-              <FontAwesome name="chevron-down" size={12} color={"black"} />
-            }
-            searchicon={<FontAwesome name="search" size={12} color={"black"} />}
-            search={false}
-            dropdownStyles={{
-              borderColor: "white",
-              backgroundColor: "#F5F5F5",
-              width: "90%",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            dropdownTextStyles={{ color: "#363488" }}
-            boxStyles={{
-              borderColor: "white",
-              borderRadius: 50,
-              backgroundColor: "#F5F5F5",
-              width: "90%",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginTop: "5%",
-            }} //override default styles
-            // defaultOption={{ key:'1', value:'Jammu & Kashmir' }}   //default selected option
-          />
-
-          <SelectList
-            // onSelect={() => alert(selected)}
-            setSelected={setSelected}
-            data={credit}
-            placeholder="Credit / Debit Card"
-            arrowicon={
-              <FontAwesome name="chevron-down" size={12} color={"black"} />
-            }
-            searchicon={<FontAwesome name="search" size={12} color={"black"} />}
-            search={false}
-            dropdownStyles={{
-              borderColor: "white",
-              backgroundColor: "#F5F5F5",
-              width: "90%",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-            dropdownTextStyles={{ color: "#363488" }}
-            boxStyles={{
-              borderColor: "white",
-              borderRadius: 50,
-              backgroundColor: "#F5F5F5",
-              width: "90%",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginTop: "5%",
-            }} //override default styles
-            // defaultOption={{ key:'1', value:'Jammu & Kashmir' }}   //default selected option
-          />
 
           <TouchableOpacity
             style={{
@@ -238,20 +175,18 @@ const Checkout = ({ navigation }) => {
               marginLeft: "5%",
               marginBottom: 100,
             }}
-            onPress={() => navigation.navigate("CreditPayment")}
+            onPress={subscribe}
           >
-            <View>
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 15,
-                  textAlign: "center",
-                  marginTop: "3%",
-                }}
-              >
-                Checkout
-              </Text>
-            </View>
+            <Text
+              style={{
+                color: "white",
+                fontSize: 15,
+                textAlign: "center",
+                marginTop: "3%",
+              }}
+            >
+              Pay
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

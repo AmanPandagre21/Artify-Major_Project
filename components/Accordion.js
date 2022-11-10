@@ -11,7 +11,7 @@ import {
 import { toggleAnimation } from "../animations/toggleAnimation";
 
 const Accordion = ({ title, bodyText }) => {
-  const [showContent, setShowContent] = useState(false);
+  const [showContent, setShowContent] = useState(true);
   const animationController = useRef(new Animated.Value(0)).current;
   const toggleListItem = () => {
     const config = {

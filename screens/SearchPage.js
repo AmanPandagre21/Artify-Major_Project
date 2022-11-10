@@ -8,21 +8,38 @@ import {
 } from "react-native";
 import React from "react";
 import CircleVector from "../components/CircleVector";
-import SearchComponent from "../components/SearchComponent";
+import { Button, Searchbar } from "react-native-paper";
 import SelectList from "react-native-dropdown-select-list";
 import { FontAwesome } from "@expo/vector-icons";
-import Posts1 from "../components/Post1";
+import SearchPost from "../components/SearchPost";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { get_posts } from "../slices/postSlice";
 
 const SearchPage = () => {
-  const [selected, setSelected] = React.useState("");
-  const categories = [
-    { key: "1", value: "Paintings" },
-    { key: "2", value: "Footwears" },
-    { key: "3", value: "Clothing" },
-    { key: "4", value: "Music" },
-    { key: "5", value: "Sketch" },
-    { key: "6", value: "Health" },
-  ];
+  // const [selected, setSelected] = React.useState("");
+  // const categories = [
+  //   { key: "1", value: "Paintings" },
+  //   { key: "2", value: "Footwears" },
+  //   { key: "3", value: "Clothing" },
+  //   { key: "4", value: "Music" },
+  //   { key: "5", value: "Sketch" },
+  //   { key: "6", value: "Health" },
+  // ];
+
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  const onChangeSearch = (query) => setSearchQuery(query);
+
+  const dispatch = useDispatch();
+
+  const { posts, status: postStatus } = useSelector((state) => state.posts);
+
+  useEffect(() => {
+    dispatch(get_posts(searchQuery));
+  }, [searchQuery, dispatch]);
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -48,10 +65,21 @@ const SearchPage = () => {
             position: "absolute",
           }}
         >
-          <SearchComponent />
+          <Searchbar
+            placeholder="Search"
+            onChangeText={onChangeSearch}
+            value={searchQuery}
+            iconColor="#363488"
+            style={{
+              width: "79%",
+              borderRadius: 15,
+              opacity: 0.4,
+              marginTop: "30%",
+            }}
+          />
         </View>
 
-        <SelectList
+        {/* <SelectList
           // onSelect={() => alert(selected)}
           setSelected={setSelected}
           data={categories}
@@ -79,7 +107,7 @@ const SearchPage = () => {
             marginTop: "10%",
           }} //override default styles
           // defaultOption={{ key:'1', value:'Jammu & Kashmir' }}   //default selected option
-        />
+        /> */}
         {/* <View style = {{flexDirection:'row',width:"100%",height:"auto"}}>
         <TouchableOpacity style = {{ width : "100%",marginTop:20 }}>
             <Image source={book} style = {{ width:"45%",height:"45%",marginLeft:"6%",borderRadius:20}}/>
@@ -89,7 +117,7 @@ const SearchPage = () => {
         </TouchableOpacity>
     </View> */}
         <View style={{ marginBottom: "15%", alignItems: "center" }}>
-          <Posts1 />
+          <SearchPost posts={posts} />
         </View>
       </View>
     </ScrollView>

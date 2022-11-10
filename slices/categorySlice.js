@@ -9,7 +9,7 @@ export const STATUES = Object.freeze({
 
 const initialState = {
   category: [],
-  status: { type: STATUES.IDLE, message: null },
+  status: { type: STATUES.LOADING, message: "loading" },
 };
 
 export const categorySlice = createSlice({

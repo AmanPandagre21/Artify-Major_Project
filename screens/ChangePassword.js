@@ -25,7 +25,7 @@ const ChangePassword = () => {
   const [confirmPass, setConfirmPass] = useState("");
 
   const dispatch = useDispatch();
-  const { artist, status } = useSelector((state) => state.artist);
+  const { artist, status: artistStatus } = useSelector((state) => state.artist);
   const passInfo = {
     oldPassword: oldPass,
     password: pass,
@@ -36,17 +36,17 @@ const ChangePassword = () => {
   };
 
   useEffect(() => {
-    if (status.type === "error") {
-      Alert.alert(status.message);
+    if (artistStatus.type === "error") {
+      Alert.alert(artistStatus.message);
       // dispatch(clear_all_errors());
     }
-    if (status.type === "idle") {
-      Alert.alert(status.message);
+    if (artistStatus.type === "idle") {
+      Alert.alert(artistStatus.message);
       setOldPass("");
       setPass("");
       setConfirmPass("");
     }
-  }, [status]);
+  }, [artistStatus]);
 
   return (
     <SafeAreaView style={styles.container}>

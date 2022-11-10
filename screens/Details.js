@@ -28,7 +28,7 @@ import { get_post_details } from "../slices/postSlice";
 const Details = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
-  const { post, status } = useSelector((state) => state.posts);
+  const { post, status: postStatus } = useSelector((state) => state.posts);
 
   useEffect(() => {
     if (route.params.postId) {
@@ -36,7 +36,7 @@ const Details = ({ navigation, route }) => {
     }
   }, [route, dispatch]);
 
-  return !post ? (
+  return !post || postStatus.type === "loading" ? (
     <ActivityIndicator animating={true} color={MD2Colors.red800} />
   ) : (
     <SafeAreaView>
@@ -66,11 +66,18 @@ const Details = ({ navigation, route }) => {
           <View style={styles.profileView}>
             <Avatar.Image
               size={30}
-              source={{ uri: post && post.image.url }}
+              source={{ uri: post && post.artist.avatar.url }}
               style={{ marginLeft: 20 }}
             />
-
-            <Text style={styles.ProfileName}>{post && post.artist.name}</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("SellerProfile", {
+                  artId: post && post.artist._id,
+                })
+              }
+            >
+              <Text style={styles.ProfileName}>{post && post.artist.name}</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() =>
@@ -101,7 +108,6 @@ const Details = ({ navigation, route }) => {
                 marginLeft: "2%",
               }}
             >
-              {" "}
               Product Category
             </Text>
             <Text
@@ -129,34 +135,43 @@ const Details = ({ navigation, route }) => {
               bodyText={post && post.description}
             />
           </View>
-
-          <TouchableOpacity
-            style={{ height: 160 }}
-            onPress={() => navigation.navigate("Checkout")}
-          >
-            <View
-              style={{
-                backgroundColor: "#363488",
-                width: "80%",
-                height: "40%",
-                borderRadius: 15,
-                marginLeft: "10%",
-                marginTop: "7%",
-              }}
+          {post && post.amount !== 0 ? (
+            <TouchableOpacity
+              style={{ height: 160 }}
+              onPress={() =>
+                navigation.navigate("ShippingAddress", {
+                  sellerId: post.artist._id,
+                  itemId: post._id,
+                  amount: post.amount,
+                })
+              }
             >
-              <Text
+              <View
                 style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  marginTop: "6%",
-                  textAlign: "center",
+                  backgroundColor: "#363488",
+                  width: "80%",
+                  height: "40%",
+                  borderRadius: 15,
+                  marginLeft: "10%",
+                  marginTop: "7%",
                 }}
               >
-                {" "}
-                Proceed to pay
-              </Text>
-            </View>
-          </TouchableOpacity>
+                <Text
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    marginTop: "6%",
+                    textAlign: "center",
+                  }}
+                >
+                  {" "}
+                  Proceed to pay
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <Text></Text>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

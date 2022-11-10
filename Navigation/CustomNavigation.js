@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 import Checkout from "../screens/Checkout";
 import Setting from "../screens/Setting";
@@ -12,8 +13,13 @@ import Home from "../screens/Home";
 import WishList from "../screens/WishList";
 import UserProfile from "../screens/UserProfile";
 import AddPost from "../screens/AddPost";
-import CreditPayment from "../screens/CreditPayment";
+import ShippingAddress from "../screens/ShippindAddress";
 import Camera from "../screens/Camera";
+import SellerProfile from "../screens/SellerProfile";
+import SearchPage from "../screens/SearchPage";
+import { getToken } from "../services/AsyncStorageService";
+import api from "../services/apiService";
+import { useDispatch } from "react-redux";
 const Stack = createNativeStackNavigator();
 
 const SettingsScreen = () => {
@@ -23,7 +29,8 @@ const SettingsScreen = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Settings" component={Setting} />
+      <Stack.Screen name="SearchPage" component={SearchPage} />
+      <Stack.Screen name="Details" component={Details} />
       <Stack.Screen name="Faqs" component={Faqs} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="ContactForm" component={ContactForm} />
@@ -43,7 +50,8 @@ const HomeScreen = () => {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Details" component={Details} />
       <Stack.Screen name="Checkout" component={Checkout} />
-      <Stack.Screen name="CreditPayment" component={CreditPayment} />
+      <Stack.Screen name="ShippingAddress" component={ShippingAddress} />
+      <Stack.Screen name="SellerProfile" component={SellerProfile} />
     </Stack.Navigator>
   );
 };

@@ -17,6 +17,10 @@ import ResetPassword from "./screens/ResetPasswordScreen";
 import { loggedArtist } from "./slices/user-artist-Slice/artistSlice";
 import BottomTab from "./Navigation/BottomTab";
 import AuthNav from "./Navigation/AuthNav";
+import { StripeProvider } from "@stripe/stripe-react-native";
+import api from "./services/apiService";
+import { getToken } from "./services/AsyncStorageService";
+import Checkout from "./screens/Checkout";
 
 const theme = {
   ...DefaultTheme,
@@ -29,24 +33,27 @@ const theme = {
 const Stack = createStackNavigator();
 
 const App = () => {
-  // const [initialize, setInitialize] = useState(true);
-  // const [user, setUser] = useState();
-
-  // Handle user state changes
-  // const onAuthStateChanged = (user) => {
-  //   setUser(user);
-  //   if (initialize) setInitialize(false);
-  // };
-
-  // useEffect(() => {
-  //   const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-  //   return subscriber;
-  // }, []);
-
   const dispatch = useDispatch();
+
+  const [stripeKey, setStripeKey] = useState();
+  async function getStripeKey() {
+    try {
+      const token = await getToken();
+      const { data } = await api.get("stripeapikey", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setStripeKey(data.stripeApiKey);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     dispatch(loggedArtist());
+
+    getStripeKey();
   }, [dispatch]);
 
   const { isAuth, status } = useSelector((state) => state.artist);
@@ -62,10 +69,11 @@ const App = () => {
     //
     //   <Stack.Screen name="Home" component={Home} />
     // </Stack.Navigator>
-
-    <NavigationContainer theme={theme}>
-      <AuthNav />
-    </NavigationContainer>
+    <StripeProvider publishableKey={stripeKey}>
+      <NavigationContainer theme={theme}>
+        <AuthNav />
+      </NavigationContainer>
+    </StripeProvider>
   );
 };
 

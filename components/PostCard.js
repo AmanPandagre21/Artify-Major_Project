@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Share,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { COLORS, NFTData, SHADOWS, SIZES } from "../constants/Theme";
@@ -14,7 +15,7 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { get_posts, like_and_dislike } from "../slices/postSlice";
 import { add_item_to_wishlist } from "../slices/whislistSlice";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const PostCard = ({
   postID,
@@ -31,6 +32,8 @@ const PostCard = ({
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const route = useRoute();
+
   const { artist } = useSelector((state) => state.artist);
 
   const { status } = useSelector((state) => state.wishlist);
@@ -44,6 +47,18 @@ const PostCard = ({
     await dispatch(like_and_dislike(userId));
 
     dispatch(get_posts());
+  };
+
+  const shareData = async () => {
+    try {
+      await Share.share({
+        title: "Sharing image file from awesome share app",
+        message: "Please take a look at this post",
+        url: route.name,
+      });
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   useEffect(() => {
@@ -165,7 +180,10 @@ const PostCard = ({
             </View>
           </View>
           <View>
-            <TouchableOpacity style={{ marginTop: "2%", marginLeft: "60%" }}>
+            <TouchableOpacity
+              style={{ marginTop: "2%", marginLeft: "60%" }}
+              onPress={shareData}
+            >
               <Ionicons
                 name="ios-share-social-sharp"
                 size={30}

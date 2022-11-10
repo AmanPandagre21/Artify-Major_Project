@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -17,10 +17,36 @@ import pen from "../assets/images/pen.jpg";
 import watch from "../assets/images/watch1.jpg";
 import shirt from "../assets/images/shirt1.jpg";
 import book from "../assets/images/book.jpg";
-import FONTS from "../constants/theme";
+import FONTS from "../constants/Theme";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  artist_posts,
+  artist_profile,
+} from "../slices/user-artist-Slice/artistSlice";
 
-const SellerProfile = () => {
-  return (
+const SellerProfile = ({ navigation, route }) => {
+  const dispatch = useDispatch();
+
+  const {
+    artistProfile,
+    myPosts,
+    artist,
+    status: artistStatus,
+  } = useSelector((state) => state.artist);
+
+  useEffect(() => {
+    dispatch(artist_profile(route.params.artId));
+
+    dispatch(artist_posts(route.params.artId));
+
+    if (route.params.artId === artist._id) {
+      navigation.navigate("UserProfile");
+    }
+  }, [route, dispatch]);
+
+  return artistStatus.type === "loading" ? (
+    <Text>Loading</Text>
+  ) : (
     <ScrollView>
       <View style={styles.container}>
         <CircleVector />
@@ -40,19 +66,28 @@ const SellerProfile = () => {
         {/* <View style = {{ alignItems: 'center', height:100, width:"100%",position:'absolute'}}>
       </View> */}
         <View style={styles.profileInfo}>
-          <Image source={Avtar} style={styles.avtar} />
+          <Image
+            source={{ uri: artistProfile && artistProfile.avatar.url }}
+            style={styles.avtar}
+          />
           <View style={styles.profileText}>
             <Text style={{ fontWeight: "bold", fontSize: 19 }}>
-              Aman Pandagre
+              {artistProfile && artistProfile.name}
             </Text>
             <Text style={{ fontSize: 14 }}>
-              Simply a great freetimer and founder of popular show Aman ke
-              parathe
+              {artistProfile && artistProfile.bio}
             </Text>
           </View>
         </View>
 
-        <View style={{ alignItems: "center", marginTop: "5%", height: "auto" }}>
+        <View
+          style={{
+            alignItems: "center",
+            marginTop: "5%",
+            height: "auto",
+            marginBottom: "-25%",
+          }}
+        >
           <Text
             style={{
               fontWeight: "bold",
@@ -68,269 +103,77 @@ const SellerProfile = () => {
           </Text>
         </View>
 
-        <View
-          style={{
-            width: "90%",
-            height: 120,
-            backgroundColor: "#E6E6EB",
-            borderRadius: 20,
-            marginLeft: "7%",
-            flexDirection: "row",
-          }}
-        >
-          <Image
-            source={shoes}
-            style={{ width: 120, height: 120, borderRadius: 20 }}
-          />
-          <View>
-            <Text
-              style={{ marginLeft: "5%", fontSize: 20, fontWeight: "bold" }}
-            >
-              Leather shoes
-            </Text>
-            <Text style={{ width: "70%", marginLeft: "4%" }}>
-              Aman earned from his show aman ke parathe
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={{ fontSize: 15, marginLeft: "5%", marginTop: "5%" }}>
-                {" "}
-                Price - 80K
-              </Text>
-              <TouchableOpacity
+        {myPosts &&
+          myPosts.map((post) => {
+            return (
+              <View
                 style={{
-                  backgroundColor: "#363488",
-                  width: "30%",
-                  height: 30,
-                  marginLeft: "3%",
-                  borderRadius: 15,
+                  width: "90%",
+                  height: 120,
+                  backgroundColor: "#E6E6EB",
+                  borderRadius: 20,
+                  marginLeft: "7%",
                   marginTop: "4%",
+                  flexDirection: "row",
                 }}
               >
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    marginTop: "4%",
-                  }}
-                >
-                  View
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        <View
-          style={{
-            width: "90%",
-            height: 120,
-            backgroundColor: "#E6E6EB",
-            borderRadius: 20,
-            marginLeft: "7%",
-            marginTop: "4%",
-            flexDirection: "row",
-          }}
-        >
-          <Image
-            source={pen}
-            style={{ width: 120, height: 120, borderRadius: 20 }}
-          />
-          <View>
-            <Text
-              style={{ marginLeft: "5%", fontSize: 20, fontWeight: "bold" }}
-            >
-              Pen
-            </Text>
-            <Text style={{ width: "70%", marginLeft: "4%" }}>
-              Aman earned from his show aman ke parathe
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={{ fontSize: 15, marginLeft: "5%", marginTop: "5%" }}>
-                {" "}
-                Price - 10
-              </Text>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "#363488",
-                  width: "30%",
-                  height: 30,
-                  marginLeft: "3%",
-                  borderRadius: 15,
-                  marginTop: "4%",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    marginTop: "4%",
-                  }}
-                >
-                  View
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        <View
-          style={{
-            width: "90%",
-            height: 120,
-            backgroundColor: "#E6E6EB",
-            borderRadius: 20,
-            marginLeft: "7%",
-            marginTop: "4%",
-            flexDirection: "row",
-          }}
-        >
-          <Image
-            source={watch}
-            style={{ width: 120, height: 120, borderRadius: 20 }}
-          />
-          <View>
-            <Text
-              style={{ marginLeft: "5%", fontSize: 20, fontWeight: "bold" }}
-            >
-              Diamond Watch
-            </Text>
-            <Text style={{ width: "70%", marginLeft: "4%" }}>
-              Aman earned from his show aman ke parathe
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={{ fontSize: 15, marginLeft: "5%", marginTop: "5%" }}>
-                {" "}
-                Price - 10
-              </Text>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "#363488",
-                  width: "30%",
-                  height: 30,
-                  marginLeft: "3%",
-                  borderRadius: 15,
-                  marginTop: "4%",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    marginTop: "4%",
-                  }}
-                >
-                  View
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        <View
-          style={{
-            width: "90%",
-            height: 120,
-            backgroundColor: "#E6E6EB",
-            borderRadius: 20,
-            marginLeft: "7%",
-            marginTop: "4%",
-            flexDirection: "row",
-          }}
-        >
-          <Image
-            source={shirt}
-            style={{ width: 120, height: 120, borderRadius: 20 }}
-          />
-          <View>
-            <Text
-              style={{ marginLeft: "5%", fontSize: 20, fontWeight: "bold" }}
-            >
-              Aman's Busat
-            </Text>
-            <Text style={{ width: "70%", marginLeft: "4%" }}>
-              Aman earned from his show aman ke parathe
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={{ fontSize: 15, marginLeft: "5%", marginTop: "5%" }}>
-                {" "}
-                Price - 10
-              </Text>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "#363488",
-                  width: "30%",
-                  height: 30,
-                  marginLeft: "3%",
-                  borderRadius: 15,
-                  marginTop: "4%",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    marginTop: "4%",
-                  }}
-                >
-                  View
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        <View
-          style={{
-            width: "90%",
-            height: 120,
-            backgroundColor: "#E6E6EB",
-            borderRadius: 20,
-            marginLeft: "7%",
-            marginTop: "4%",
-            flexDirection: "row",
-          }}
-        >
-          <Image
-            source={book}
-            style={{ width: 120, height: 120, borderRadius: 20 }}
-          />
-          <View>
-            <Text
-              style={{ marginLeft: "5%", fontSize: 20, fontWeight: "bold" }}
-            >
-              Aman's book
-            </Text>
-            <Text style={{ width: "70%", marginLeft: "4%" }}>
-              Aman earned from his show aman ke parathe
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={{ fontSize: 15, marginLeft: "5%", marginTop: "5%" }}>
-                {" "}
-                Price - 10
-              </Text>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "#363488",
-                  width: "30%",
-                  height: 30,
-                  marginLeft: "3%",
-                  borderRadius: 15,
-                  marginTop: "4%",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    marginTop: "4%",
-                  }}
-                >
-                  View
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+                <Image
+                  source={{ uri: post.image.url }}
+                  style={{ width: 120, height: 120, borderRadius: 20 }}
+                />
+                <View>
+                  <Text
+                    style={{
+                      marginLeft: "5%",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {post.title}
+                  </Text>
+                  <Text style={{ width: "70%", marginLeft: "4%" }}>
+                    {post.description}
+                  </Text>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        marginLeft: "5%",
+                        marginTop: "5%",
+                      }}
+                    >
+                      Price - {post.amount}
+                    </Text>
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "#363488",
+                        width: "30%",
+                        height: 30,
+                        marginLeft: "3%",
+                        borderRadius: 15,
+                        marginTop: "4%",
+                      }}
+                      onPress={() =>
+                        navigation.navigate("Details", {
+                          postId: post._id,
+                        })
+                      }
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          textAlign: "center",
+                          marginTop: "4%",
+                        }}
+                      >
+                        View
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            );
+          })}
       </View>
     </ScrollView>
   );
@@ -342,7 +185,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     height: "100%",
-    marginBottom: "10%",
+    marginBottom: "60%",
   },
   profileInfo: {
     width: "85%",

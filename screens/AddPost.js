@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { get_categories } from "../slices/categorySlice";
 import mime from "mime";
-import { add_post } from "../slices/postSlice";
+import { add_post, get_posts, clear_all_errors } from "../slices/postSlice";
 
 const AddPost = ({ navigation, route }) => {
   // use State
@@ -27,7 +27,7 @@ const AddPost = ({ navigation, route }) => {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   // const [categoryId, setCategoryId] = React.useState("");
-  const [amount, setAmount] = React.useState("");
+  const [amount, setAmount] = React.useState("0");
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
 
   // Store
@@ -43,15 +43,15 @@ const AddPost = ({ navigation, route }) => {
     myForm.append("title", title);
     myForm.append("description", description);
     myForm.append("category", selected);
-    myForm.append("isForSell", isSwitchOn ? true : false);
-    if (isSwitchOn) myForm.append("amount", amount);
+    myForm.append("isForSell", isSwitchOn);
+    myForm.append("amount", amount === "0" ? "0" : amount);
     myForm.append("image", {
       uri: post,
       type: mime.getType(post),
       name: post.split("/").pop(),
     });
-
     await dispatch(add_post(myForm));
+    dispatch(get_posts());
   };
 
   const imageHandler = () => {
@@ -66,7 +66,7 @@ const AddPost = ({ navigation, route }) => {
   useEffect(() => {
     if (status && status.type === "error") {
       Alert.alert(status.message);
-      // dispatch(clear_all_errors());
+      dispatch(clear_all_errors());
     }
     if (status && status.type === "idle") {
       Alert.alert(status.message);
@@ -74,7 +74,7 @@ const AddPost = ({ navigation, route }) => {
       setTitle("");
       setDescription("");
       setSelected("Categories");
-      setAmount("");
+      setAmount("0");
       setIsSwitchOn(false);
       navigation.navigate("Home");
     }

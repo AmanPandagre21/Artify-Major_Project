@@ -12,23 +12,20 @@ import { clear_all_errors, get_items } from "../slices/whislistSlice";
 const Wishlist = () => {
   const dispatch = useDispatch();
 
-  const { list, status } = useSelector((state) => state.wishlist);
+  const { list, status: whishliststatus } = useSelector(
+    (state) => state.wishlist
+  );
 
   useEffect(() => {
     dispatch(get_items());
 
-    if (status.type === "error") {
-      Alert.alert(status.message);
-      dispatch(clear_all_errors());
-    }
-
-    if (status.type === "idle") {
-      Alert.alert(status.message);
+    if (whishliststatus.type === "error") {
+      Alert.alert(whishliststatus.message);
       dispatch(clear_all_errors());
     }
   }, [dispatch]);
 
-  return status.type === "loading" ? (
+  return whishliststatus.type === "loading" ? (
     <Text>Loading</Text>
   ) : (
     <SafeAreaView style={{ flex: 1 }}>

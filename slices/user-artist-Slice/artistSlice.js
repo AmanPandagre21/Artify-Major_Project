@@ -181,9 +181,14 @@ export function loggedArtist() {
         })
       );
     } catch (error) {
-      dispatch(
-        setStatus({ type: STATUES.ERROR, message: error.response.data.message })
-      );
+      if (error) {
+        dispatch(
+          setStatus({
+            type: STATUES.ERROR,
+            message: error.response.data.message,
+          })
+        );
+      }
     }
   };
 }
@@ -369,12 +374,14 @@ export function artist_profile(id) {
   return async function artistProfileThunk(dispatch, getState) {
     dispatch(setStatus({ type: STATUES.LOADING, message: "Loading" }));
     try {
+      const token = await getToken();
       const { data } = await api.get(`/artist/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      dispatch(getArtistPosts(data.artist));
+      console.log(data);
+      dispatch(getArtistProfile(data.artist));
       dispatch(
         setStatus({
           type: STATUES.IDLE,
@@ -393,6 +400,7 @@ export function artist_posts(id) {
   return async function artistPostsThunk(dispatch, getState) {
     dispatch(setStatus({ type: STATUES.LOADING, message: "Loading" }));
     try {
+      const token = await getToken();
       const { data } = await api.get(`/artist-posts/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -416,6 +424,6 @@ export function artist_posts(id) {
 // clear Users
 export function clear_all_errors() {
   return async function clearErrorsThunk(dispatch, getState) {
-    dispatch(setStatus({ type: STATUES.Idle, message: null }));
+    dispatch(setStatus({ type: STATUES.ERROR, message: null }));
   };
 }
