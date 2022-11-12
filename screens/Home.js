@@ -19,7 +19,7 @@ import { loggedArtist } from "../slices/user-artist-Slice/artistSlice";
 import { get_posts } from "../slices/postSlice";
 import { clear_all_errors } from "../slices/whislistSlice";
 import PostCard from "../components/PostCard";
-
+import Loader from "../components/loader";
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { posts, status: postStatus } = useSelector((state) => state.posts);
@@ -41,7 +41,7 @@ const Home = ({ navigation }) => {
   }, [Alert, dispatch, whishliststatus]);
 
   return !posts ? (
-    <Text>LOADING</Text>
+    <Loader/>
   ) : (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
