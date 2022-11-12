@@ -21,6 +21,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { my_posts } from "../slices/user-artist-Slice/artistSlice";
 import { get_my_orders, get_my_orders_history } from "../slices/orderSlice";
+import Loader from "../components/loader";
 
 const UserProfile = ({ navigation }) => {
   const [showpost, setshowpost] = useState(true);
@@ -45,7 +46,7 @@ const UserProfile = ({ navigation }) => {
   }, [artist, dispatch]);
 
   return status.type === "loading" ? (
-    <Text>Loading</Text>
+    <Loader />
   ) : (
     <ScrollView style={styles.container}>
       <View>
