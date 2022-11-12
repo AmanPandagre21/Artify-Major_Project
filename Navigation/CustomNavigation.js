@@ -31,10 +31,10 @@ const SettingsScreen = () => {
     >
       <Stack.Screen name="SearchPage" component={SearchPage} />
       <Stack.Screen name="Details" component={Details} />
-      <Stack.Screen name="Faqs" component={Faqs} />
+      {/* <Stack.Screen name="Faqs" component={Faqs} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="ContactForm" component={ContactForm} />
-      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="EditProfile" component={EditProfile} /> */}
       <Stack.Screen name="camera" component={Camera} />
     </Stack.Navigator>
   );
@@ -66,6 +66,10 @@ const UserProfileScreen = () => {
       <Stack.Screen name="UserProfile" component={UserProfile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="ContactForm" component={ContactForm} />
+      <Stack.Screen name="Faqs" component={Faqs} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="SettingPage" component={Setting} />
+     
     </Stack.Navigator>
   );
 };

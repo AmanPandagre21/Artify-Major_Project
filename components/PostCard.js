@@ -84,7 +84,7 @@ const PostCard = ({
   return (
     <View
       style={{
-        height: 380,
+        height: 430,
         backgroundColor: COLORS.white,
         borderRadius: SIZES.font,
         marginBottom: SIZES.extraLarge,
@@ -159,8 +159,10 @@ const PostCard = ({
             <View
               style={{
                 marginLeft: "15%",
-                flexDirection: "row",
+                flexDirection: "column",
                 marginTop: "12%",
+                width:"75%"
+                
               }}
             >
               <TouchableOpacity onPress={() => likeDislikeHandler(postID)}>
@@ -174,7 +176,7 @@ const PostCard = ({
 
               <View
               style={{
-                marginLeft: "15%",
+                marginTop:"2%",
                 flexDirection: "row",
                 // marginTop: "12%",
               }}
@@ -184,7 +186,7 @@ const PostCard = ({
                 size={24}
                 color="#363488"
               />
-              <Text style={{ marginLeft: "9%", color: "#363488" }}>
+              <Text style={{  color: "#363488" }}>
                 {amount}💰
               </Text>
             </View>
@@ -206,9 +208,9 @@ const PostCard = ({
               </Text>
             </View> */}
           </View>
-          <View >
+          <View style={{width:"40%",marginTop:"10%" ,marginLeft:"auto"}} >
             <TouchableOpacity
-              style={{ marginTop: "2%", marginLeft: "50%" }}
+              style={{ marginTop: "2%",marginLeft:"auto",marginRight:"8%" }}
               onPress={shareData}
             >
               <Ionicons
@@ -219,12 +221,14 @@ const PostCard = ({
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                width: "35%",
+                width: "40%",
                 height: 40,
                 backgroundColor: "#363488",
-                marginLeft: "33%",
-                borderRadius: 20,
+                 marginLeft: "auto",
+                
+                borderRadius: 18,
                 marginTop: "15%",
+                marginRight:"8%"
               }}
               onPress={() =>
                 navigation.navigate("Details", {
@@ -234,10 +238,12 @@ const PostCard = ({
             >
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: 15,
+                  marginTop:"auto",
+                  marginBottom:"auto",  
                   color: "white",
                   textAlign: "center",
-                  marginTop: "5%",
+                  
                 }}
               >
                 View

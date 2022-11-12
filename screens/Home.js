@@ -59,7 +59,7 @@ const Home = ({ navigation }) => {
               alignContent:"center"
             }}
           >
-            <Text style={{ fontSize: 30 }}>
+            <Text style={{ fontSize: 30 ,marginLeft:"19%",color:"#363488",fontWeight:"500"}}>
              Artify
             </Text>
            

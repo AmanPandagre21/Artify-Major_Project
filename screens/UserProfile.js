@@ -51,7 +51,20 @@ const UserProfile = ({ navigation }) => {
     <ScrollView style={styles.container}>
       <View>
         <CircleVector />
+        <TouchableOpacity style={{position:"absolute",marginLeft:"85%",marginTop:"15%"}} onPress={()=>navigation.navigate("SettingPage")}>
+        <Ionicons
+                name="settings"
+                size={45}
+                color="#363488"
+                
+              />
+        </TouchableOpacity>
+        
         <HeaderText content="Profile" />
+       
+             
+       
+        
         <View style={styles.profileInfo}>
           {artist.avatar ? (
             <Image
