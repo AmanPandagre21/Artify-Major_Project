@@ -5,7 +5,7 @@ import { FocusedStatusBar } from "../components/FocusedStatusBar";
 import Wishlistcard from "../components/Wishlistcard";
 import Wishlistheader from "../components/Wishlistheader";
 import { COLORS } from "../constants/Theme";
-import { NFTData } from "../constants/dummy";
+import Loader from "../components/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clear_all_errors, get_items } from "../slices/whislistSlice";
 
@@ -26,7 +26,7 @@ const Wishlist = () => {
   }, [dispatch]);
 
   return whishliststatus.type === "loading" ? (
-    <Text>Loading</Text>
+    <Loader />
   ) : (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
