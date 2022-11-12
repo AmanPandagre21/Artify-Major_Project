@@ -20,6 +20,7 @@ import { get_posts } from "../slices/postSlice";
 import { clear_all_errors } from "../slices/whislistSlice";
 import PostCard from "../components/PostCard";
 import Loader from "../components/loader";
+
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { posts, status: postStatus } = useSelector((state) => state.posts);
@@ -55,11 +56,13 @@ const Home = ({ navigation }) => {
               width: "100%",
               position: "absolute",
               flexDirection: "row",
+              alignContent:"center"
             }}
           >
-            <Text style={{ fontSize: 30, marginLeft: "3%" }}>
-              {artist && artist.name}
+            <Text style={{ fontSize: 30 }}>
+             Artify
             </Text>
+           
             {/* <View style={{ width: "95%", marginRight: 30 }}>
               <SearchComponent />
             </View> */}
