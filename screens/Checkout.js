@@ -15,49 +15,49 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useStripe } from "@stripe/stripe-react-native";
 import api from "../services/apiService";
 import { getToken } from "../services/AsyncStorageService";
+import { useDispatch, useSelector } from "react-redux";
+import { place_order } from "../slices/orderSlice";
 
 const Checkout = ({ navigation, route }) => {
   const { shipping } = route.params;
 
-  const stripe = useStripe();
-  console.log(stripe);
-  const subscribe = async () => {
-    try {
-      const amount = Math.floor(shipping.totalPrice * 100);
+  const dispatch = useDispatch();
 
-      const token = await getToken();
-      const response = await fetch(
-        "https://artify-app-server.herokuapp.com/api/v1/payment/process",
-        {
-          method: "POST",
-          body: JSON.stringify({ amount: amount }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) return Alert.alert(data.message);
-      const clientSecret = data.clientSecret;
-      console.log(`nnf => ${clientSecret}`);
-      const initSheet = await stripe.initPaymentSheet({
-        paymentIntentClientSecret: clientSecret,
-      });
-      console.log(initSheet);
-      if (initSheet.error) return Alert.alert(initSheet.error.message);
-      const presentSheet = await stripe.presentPaymentSheet({
-        clientSecret,
-      });
+  const { status: orderStatus } = useSelector((state) => state.order);
 
-      if (presentSheet.error) return Alert.alert(presentSheet.error.message);
-      else {
-        console.log("sdfsf");
-      }
-    } catch (error) {
-      Alert.alert(error);
-    }
+  const {
+    seller,
+    orderItem,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+    shippingInfo,
+  } = shipping;
+
+  const payHandler = () => {
+    dispatch(
+      place_order(
+        seller,
+        orderItem,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
+        shippingInfo
+      )
+    );
   };
+
+  useEffect(() => {
+    if (orderStatus && orderStatus.type === "error") {
+      Alert.alert(orderStatus.message);
+      //  dispatch(clear_all_errors());
+    }
+    if (orderStatus && orderStatus.type === "idle") {
+      Alert.alert(orderStatus.message);
+    }
+  }, [dispatch]);
 
   return (
     <SafeAreaView>
@@ -175,7 +175,7 @@ const Checkout = ({ navigation, route }) => {
               marginLeft: "5%",
               marginBottom: 100,
             }}
-            onPress={subscribe}
+            onPress={payHandler}
           >
             <Text
               style={{

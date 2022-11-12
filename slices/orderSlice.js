@@ -10,6 +10,7 @@ export const STATUS = Object.freeze({
 
 const initialState = {
   orders: [],
+  ordersHistory: [],
   status: { type: STATUS.IDLE, message: null },
 };
 
@@ -20,6 +21,10 @@ export const orderSlice = createSlice({
     placeOrder(state, action) {},
     getMyOrders(state, action) {
       state.orders = action.payload;
+    },
+
+    getMyOrdersHistory(state, action) {
+      state.ordersHistory = action.payload;
     },
 
     updateOrder(state, action) {
@@ -40,23 +45,44 @@ export const {
   placeOrder,
   getMyOrders,
   updateOrder,
+  getMyOrdersHistory,
   setStatus,
   clearAllErrors,
-} = postSlice.actions;
-export default postSlice.reducer;
+} = orderSlice.actions;
+export default orderSlice.reducer;
 
 //place Order
-export function place_order(formData) {
+export function place_order(
+  seller,
+  orderItem,
+  itemsPrice,
+  taxPrice,
+  shippingPrice,
+  totalPrice,
+  shippingInfo
+) {
   return async function placeOrderThunk(dispatch, getState) {
     dispatch(setStatus({ type: STATUS.LOADING, message: "Loading" }));
     try {
       const token = await getToken();
-      const { data } = await api.post("/order/new", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const { data } = await api.post(
+        "/order/new",
+        {
+          seller,
+          orderItem,
+          itemsPrice,
+          taxPrice,
+          shippingPrice,
+          totalPrice,
+          shippingInfo,
         },
-      });
-
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(data);
       dispatch(placeOrder());
       dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
     } catch (error) {
@@ -84,6 +110,31 @@ export function get_my_orders() {
         },
       });
       dispatch(getMyOrders(data.orders));
+      dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
+    } catch (error) {
+      if (error) {
+        dispatch(
+          setStatus({
+            type: STATUS.ERROR,
+            message: error.response.data.message,
+          })
+        );
+      }
+    }
+  };
+}
+
+export function get_my_orders_history() {
+  return async function getMyOrdersHistoryThunk(dispatch, getState) {
+    dispatch(setStatus({ type: STATUS.LOADING, message: "Loading" }));
+    try {
+      const token = await getToken();
+      const { data } = await api.get("/orders-history", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getMyOrdersHistory(data.orders));
       dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
     } catch (error) {
       if (error) {

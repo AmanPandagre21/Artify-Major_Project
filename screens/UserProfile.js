@@ -20,6 +20,7 @@ import BuyingHistory from "../components/BuyingHistory";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { my_posts } from "../slices/user-artist-Slice/artistSlice";
+import { get_my_orders } from "../slices/orderSlice";
 
 const UserProfile = ({ navigation }) => {
   const [showpost, setshowpost] = useState(true);
@@ -29,8 +30,18 @@ const UserProfile = ({ navigation }) => {
 
   const { artist, myPosts, status } = useSelector((state) => state.artist);
 
+  const {
+    orders,
+    ordersHistory,
+    status: orderStatus,
+  } = useSelector((state) => state.order);
+
   useEffect(() => {
     dispatch(my_posts());
+
+    dispatch(get_my_orders());
+
+    dispatch(get_my_orders_history());
   }, [artist, dispatch]);
 
   return status.type === "loading" ? (
@@ -158,9 +169,9 @@ const UserProfile = ({ navigation }) => {
         {showpost ? (
           <Post post={myPosts} status={status} />
         ) : currBuyProduct ? (
-          <BuyProduct />
+          <BuyProduct order={orders} status={orderStatus} />
         ) : buyingHistory ? (
-          <BuyingHistory />
+          <BuyingHistory history={ordersHistory} status={orderStatus} />
         ) : (
           <Text>hello</Text>
         )}

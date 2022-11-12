@@ -63,9 +63,9 @@ export function add_post(formData) {
       });
 
       dispatch(addPost());
-      dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
+      dispatch(setStatus({ type: STATUS.IDLE, message: data.status }));
     } catch (error) {
-      if (error.response.data) {
+      if (error) {
         dispatch(
           setStatus({
             type: STATUS.ERROR,

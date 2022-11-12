@@ -30,6 +30,10 @@ const Details = ({ navigation, route }) => {
 
   const { post, status: postStatus } = useSelector((state) => state.posts);
 
+  const { artist } = useSelector((state) => state.artist);
+
+  console.log(artist);
+
   useEffect(() => {
     if (route.params.postId) {
       dispatch(get_post_details(route.params.postId));
@@ -138,6 +142,7 @@ const Details = ({ navigation, route }) => {
           {post && post.amount !== 0 ? (
             <TouchableOpacity
               style={{ height: 160 }}
+              disabled={artist._id === post.artist._id ? true : false}
               onPress={() =>
                 navigation.navigate("ShippingAddress", {
                   sellerId: post.artist._id,
@@ -148,7 +153,8 @@ const Details = ({ navigation, route }) => {
             >
               <View
                 style={{
-                  backgroundColor: "#363488",
+                  backgroundColor:
+                    artist._id === post.artist._id ? "#FF0000" : "#363488",
                   width: "80%",
                   height: "40%",
                   borderRadius: 15,
@@ -164,8 +170,9 @@ const Details = ({ navigation, route }) => {
                     textAlign: "center",
                   }}
                 >
-                  {" "}
-                  Proceed to pay
+                  {artist._id === post.artist._id
+                    ? " Its your product"
+                    : "Proceed to pay"}
                 </Text>
               </View>
             </TouchableOpacity>

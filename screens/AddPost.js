@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { get_categories } from "../slices/categorySlice";
 import mime from "mime";
 import { add_post, get_posts, clear_all_errors } from "../slices/postSlice";
+import * as FileSystem from "expo-file-system";
 
 const AddPost = ({ navigation, route }) => {
   // use State
@@ -26,7 +27,6 @@ const AddPost = ({ navigation, route }) => {
   const [post, setPost] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
-  // const [categoryId, setCategoryId] = React.useState("");
   const [amount, setAmount] = React.useState("0");
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
 
@@ -39,7 +39,6 @@ const AddPost = ({ navigation, route }) => {
 
   const postHandler = async () => {
     const myForm = new FormData();
-
     myForm.append("title", title);
     myForm.append("description", description);
     myForm.append("category", selected);

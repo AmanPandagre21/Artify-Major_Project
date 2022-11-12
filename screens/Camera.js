@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
+// import * as FileSystem from "expo-file-system";
 
 const CameraComponent = ({ navigation, route }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -30,16 +31,22 @@ const CameraComponent = ({ navigation, route }) => {
       aspect: [1, 1],
       quality: 1,
     });
+
     if (route.params.updateProfile)
       return navigation.navigate("EditProfile", { image: data.uri });
-    else return navigation.navigate("AddPost", { image: data.uri });
+    else return navigation.navigate("AddPost", { image: data && data.uri });
   };
 
   const clickPicture = async () => {
-    const data = await camera.takePictureAsync();
+    const data = await camera.takePictureAsync({ base64: true });
+
     if (route.params.updateProfile)
       return navigation.navigate("EditProfile", { image: data.uri });
-    else return navigation.navigate("AddPost", { image: data.uri });
+    else
+      return navigation.navigate("AddPost", {
+        image: data.uri,
+        base64: data.base64,
+      });
   };
 
   if (hasPermission === null) {

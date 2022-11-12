@@ -8,12 +8,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { get_items, remove_item } from "../slices/whislistSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Wishlistcard = ({ data }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  console.log("oo");
   const deleteItemHandler = async (id) => {
     await dispatch(remove_item(id));
     dispatch(get_items());
@@ -40,7 +39,7 @@ const Wishlistcard = ({ data }) => {
               color: COLORS.primary,
             }}
           >
-            {data.postId.title}
+            {data && data.postId.title}
           </Text>
           <Text
             style={{
