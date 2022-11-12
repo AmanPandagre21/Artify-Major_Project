@@ -61,18 +61,20 @@ const Details = ({ navigation, route }) => {
                 fontSize: 30,
                 lineHeight: 48,
                 color: "#363488",
-                top: 70,
+                top: 80,
               }}
             >
               Product Details
             </Text>
           </View>
           <View style={styles.profileView}>
+            <View style={{flexDirection:'row'}}>
             <Avatar.Image
               size={30}
               source={{ uri: post && post.artist.avatar.url }}
               style={{ marginLeft: 20 }}
             />
+
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate("SellerProfile", {
@@ -82,10 +84,10 @@ const Details = ({ navigation, route }) => {
             >
               <Text style={styles.ProfileName}>{post && post.artist.name}</Text>
             </TouchableOpacity>
-
+            </View>
             <TouchableOpacity
               onPress={() =>
-                Linking.openURL(`tel:${post && post.artist.phone}`)
+                Linking.openURL(`tel:₹{post && post.artist.phone}`)
               }
             >
               <Ionicons name="call-outline" size={24} color="#363488" />
@@ -102,23 +104,25 @@ const Details = ({ navigation, route }) => {
               {post && post.amount}$
             </Text>
           </View>
-
-          <View style={{ width: "100%", height: 40, marginTop: "2%" }}>
+          <View style={styles.descriptionCard}>
+          <View style={{ marginBottom:'4%',width: "100%", height: 40, marginTop: "2%" }}>
             <Text
               style={{
                 fontWeight: "bold",
                 color: "#363488",
                 marginTop: "3%",
-                marginLeft: "2%",
+                fontSize:18,
+                marginLeft:'5%'
               }}
             >
               Product Category
             </Text>
             <Text
               style={{
-                position: "absolute",
-                marginLeft: "70%",
-                marginTop: "3%",
+                color:'white',
+                marginLeft: "5%",
+                fontSize:18,
+                marginTop: "2%",
                 fontWeight: "bold",
                 fontStyle: "italic",
               }}
@@ -126,11 +130,12 @@ const Details = ({ navigation, route }) => {
               {post && post.category.name}
             </Text>
           </View>
+
           <View
             style={{
-              marginTop: "5%",
+              marginTop: "6%",
               width: "95%",
-              marginLeft: "auto",
+              marginLeft: "3.5%",
               marginRight: "auto",
             }}
           >
@@ -139,6 +144,8 @@ const Details = ({ navigation, route }) => {
               bodyText={post && post.description}
             />
           </View>
+          
+          
           {post && post.amount !== 0 ? (
             <TouchableOpacity
               style={{ height: 160 }}
@@ -154,9 +161,9 @@ const Details = ({ navigation, route }) => {
               <View
                 style={{
                   backgroundColor:
-                    artist._id === post.artist._id ? "#FF0000" : "#363488",
+                    artist._id === post.artist._id ? "#808080" : "#363488",
                   width: "80%",
-                  height: "40%",
+                  height: "35%",
                   borderRadius: 15,
                   marginLeft: "10%",
                   marginTop: "7%",
@@ -180,6 +187,7 @@ const Details = ({ navigation, route }) => {
             <Text></Text>
           )}
         </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -196,6 +204,7 @@ const styles = StyleSheet.create({
     //marginLeft:"auto",
     marginRight: "auto",
     height: "auto",
+    justifyContent:"space-between"
   },
   container: {
     height: "100%",
@@ -224,4 +233,15 @@ const styles = StyleSheet.create({
     color: "#363488",
     fontWeight: "bold",
   },
+  descriptionCard : {
+    width:'90%',
+    height:'27%',
+    padding:'2%',
+    marginLeft:'6%',
+    marginTop:'8%',
+    backdropFilter: "blur(16px) saturate(180%)",
+    backgroundColor: "rgba(133, 133, 185, 0.75)",
+    borderRadius: 12,
+    border: "1px solid rgba(255, 255, 255, 0.125)"
+  }
 });

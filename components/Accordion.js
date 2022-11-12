@@ -53,14 +53,16 @@ export default Accordion;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    // padding : '2%',
+    marginTop:'2%',
+    padding:'2%',
     borderRadius: 12,
     backgroundColor: "white",
     marginBottom: "2%",
     overflow: "hidden",
+    backgroundColor:'#6B728E'  //"rgba(133, 133, 185, 0.75)"
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#363488",
     fontWeight: "bold",
   },
