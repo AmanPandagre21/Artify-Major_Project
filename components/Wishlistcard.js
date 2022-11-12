@@ -18,8 +18,10 @@ const Wishlistcard = ({ data }) => {
     dispatch(get_items());
   };
 
-  return !data ? (
-    <ActivityIndicator animating={true} color={MD2Colors.red800} />
+  console.log(data);
+
+  return data === null ? (
+    <Text>Add Item</Text>
   ) : (
     <View
       style={{
@@ -39,7 +41,7 @@ const Wishlistcard = ({ data }) => {
               color: COLORS.primary,
             }}
           >
-            {data && data.postId.title}
+            {data.postId && data.postId.title}
           </Text>
           <Text
             style={{
@@ -63,7 +65,7 @@ const Wishlistcard = ({ data }) => {
           {/* <EthPrice price = {data.price}/> */}
 
           <Image
-            source={{ uri: data && data.postId.image.url }}
+            source={{ uri: data.postId && data.postId.image.url }}
             style={{
               width: "20%",
               borderRadius: 50,
@@ -85,9 +87,9 @@ const Wishlistcard = ({ data }) => {
                 textAlign: "left",
               }}
             >
-              {data && data.postId.description}
+              {data.postId && data.postId.description}
             </Text>
-            <Text>{data && data.postId.amount}$</Text>
+            <Text>{data.postId && data.postId.amount}$</Text>
           </View>
           <View>
             <TouchableOpacity
@@ -96,7 +98,7 @@ const Wishlistcard = ({ data }) => {
                 marginLeft: -170,
                 marginTop: -4,
               }}
-              onPress={() => deleteItemHandler(data._id)}
+              onPress={() => deleteItemHandler(data && data._id)}
             >
               {/* <MaterialCommunityIcons name = "delete-empty" size={35} color='#363488' /> */}
               <MaterialCommunityIcons
@@ -111,7 +113,7 @@ const Wishlistcard = ({ data }) => {
               marginLeft={-110}
               handlePress={() =>
                 navigation.navigate("Details", {
-                  postId: data && data.postId._id,
+                  postId: data.postId && data.postId._id,
                 })
               }
             />

@@ -20,7 +20,7 @@ import BuyingHistory from "../components/BuyingHistory";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { my_posts } from "../slices/user-artist-Slice/artistSlice";
-import { get_my_orders } from "../slices/orderSlice";
+import { get_my_orders, get_my_orders_history } from "../slices/orderSlice";
 
 const UserProfile = ({ navigation }) => {
   const [showpost, setshowpost] = useState(true);

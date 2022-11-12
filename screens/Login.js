@@ -28,7 +28,11 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-  const { artist, isAuth, status } = useSelector((state) => state.artist);
+  const {
+    artist,
+    isAuth,
+    status: artistStatus,
+  } = useSelector((state) => state.artist);
   const dispatch = useDispatch();
 
   const onLogin = (username, password) => {
@@ -36,9 +40,9 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (status && status.type === "error") {
-      Alert.alert(status.message);
-      // dispatch(clear_all_errors());
+    if (artistStatus && artistStatus.type === "error") {
+      Alert.alert(artistStatus.message);
+      dispatch(clear_all_errors());
     }
 
     if (isAuth) {
@@ -46,7 +50,7 @@ const Login = () => {
     } else {
       navigation.navigate("Login");
     }
-  }, [isAuth, status]);
+  }, [isAuth, artistStatus]);
 
   return (
     <SafeAreaView style={styles.container}>

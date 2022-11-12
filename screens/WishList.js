@@ -31,13 +31,17 @@ const Wishlist = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <View style={{ zIndex: 0 }}>
-          <FlatList
-            data={list && list}
-            renderItem={({ item }) => <Wishlistcard data={item} />}
-            keyExtractor={(item) => item._id}
-            showsVerticalScrollIndicator={false}
-            // ListHeaderComponent={<Wishlistheader onSearch={} />}
-          />
+          {list === [] ? (
+            <Text>add Item</Text>
+          ) : (
+            <FlatList
+              data={list && list}
+              renderItem={({ item }) => <Wishlistcard data={item && item} />}
+              keyExtractor={(item) => item._id}
+              showsVerticalScrollIndicator={false}
+              // ListHeaderComponent={<Wishlistheader onSearch={} />}
+            />
+          )}
         </View>
 
         <View

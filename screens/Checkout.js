@@ -52,7 +52,7 @@ const Checkout = ({ navigation, route }) => {
   useEffect(() => {
     if (orderStatus && orderStatus.type === "error") {
       Alert.alert(orderStatus.message);
-      //  dispatch(clear_all_errors());
+      dispatch(clear_all_errors());
     }
     if (orderStatus && orderStatus.type === "idle") {
       Alert.alert(orderStatus.message);

@@ -31,16 +31,14 @@ const Home = ({ navigation }) => {
   );
 
   useEffect(() => {
-    dispatch(loggedArtist());
-    dispatch(get_posts());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (whishliststatus.type === "error") {
       Alert.alert(whishliststatus.message);
-      // dispatch(clear_all_errors());
+      dispatch(clear_all_errors());
     }
-  }, [Alert, dispatch]);
+    dispatch(loggedArtist());
+
+    dispatch(get_posts());
+  }, [Alert, dispatch, whishliststatus]);
 
   return !posts ? (
     <Text>LOADING</Text>

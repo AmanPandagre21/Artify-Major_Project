@@ -102,8 +102,13 @@ const BottomTab = ({ navigation }) => {
             <View>
               {/* <AntDesign name="heart" size={30} color={focused?"#363488":"black"}  /> */}
 
-              <Ionicons
+              {/* <Ionicons
                 name="settings"
+                size={30}
+                color={focused ? "#363488" : "black"}
+              /> */}
+              <FontAwesome
+                name="search"
                 size={30}
                 color={focused ? "#363488" : "black"}
               />

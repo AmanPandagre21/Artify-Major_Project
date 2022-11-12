@@ -10,10 +10,11 @@ const StartScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { artist, isAuth, status } = useSelector((state) => state.artist);
+  const { isAuth, status: artStatus } = useSelector((state) => state.artist);
 
   useEffect(() => {
     dispatch(loggedArtist());
+
     if (isAuth) {
       navigation.navigate("Home");
     } else {
@@ -21,7 +22,9 @@ const StartScreen = () => {
     }
   }, [isAuth, dispatch]);
 
-  return (
+  return artStatus.type === "loading" ? (
+    <Text>Loading</Text>
+  ) : (
     <SafeAreaView style={styles.container}>
       <Image source={assets.circleVector_3} style={styles.vector_img}></Image>
       <View>
