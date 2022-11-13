@@ -179,7 +179,7 @@ const UserProfile = ({ navigation }) => {
               style={styles.postIcon}
             />
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               setshowpost(false);
               setCurrBuyProduct(false);
@@ -192,7 +192,7 @@ const UserProfile = ({ navigation }) => {
               color="black"
               style={styles.postIcon}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         {/* <BuyProduct/>
       <BuyingHistory/> */}
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     marginLeft: "9%",
   },
   postIcon: {
-    marginLeft: "15%",
+    marginLeft: "23%",
     color: "#363488",
   },
 });
