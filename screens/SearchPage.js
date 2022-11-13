@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import React from "react";
 import CircleVector from "../components/CircleVector";
@@ -17,22 +18,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { get_posts } from "../slices/postSlice";
 
-const SearchPage = () => {
-  // const [selected, setSelected] = React.useState("");
-  // const categories = [
-  //   { key: "1", value: "Paintings" },
-  //   { key: "2", value: "Footwears" },
-  //   { key: "3", value: "Clothing" },
-  //   { key: "4", value: "Music" },
-  //   { key: "5", value: "Sketch" },
-  //   { key: "6", value: "Health" },
-  // ];
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
+const SearchPage = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const onChangeSearch = (query) => setSearchQuery(query);
 
   const dispatch = useDispatch();
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(get_posts());
+    setSearchQuery("");
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   const { posts, status: postStatus } = useSelector((state) => state.posts);
 
@@ -41,7 +45,11 @@ const SearchPage = () => {
   }, [searchQuery, dispatch]);
 
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View style={styles.container}>
         <CircleVector />
         <Text

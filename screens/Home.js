@@ -2,24 +2,24 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   SafeAreaView,
-  FlatList,
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   ScrollView,
   Alert,
+  RefreshControl,
 } from "react-native";
 import circle from "../assets/images/circleVector_1.png";
-import { COLORS, NFTData, SHADOWS, SIZES } from "../constants/Theme";
-// import { SearchComponent } from "../components/Index";
-
 import { useDispatch, useSelector } from "react-redux";
 import { loggedArtist } from "../slices/user-artist-Slice/artistSlice";
 import { get_posts } from "../slices/postSlice";
 import { clear_all_errors } from "../slices/whislistSlice";
 import PostCard from "../components/PostCard";
 import Loader from "../components/loader";
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -30,6 +30,16 @@ const Home = ({ navigation }) => {
   const { list, status: whishliststatus } = useSelector(
     (state) => state.wishlist
   );
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(clear_all_errors());
+    dispatch(loggedArtist());
+    dispatch(get_posts());
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     if (whishliststatus.type === "error") {
@@ -42,10 +52,14 @@ const Home = ({ navigation }) => {
   }, [Alert, dispatch, whishliststatus]);
 
   return !posts ? (
-    <Loader/>
+    <Loader />
   ) : (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {/* <FocusedStatusBar backgroundColor={COLORS.primary} /> */}
         <View style={styles.container}>
           <Image source={circle} style={{ width: 200, height: 150 }} />
@@ -56,13 +70,20 @@ const Home = ({ navigation }) => {
               width: "100%",
               position: "absolute",
               flexDirection: "row",
-              alignContent:"center"
+              alignContent: "center",
             }}
           >
-            <Text style={{ fontSize: 30 ,marginLeft:"19%",color:"#363488",fontWeight:"500"}}>
-             Artify
+            <Text
+              style={{
+                fontSize: 30,
+                marginLeft: "19%",
+                color: "#363488",
+                fontWeight: "500",
+              }}
+            >
+              Artify
             </Text>
-           
+
             {/* <View style={{ width: "95%", marginRight: 30 }}>
               <SearchComponent />
             </View> */}

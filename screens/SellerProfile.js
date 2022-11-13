@@ -9,15 +9,7 @@ import {
 import { Text, Button } from "react-native-paper";
 import CircleVector from "../components/CircleVector";
 import Avtar from "../assets/images/avtar.jpg";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import shoes from "../assets/images/shoes.jpg";
-import pen from "../assets/images/pen.jpg";
-import watch from "../assets/images/watch1.jpg";
-import shirt from "../assets/images/shirt1.jpg";
-import book from "../assets/images/book.jpg";
-import FONTS from "../constants/Theme";
+import Loader from "../components/loader";
 import { useDispatch, useSelector } from "react-redux";
 import {
   artist_posts,
@@ -45,7 +37,7 @@ const SellerProfile = ({ navigation, route }) => {
   }, [route, dispatch]);
 
   return artistStatus.type === "loading" ? (
-    <Text>Loading</Text>
+    <Loader />
   ) : (
     <ScrollView>
       <View style={styles.container}>

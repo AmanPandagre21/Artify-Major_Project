@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { COLORS, SIZES, assets, SHADOWS } from "../constants/Index";
 import { Button } from "react-native-paper";
 import { useState, useEffect } from "react";
+import Loader from "../components/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { loggedArtist } from "../slices/user-artist-Slice/artistSlice";
 
@@ -23,7 +24,7 @@ const StartScreen = () => {
   }, [isAuth, dispatch]);
 
   return artStatus.type === "loading" ? (
-    <Text>Loading</Text>
+    <Loader />
   ) : (
     <SafeAreaView style={styles.container}>
       <Image source={assets.circleVector_3} style={styles.vector_img}></Image>

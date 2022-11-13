@@ -27,6 +27,7 @@ import CircleVector from "../components/CircleVector";
 import { Switch } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { artistLogout } from "../slices/user-artist-Slice/artistSlice";
+import Loader from "../components/loader";
 
 const Setting = ({ navigation }) => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
@@ -40,7 +41,7 @@ const Setting = ({ navigation }) => {
     dispatch(artistLogout());
   };
   return status.type === "loading" ? (
-    <Text>Loading</Text>
+    <Loader />
   ) : (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       {/* <FocusedStatusBar backgroundColor={COLORS.primary} /> */}

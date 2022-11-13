@@ -5,8 +5,10 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  RefreshControl,
   Alert,
 } from "react-native";
+import React from "react";
 import { COLORS, assets } from "../constants/Index";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput, Button } from "react-native-paper";
@@ -20,6 +22,10 @@ import {
   loggedArtist,
 } from "../slices/user-artist-Slice/artistSlice";
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 const Login = () => {
   const [passIcon, setPassIcon] = useState("eye");
   const [flag, setFlag] = useState(true);
@@ -27,6 +33,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const navigation = useNavigation();
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(clear_all_errors());
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   const {
     artist,
@@ -54,7 +68,13 @@ const Login = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 0 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginTop: 0 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {/* Headear  Part */}
         <CircleVector />
         <View

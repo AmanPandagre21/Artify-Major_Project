@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  RefreshControl,
   TouchableOpacity,
 } from "react-native";
 import { Text, Button } from "react-native-paper";
@@ -23,6 +24,10 @@ import { my_posts } from "../slices/user-artist-Slice/artistSlice";
 import { get_my_orders, get_my_orders_history } from "../slices/orderSlice";
 import Loader from "../components/loader";
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 const UserProfile = ({ navigation }) => {
   const [showpost, setshowpost] = useState(true);
   const [currBuyProduct, setCurrBuyProduct] = useState(false);
@@ -30,6 +35,18 @@ const UserProfile = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const { artist, myPosts, status } = useSelector((state) => state.artist);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(my_posts());
+
+    dispatch(get_my_orders());
+
+    dispatch(get_my_orders_history());
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   const {
     orders,
@@ -48,23 +65,23 @@ const UserProfile = ({ navigation }) => {
   return status.type === "loading" ? (
     <Loader />
   ) : (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View>
         <CircleVector />
-        <TouchableOpacity style={{position:"absolute",marginLeft:"85%",marginTop:"15%"}} onPress={()=>navigation.navigate("SettingPage")}>
-        <Ionicons
-                name="settings"
-                size={45}
-                color="#363488"
-                
-              />
+        <TouchableOpacity
+          style={{ position: "absolute", marginLeft: "85%", marginTop: "15%" }}
+          onPress={() => navigation.navigate("SettingPage")}
+        >
+          <Ionicons name="settings" size={45} color="#363488" />
         </TouchableOpacity>
-        
+
         <HeaderText content="Profile" />
-       
-             
-       
-        
+
         <View style={styles.profileInfo}>
           {artist.avatar ? (
             <Image
@@ -183,7 +200,7 @@ const UserProfile = ({ navigation }) => {
         {showpost ? (
           <Post post={myPosts} status={status} />
         ) : currBuyProduct ? (
-          <BuyProduct order={orders} status={orderStatus} />
+          <BuyProduct order={orders} userId={artist._id} status={orderStatus} />
         ) : buyingHistory ? (
           <BuyingHistory history={ordersHistory} status={orderStatus} />
         ) : (

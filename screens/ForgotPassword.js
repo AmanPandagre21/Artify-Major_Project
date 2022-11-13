@@ -33,7 +33,7 @@ const ForgotPassword = ({ navigation }) => {
   useEffect(() => {
     if (status.type === "error") {
       Alert.alert(status.message);
-      // dispatch(clear_all_errors());
+      dispatch(clear_all_errors());
     }
 
     if (status.type === "idle") {

@@ -18,106 +18,87 @@ const Wishlistcard = ({ data }) => {
     dispatch(get_items());
   };
 
-  console.log(data);
-
   return data === null ? (
     <Text>Add Item</Text>
   ) : (
     <View
       style={{
-        backgroundColor: COLORS.white,
+        backgroundColor: "white",
         borderRadius: SIZES.font,
         marginBottom: SIZES.extraLarge,
         margin: SIZES.base,
         ...SHADOWS.dark,
+        padding: "2%",
+        height: "auto",
       }}
     >
-      <View style={{ width: "100%", padding: SIZES.font }}>
-        <View>
-          <Text
-            style={{
-              // fontFamily: FONTS.semiBold,
-              // fontSize: titleSize,
-              color: COLORS.primary,
-            }}
-          >
-            {data.postId && data.postId.title}
-          </Text>
-          <Text
-            style={{
-              // fontFamily: FONTS.regular,
-              // fontSize: subTitleSize,
-              color: COLORS.primary,
-            }}
-          >
-            {/* by {subTitle} */}
-          </Text>
-        </View>
-
-        <View
+      <View style={{ flexDirection: "row", width: "100%" }}>
+        {/* <View
           style={{
             marginTop: SIZES.font,
             flexDirection: "row",
             justifyContent: "space-between",
             aligndatas: "center",
           }}
-        >
-          {/* <EthPrice price = {data.price}/> */}
+        > */}
 
-          <Image
-            source={{ uri: data.postId && data.postId.image.url }}
-            style={{
-              width: "20%",
-              borderRadius: 50,
-              height: "200%",
-              marginBottom: SIZES.font - 20,
-              marginTop: SIZES.font - 110,
-            }}
-          />
-          <View
-            style={{
-              marginTop: -7 * SIZES.large,
-              // fontFamily : FONTS.bold,
-              fontSize: SIZES.extraLarge,
-            }}
-          >
-            <Text></Text>
-            <Text
-              style={{
-                textAlign: "left",
-              }}
-            >
+        <Image
+          source={{ uri: data.postId && data.postId.image.url }}
+          style={{
+            width: "35%",
+            borderRadius: 20,
+            height: 106,
+          }}
+        />
+        {/* <View style={{marginRight:'24.5%'}}>
+            
+            <Text>
               {data.postId && data.postId.description}
             </Text>
-            <Text>{data.postId && data.postId.amount}$</Text>
+            <Text>{data.postId && data.postId.amount}₹</Text>
           </View>
           <View>
-            <TouchableOpacity
-              style={{
-                position: "absolute",
-                marginLeft: -170,
-                marginTop: -4,
-              }}
-              onPress={() => deleteItemHandler(data && data._id)}
-            >
-              {/* <MaterialCommunityIcons name = "delete-empty" size={35} color='#363488' /> */}
-              <MaterialCommunityIcons
-                name="delete-circle-outline"
-                size={47}
-                color="#363488"
-              />
+            <TouchableOpacity>
+              
             </TouchableOpacity>
-            <RectButton
-              minWidth={120}
-              // fontSize = {SIZES.font}
-              marginLeft={-110}
-              handlePress={() =>
-                navigation.navigate("Details", {
-                  postId: data.postId && data.postId._id,
-                })
-              }
+          </View> */}
+
+        {/* </View> */}
+        <View style={{ marginRight: "auto", marginLeft: "5%" }}>
+          <Text
+            style={{
+              color: "#363488",
+              fontWeight: "bold",
+            }}
+          >
+            {data.postId && data.postId.title}
+          </Text>
+          <Text style={{ fontWeight: "bold" }}>
+            📄 {data.postId && data.postId.description}
+          </Text>
+          <Text>💰 {data.postId && data.postId.amount} ₹</Text>
+        </View>
+
+        <View
+          style={{ marginLeft: "50%", marginTop: "19%", flexDirection: "row" }}
+        >
+          <TouchableOpacity
+            style={{ marginRight: "5%" }}
+            onPress={() => deleteItemHandler(data && data._id)}
+          >
+            <MaterialCommunityIcons
+              name="delete-circle-outline"
+              size={47}
+              color="#363488"
             />
-          </View>
+          </TouchableOpacity>
+          <RectButton
+            handlePress={() =>
+              navigation.navigate("Details", {
+                postId: data.postId && data.postId._id,
+              })
+            }
+          />
         </View>
       </View>
     </View>

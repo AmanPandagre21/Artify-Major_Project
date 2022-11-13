@@ -33,7 +33,7 @@ const EditProfile = ({ navigation, route }) => {
 
   const [userAvatar, setUserAvatar] = useState(url);
   const [name, setName] = useState(artist && artist.name);
-  const [phone, setPhone] = useState(artist && artist.phone);
+  const [phone, setPhone] = useState(artist && Number(artist.phone));
   const [bio, setBio] = useState(artist && artist.bio);
 
   const dispatch = useDispatch();
@@ -44,11 +44,13 @@ const EditProfile = ({ navigation, route }) => {
     myForm.append("name", name);
     myForm.append("number", phone);
     myForm.append("bio", bio);
-    myForm.append("avatar", {
-      uri: userAvatar,
-      type: mime.getType(userAvatar),
-      name: userAvatar.split("/").pop(),
-    });
+    if (userAvatar !== url) {
+      myForm.append("avatar", {
+        uri: userAvatar,
+        type: mime.getType(userAvatar),
+        name: userAvatar.split("/").pop(),
+      });
+    }
 
     await dispatch(update_artist_profile(myForm));
     dispatch(loggedArtist());
@@ -66,7 +68,7 @@ const EditProfile = ({ navigation, route }) => {
       dispatch(clear_all_errors());
     }
     if (status && status.type === "idle") {
-      Alert.alert(status.message);
+      // Alert.alert(status.message);
     }
     if (route.params) {
       if (route.params.image) {
@@ -100,7 +102,7 @@ const EditProfile = ({ navigation, route }) => {
           <TouchableOpacity>
             <Avatar.Image
               size={100}
-              source={{ uri: userAvatar ? userAvatar : null }}
+              source={{ uri: userAvatar }}
               style={{ marginLeft: 20 }}
             />
           </TouchableOpacity>
@@ -127,7 +129,7 @@ const EditProfile = ({ navigation, route }) => {
           />
           <TextInput
             label="Contact number"
-            name="number"
+            name="phone"
             value={phone}
             keyboardType="numeric"
             onChangeText={(phone) => setPhone(phone)}

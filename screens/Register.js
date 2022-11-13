@@ -9,6 +9,7 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  RefreshControl,
   Alert,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
@@ -17,6 +18,10 @@ import {
   artistRegister,
   clear_all_errors,
 } from "../slices/user-artist-Slice/artistSlice";
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const Register = () => {
   const navigation = useNavigation();
@@ -27,6 +32,14 @@ const Register = () => {
   // const [phone, setPhone] = useState(0);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(clear_all_errors());
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   const data = {
     name,
@@ -54,7 +67,13 @@ const Register = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 0 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginTop: 0 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <CircleVector />
         <View style={{ alignItems: "center" }}>
           <Text style={styles.headerText}>Lets get Started</Text>

@@ -155,13 +155,16 @@ export function update_order(id) {
     dispatch(setStatus({ type: STATUS.LOADING, message: "Loading" }));
     try {
       const token = await getToken();
-      const { data } = await api.get(`/update-order/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      dispatch(updateOrder(data.orders));
+      const { data } = await api.put(
+        `/update-order/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(updateOrder(data.order));
       dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
     } catch (error) {
       if (error) {

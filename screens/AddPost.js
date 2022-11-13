@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  RefreshControl,
   Alert,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import React from "react";
+import defaultImage from "../assets/images/34000049.jpg";
 import CircleVector from "../components/CircleVector";
 import SelectList from "react-native-dropdown-select-list";
 import { Avatar, Switch } from "react-native-paper";
@@ -20,6 +22,11 @@ import { get_categories } from "../slices/categorySlice";
 import mime from "mime";
 import { add_post, get_posts, clear_all_errors } from "../slices/postSlice";
 import * as FileSystem from "expo-file-system";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const AddPost = ({ navigation, route }) => {
   // use State
@@ -33,9 +40,23 @@ const AddPost = ({ navigation, route }) => {
   // Store
   const dispatch = useDispatch();
   const { category } = useSelector((state) => state.category);
-  const { status } = useSelector((state) => state.posts);
+  const { status: postStatus_ } = useSelector((state) => state.posts);
 
   // handlers
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(clear_all_errors());
+    setPost("");
+    setTitle("");
+    setDescription("");
+    setSelected("Categories");
+    setAmount("0");
+    setIsSwitchOn(false);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   const postHandler = async () => {
     const myForm = new FormData();
@@ -63,12 +84,12 @@ const AddPost = ({ navigation, route }) => {
 
   // useEffect
   useEffect(() => {
-    if (status && status.type === "error") {
-      Alert.alert(status.message);
+    if (postStatus_ && postStatus_.type === "error") {
+      Alert.alert(postStatus_.message);
       dispatch(clear_all_errors());
     }
-    if (status && status.type === "idle") {
-      Alert.alert(status.message);
+    if (postStatus_ && postStatus_.type === "idle") {
+      // Alert.alert(postStatus_.message);
       setPost("");
       setTitle("");
       setDescription("");
@@ -85,7 +106,7 @@ const AddPost = ({ navigation, route }) => {
         setPost(route.params.image);
       }
     }
-  }, [status, dispatch, route]);
+  }, [postStatus_, dispatch, route]);
 
   // set Categories
   const catArr = [];
@@ -95,7 +116,11 @@ const AddPost = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <CircleVector />
         <View
           style={{
@@ -118,16 +143,38 @@ const AddPost = ({ navigation, route }) => {
           </Text>
         </View>
         <View style={styles.profileView}>
-          <TouchableOpacity>
-            <Avatar.Image
+          <TouchableOpacity
+            onPress={imageHandler}
+            style={{
+              borderRadius: 8,
+              width: "90%",
+              height: 190,
+              backgroundColor: "white",
+            }}
+          >
+            {/* <Avatar.Image
               size={100}
               source={{ uri: post ? post : null }}
-              style={{ marginLeft: 20 }}
-            />
+              style={{ marginLeft: 67 }}
+
+            /> */}
+            {post ? (
+              <Image
+                size={100}
+                source={{ uri: post ? post : null }}
+                style={{ width: "100%", height: "100%" }}
+              />
+            ) : (
+              <Image
+                size={100}
+                source={defaultImage}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )}
           </TouchableOpacity>
-          <TouchableOpacity onPress={imageHandler}>
-            <Text style={{ color: "#900" }}>Change Photo</Text>
-          </TouchableOpacity>
+          {/* <TouchableOpacity onPress={imageHandler}>
+            <Text style={{ color: "#900",marginLeft:'30%' }}>Change Photo</Text>
+          </TouchableOpacity> */}
         </View>
 
         <View style={styles.footer}>
@@ -212,6 +259,7 @@ const AddPost = ({ navigation, route }) => {
                 marginTop: "10%",
                 marginLeft: "6%",
               }}
+              disabled={postStatus_.type === "loading" ? true : false}
               onPress={postHandler}
             >
               <View>
@@ -223,7 +271,14 @@ const AddPost = ({ navigation, route }) => {
                     marginTop: "3%",
                   }}
                 >
-                  Post it!!
+                  {postStatus_.type === "loading" ? (
+                    <ActivityIndicator
+                      animating={true}
+                      color={MD2Colors.red800}
+                    />
+                  ) : (
+                    "Post it!!"
+                  )}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -243,10 +298,10 @@ const styles = StyleSheet.create({
   },
   profileView: {
     marginTop: 10,
-    flexDirection: "row",
+    flexDirection: "column",
     width: "90%",
     position: "relative",
-    marginLeft: "15%",
+    marginLeft: "10%",
     marginRight: "auto",
     height: "auto",
   },
@@ -263,14 +318,13 @@ const styles = StyleSheet.create({
   footer: {
     width: "100%",
     height: "100%",
-    marginTop: "5%",
     backgroundColor: "white",
-    borderTopEndRadius: 30,
-    borderTopStartRadius: 30,
-    padding: 5,
-    paddingTop: 25,
+    // borderTopEndRadius: 30,
+    // borderTopStartRadius: 30,
+    // padding: 5,
+    // paddingTop: 25,
     flex: 1,
-    top: 10,
+
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
