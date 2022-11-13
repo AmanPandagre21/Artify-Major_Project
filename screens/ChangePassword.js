@@ -50,9 +50,9 @@ const ChangePassword = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 0 }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <CircleVector />
-        <View style={{ alignItems: "center" }}>
+        <View style={{ marginTop:'-25%',alignItems: "center" }}>
           <Text style={styles.headerText}>Change Password</Text>
         </View>
 
@@ -149,14 +149,14 @@ const styles = StyleSheet.create({
 
   footer: {
     width: "100%",
-    height: "auto",
-    marginTop: 20,
+    height: 'auto',
+    marginTop:20,
     backgroundColor: "white",
     borderTopEndRadius: 30,
     borderTopStartRadius: 30,
     padding: 5,
     paddingBottom: 25,
-    paddingTop: 25,
+    // paddingTop: 25,
     flex: 1,
     top: 10,
     flexDirection: "column",
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginLeft: "auto",
     marginRight: "auto",
-    marginBottom: "2%",
+    marginBottom: "40%",
     justifyContent: "center",
   },
 });

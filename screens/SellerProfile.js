@@ -76,20 +76,23 @@ const SellerProfile = ({ navigation, route }) => {
           style={{
             alignItems: "center",
             marginTop: "5%",
-            height: "auto",
-            marginBottom: "-25%",
+            height: "4%",
+            width:'50%',
+            backgroundColor: "#363488",
+            borderRadius:13,
+            marginLeft:'25%'
+            // marginBottom: "-5%",
+            // borderRadius:10
           }}
         >
           <Text
             style={{
-              fontWeight: "bold",
               fontSize: 20,
-              width: 200,
-              backgroundColor: "red",
+              color:'white',
               textAlign: "center",
-              height: "20%",
-              borderRadius: 5,
-            }}
+              height: 60,
+              marginTop:'2%'
+              }}
           >
             Products
           </Text>
@@ -101,7 +104,7 @@ const SellerProfile = ({ navigation, route }) => {
               <View
                 style={{
                   width: "90%",
-                  height: 120,
+                  height: 'auto',
                   backgroundColor: "#E6E6EB",
                   borderRadius: 20,
                   marginLeft: "7%",
@@ -111,7 +114,7 @@ const SellerProfile = ({ navigation, route }) => {
               >
                 <Image
                   source={{ uri: post.image.url }}
-                  style={{ width: 120, height: 120, borderRadius: 20 }}
+                  style={{ width: 120, height: 'auto', borderRadius: 20 }}
                 />
                 <View>
                   <Text
@@ -134,16 +137,19 @@ const SellerProfile = ({ navigation, route }) => {
                         marginTop: "5%",
                       }}
                     >
-                      Price - {post.amount}
+                      💰  {post.amount}
                     </Text>
-                    <TouchableOpacity
+                    
+                  </View>
+                  <TouchableOpacity
                       style={{
                         backgroundColor: "#363488",
-                        width: "30%",
+                        width: "50%",
                         height: 30,
-                        marginLeft: "3%",
+                        marginLeft: "50%",
                         borderRadius: 15,
                         marginTop: "4%",
+                        marginBottom:'3%'
                       }}
                       onPress={() =>
                         navigation.navigate("Details", {
@@ -161,7 +167,6 @@ const SellerProfile = ({ navigation, route }) => {
                         View
                       </Text>
                     </TouchableOpacity>
-                  </View>
                 </View>
               </View>
             );
