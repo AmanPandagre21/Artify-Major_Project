@@ -5,6 +5,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import { Text, Button } from "react-native-paper";
 import CircleVector from "../components/CircleVector";
@@ -16,6 +17,10 @@ import {
   artist_profile,
 } from "../slices/user-artist-Slice/artistSlice";
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 const SellerProfile = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
@@ -25,6 +30,17 @@ const SellerProfile = ({ navigation, route }) => {
     artist,
     status: artistStatus,
   } = useSelector((state) => state.artist);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(artist_profile(route.params.artId));
+
+    dispatch(artist_posts(route.params.artId));
+
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     dispatch(artist_profile(route.params.artId));
@@ -39,7 +55,11 @@ const SellerProfile = ({ navigation, route }) => {
   return artistStatus.type === "loading" ? (
     <Loader />
   ) : (
-    <ScrollView>
+    <ScrollView 
+    refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }r
+    >
       <View style={styles.container}>
         <CircleVector />
         <Text

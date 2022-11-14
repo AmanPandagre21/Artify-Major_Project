@@ -6,6 +6,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import {
   Text,
   View,
@@ -28,7 +29,7 @@ import {
 } from "../slices/user-artist-Slice/artistSlice";
 
 const EditProfile = ({ navigation, route }) => {
-  const { artist, status } = useSelector((state) => state.artist);
+  const { artist, status :artStat } = useSelector((state) => state.artist);
   const url = artist.image && artist.image.url;
 
   const [userAvatar, setUserAvatar] = useState(url);
@@ -63,11 +64,11 @@ const EditProfile = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (status && status.type === "error") {
-      Alert.alert(status.message);
+    if (artStat && artStat.type === "error") {
+      Alert.alert(artStat.message);
       dispatch(clear_all_errors());
     }
-    if (status && status.type === "idle") {
+    if (artStat && artStat.type === "idle") {
       // Alert.alert(status.message);
     }
     if (route.params) {
@@ -148,6 +149,7 @@ const EditProfile = ({ navigation, route }) => {
             mode="contained"
             buttonColor="#363488"
             textColor="white"
+            disabled={artStat && artStat.type ==="loading" ? true : false}
             labelStyle={{
               fontSize: 16,
               textTransform: "uppercase",
@@ -157,7 +159,11 @@ const EditProfile = ({ navigation, route }) => {
             style={styles.btn}
             onPress={profileUpdateHandler}
           >
-            Edit Profile
+          {artStat && artStat.type === "loading"? <ActivityIndicator
+                      animating={true}
+                      color={MD2Colors.red800}
+                    />:"Edit Profile"}
+            
           </Button>
           <View style={{ marginTop: 20, height: 80 }}></View>
         </View>

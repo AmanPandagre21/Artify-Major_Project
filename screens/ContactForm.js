@@ -17,6 +17,8 @@ import {
   report_query,
 } from "../slices/user-artist-Slice/artistSlice";
 import { Alert } from "react-native";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
+
 
 const ContactForm = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -115,6 +117,7 @@ const ContactForm = ({ navigation }) => {
             mode="contained"
             buttonColor="#363488"
             textColor="white"
+            disabled={status&& status.type === "loading"?true:false}
             labelStyle={{
               fontSize: 16,
               textTransform: "uppercase",
@@ -124,7 +127,10 @@ const ContactForm = ({ navigation }) => {
             onPress={contactHandler}
             style={styles.btn}
           >
-            Send Message
+          {status && status.type === "loading"?  <ActivityIndicator
+                      animating={true}
+                      color={MD2Colors.red800}
+                    />:"Send Message"}
           </Button>
           <View style={{ height: 150, marginTop: 10 }}>
             <Text style={{ fontWeight: "bold", fontSize: 20 }}>

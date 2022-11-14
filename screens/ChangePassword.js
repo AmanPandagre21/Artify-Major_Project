@@ -17,7 +17,9 @@ import {
   change_password,
   clear_all_errors,
 } from "../slices/user-artist-Slice/artistSlice";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { getToken } from "../services/AsyncStorageService";
+
 
 const ChangePassword = () => {
   const [oldPass, setOldPass] = useState("");
@@ -98,6 +100,7 @@ const ChangePassword = () => {
             mode="contained"
             buttonColor="#363488"
             textColor="white"
+            disabled = {artistStatus && artistStatus.type==="loading"?true:false}
             labelStyle={{
               fontSize: 16,
               textTransform: "uppercase",
@@ -107,7 +110,11 @@ const ChangePassword = () => {
             style={styles.btn}
             onPress={changePassHandler}
           >
-            Change Password
+          {artistStatus && artistStatus.type==="loading"? <ActivityIndicator
+                      animating={true}
+                      color={MD2Colors.red800}
+                    />:"Change Password"}
+            
           </Button>
         </View>
       </ScrollView>

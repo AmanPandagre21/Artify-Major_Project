@@ -24,7 +24,7 @@ import ArtWork from "../assets/images/artwork.png";
 import Accordion from "../components/Accordion";
 import { useDispatch, useSelector } from "react-redux";
 import { get_post_details } from "../slices/postSlice";
-
+import Loader from "../components/loader";
 const Details = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
@@ -39,7 +39,8 @@ const Details = ({ navigation, route }) => {
   }, [route, dispatch]);
 
   return !post || postStatus.type === "loading" ? (
-    <ActivityIndicator animating={true} color={MD2Colors.red800} />
+    // <ActivityIndicator animating={true} color={MD2Colors.red800} />
+    <Loader/>
   ) : (
     <SafeAreaView>
       <ScrollView>
