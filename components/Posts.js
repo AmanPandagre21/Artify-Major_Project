@@ -1,6 +1,8 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { ActivityIndicator, MD2Colors , Modal, Text, Provider, Portal, Button} from "react-native-paper";
+
 
 const Row = ({ children }) => {
   return <View style={styles.row}>{children}</View>;
@@ -10,6 +12,7 @@ const Col = ({ children }) => {
 };
 const Post = ({ post, status }) => {
   {
+    const navigation = useNavigation();
     return post ? (
       <View style={styles.app}>
         <Row>
@@ -20,10 +23,13 @@ const Post = ({ post, status }) => {
             post.map((ele) => {
               return (
                 <Col key={ele._id}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate("EditPost2")}>
                     <Image source={{ uri: ele.image.url }} style={styles.img} />
                   </TouchableOpacity>
+                  
+                  
                 </Col>
+
               );
             })
           )}

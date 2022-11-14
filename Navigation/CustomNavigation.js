@@ -17,6 +17,7 @@ import ShippingAddress from "../screens/ShippindAddress";
 import Camera from "../screens/Camera";
 import SellerProfile from "../screens/SellerProfile";
 import SearchPage from "../screens/SearchPage";
+import EditPost2 from "../screens/EditPost2";
 import { getToken } from "../services/AsyncStorageService";
 import api from "../services/apiService";
 import { useDispatch } from "react-redux";
@@ -69,6 +70,8 @@ const UserProfileScreen = () => {
       <Stack.Screen name="Faqs" component={Faqs} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="SettingPage" component={Setting} />
+      <Stack.Screen name="EditPost2" component={EditPost2} />
+      
      
     </Stack.Navigator>
   );

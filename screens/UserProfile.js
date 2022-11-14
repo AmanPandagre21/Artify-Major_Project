@@ -7,7 +7,7 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from "react-native";
-import { Text, Button } from "react-native-paper";
+import { Text, Button, Modal, Portal, Provider } from "react-native-paper";
 import HeaderText from "../components/HeaderText";
 import CircleVector from "../components/CircleVector";
 import AvtarImg from "../assets/avtar.jpg";
@@ -32,6 +32,10 @@ const UserProfile = ({ navigation }) => {
   const [showpost, setshowpost] = useState(true);
   const [currBuyProduct, setCurrBuyProduct] = useState(false);
   const [buyingHistory, setBuyingHistory] = useState(false);
+  const [visible, setVisible] = React.useState(false);
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
   const dispatch = useDispatch();
 
   const { artist, myPosts, status } = useSelector((state) => state.artist);
@@ -179,24 +183,8 @@ const UserProfile = ({ navigation }) => {
               style={styles.postIcon}
             />
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            onPress={() => {
-              setshowpost(false);
-              setCurrBuyProduct(false);
-              setBuyingHistory(false);
-            }}
-          >
-            <MaterialCommunityIcons
-              name="play-box"
-              size={40}
-              color="black"
-              style={styles.postIcon}
-            />
-          </TouchableOpacity> */}
         </View>
-        {/* <BuyProduct/>
-      <BuyingHistory/> */}
-
+        
         {showpost ? (
           <Post post={myPosts} status={status} />
         ) : currBuyProduct ? (
