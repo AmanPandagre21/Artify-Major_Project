@@ -239,9 +239,24 @@ const AddPost = ({ navigation, route }) => {
               marginTop: "5%",
             }}
           />
-
-          <Text>Do You Want to add pricing</Text>
-          <Switch value={isSwitchOn} onValueChange={onToggleSwitch}></Switch>
+           <View style={{width:"88%",marginTop:"2%",flexDirection:"row",marginLeft:"auto",marginRight:"auto"}}>
+           <Text style={{marginTop:"3%"}}>Do You Want to add pricing</Text>
+          <Switch value={isSwitchOn} style={{marginLeft:"auto"}} onValueChange={onToggleSwitch}></Switch>
+          {/* {isSwitchOn ? (
+            <TextInput
+              label="Price of Your Product"
+              multiline={true}
+              name="amount"
+              value={amount}
+              onChangeText={(amount) => setAmount(amount)}
+              style={styles.loginInput}
+              underlineColor="transparent"
+            />
+          ) : (
+            ""
+          )} */}
+           </View>
+          
 
           {isSwitchOn ? (
             <TextInput

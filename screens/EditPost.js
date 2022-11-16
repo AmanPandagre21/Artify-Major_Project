@@ -210,10 +210,10 @@ const AddPost = ({ navigation, route }) => {
               ""
             )}
    */}
-          <View style={{ height: 200, width: "100%" }}>
-            <TouchableOpacity
+          <View style={{ height: 200, width: "90%",flexDirection:"row",marginLeft:"auto",marginRight:"40%" }}>
+          <TouchableOpacity
               style={{
-                width: "88%",
+                width: "45%",
                 height: 50,
                 backgroundColor: "#363488",
                 borderRadius: 10,
@@ -226,9 +226,35 @@ const AddPost = ({ navigation, route }) => {
                 <Text
                   style={{
                     color: "white",
-                    fontSize: 19,
+                    fontSize: 15,
                     textAlign: "center",
-                    marginTop: "3%",
+                    marginTop: "7%",
+                  }}
+                >
+                 Not for Sale
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: "45%",
+                height: 50,
+                backgroundColor: "#363488",
+                borderRadius: 10,
+                marginTop: "10%",
+                marginLeft: "6%",
+              }}
+              onPress={postHandler}
+            >
+              <View>
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 15,
+                    textAlign: "center",
+                    marginTop: "7%",
+                    // marginTop:"auto",
+                    // marginBottom:"auto"
                   }}
                 >
                   Edit Post!!

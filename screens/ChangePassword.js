@@ -75,7 +75,7 @@ const ChangePassword = () => {
             name="oldPassword"
             value={oldPass}
             onChangeText={(oldPass) => setOldPass(oldPass)}
-            style={styles.loginInput}
+            style={[styles.loginInput,{marginTop:"15%"}]}
             underlineColor="transparent"
           />
           <TextInput

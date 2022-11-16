@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
-import ArtImage2 from "../assets/images/person02.png";
+import Goku from "../assets/images/goku.jpg";
 import { Button, Divider } from "react-native-paper";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { COLORS, NFTData, SHADOWS, SIZES } from "../constants/Theme";
@@ -34,10 +34,17 @@ const BuyProduct = ({ order, userId, status }) => {
             <>
               <View style={styles.container} key={order._id}>
                 <View style={styles.postHeader}>
-                  <Image
-                    source={{ uri: order && order.orderItem.image.url }}
-                    style={styles.image}
-                  />
+                  {order.orderItem === null ? (
+                    <Image source={"Goku"} style={styles.image} />
+                  ) : (
+                    <Image
+                      source={{
+                        uri: order.orderItem.image.url,
+                      }}
+                      style={styles.image}
+                    />
+                  )}
+
                   <View style={styles.headerText}>
                     <Text
                       style={{
@@ -46,10 +53,14 @@ const BuyProduct = ({ order, userId, status }) => {
                         color: COLORS.White,
                       }}
                     >
-                      {order && order.orderItem.title}
+                      {order.orderItem === null
+                        ? "Post deleted"
+                        : order.orderItem.title}
                     </Text>
                     <Text style={{ fontSize: 14, color: COLORS.White }}>
-                      {order && order.orderItem.description}{" "}
+                      {order.orderItem === null
+                        ? "Post Deleted"
+                        : order.orderItem.description}
                     </Text>
                   </View>
                 </View>

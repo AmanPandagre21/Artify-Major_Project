@@ -28,10 +28,10 @@ import ArtWork from "../assets/images/artwork.png";
 // import { CircleButton, RectButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "../components";
 import Accordion from "../components/Accordion";
 import { useDispatch, useSelector } from "react-redux";
-import { get_post_details } from "../slices/postSlice";
+import { delete_post, get_post_details } from "../slices/postSlice";
 import Loader from "../components/loader";
-
-const EditPost2 = ({ route }) => {
+import ReadMore from 'react-native-read-more-text';
+const EditPost2 = ({ route, navigation }) => {
   const [isPriceOn, setIsPriceOn] = useState(false);
 
   const dispatch = useDispatch();
@@ -51,11 +51,7 @@ const EditPost2 = ({ route }) => {
       Alert.alert(post_Status.message);
     }
 
-    if (
-      post_Status &&
-      post_Status.type === "idle" &&
-      post_Status.message !== nulll
-    ) {
+    if (post_Status && post_Status.type === "idle") {
       Alert.alert(post_Status.message);
     }
   }, [route, dispatch]);
@@ -88,7 +84,7 @@ const EditPost2 = ({ route }) => {
           </View>
 
           <Image
-            source={{ uri: post.image && post.image.url }}
+            source={{ uri: post && post.image.url }}
             style={styles.imagestyle}
           />
           <View
@@ -148,10 +144,28 @@ const EditPost2 = ({ route }) => {
               marginRight: "auto",
             }}
           >
-            <Accordion
+
+<View
+              style={{
+                // marginTop: "4%",
+                width: "95%",
+                marginLeft: "3.5%",
+                marginRight: "auto",
+              }}
+            >
+        <Text style={{color:"#363488",fontWeight:"bold",fontSize:20}}>Description 📄</Text>
+        <ReadMore numberOfLines={4}  >
+          {post && post.description}
+        </ReadMore>
+              {/* <Accordion
+                title={"Description"}
+                bodyText={post && post.description}
+              /> */}
+            </View>
+            {/* <Accordion
               title={"Description"}
               bodyText={post && post.description}
-            />
+            /> */}
           </View>
           <TouchableOpacity
             style={{
@@ -160,6 +174,7 @@ const EditPost2 = ({ route }) => {
               justifyContent: "center",
               flexDirection: "row",
             }}
+            onPress={() => navigation.navigate("EditPost")}
           >
             <AntDesign
               name="edit"
@@ -192,6 +207,7 @@ const EditPost2 = ({ route }) => {
               height: "auto",
               justifyContent: "center",
               flexDirection: "row",
+              marginBottom:"7%"
             }}
             onPress={onDeletehandler}
           >

@@ -241,7 +241,7 @@ const Setting = ({ navigation }) => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={logoutHandler}>
           <View
             style={{
               height: "auto",
@@ -264,7 +264,7 @@ const Setting = ({ navigation }) => {
                 fontSize: 18,
                 marginRight: "62%",
               }}
-              onPress={logoutHandler}
+              
             >
               <Text>Logout</Text>
             </TouchableOpacity>

@@ -21,6 +21,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { TextInput, Button } from "react-native-paper";
 import graphics from "../assets/circleVector_1.png";
 import { Avatar } from "react-native-paper";
+import { FontAwesome } from '@expo/vector-icons';
 import mime from "mime";
 import {
   clear_all_errors,
@@ -100,16 +101,33 @@ const EditProfile = ({ navigation, route }) => {
         </View>
 
         <View style={styles.profileView}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleImage}>
             <Avatar.Image
               size={100}
               source={{ uri: userAvatar }}
               style={{ marginLeft: 20 }}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleImage}>
-            <Text style={{ color: "#900" }}>Change Photo</Text>
+        
+         <TouchableOpacity onPress={handleImage} style={{
+            height: "80%",
+           width:"100%",
+            position: "absolute",
+            borderRadius: 24,
+            marginLeft: "49%",
+            marginTop: "15%",
+            //  backgroundColor:"#363488",
+            alignItems:"center"}}>
+          
+          <FontAwesome name="camera" size={30} color="#363488" style={{marginTop:"auto",marginBottom:"auto",marginLeft:"23%"}} />
+          
+         
+            {/* <Text style={{ color: "#900" }}>Change Photo</Text> */}
           </TouchableOpacity>
+       
+         
+          
+         
         </View>
         <View style={styles.footer}>
           <TextInput

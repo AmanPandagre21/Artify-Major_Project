@@ -112,7 +112,6 @@ export function get_post_details(id) {
     dispatch(setStatus({ type: STATUS.LOADING, message: "Loading" }));
     try {
       const token = await getToken();
-      console.log(token);
       const { data } = await api.get(`/post-details/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -174,9 +173,9 @@ export function delete_post(postID) {
           Authorization: `Bearer ${token}`,
         },
       });
-      dispatch(likeAndDislike());
+      dispatch(deletePost());
 
-      dispatch(setStatus({ type: STATUS.IDLE, message: null }));
+      dispatch(setStatus({ type: STATUS.IDLE, message: "Post Deleted" }));
     } catch (error) {
       if (error) {
         dispatch(
