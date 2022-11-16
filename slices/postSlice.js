@@ -29,6 +29,8 @@ export const postSlice = createSlice({
 
     likeAndDislike(state, action) {},
 
+    deletePost(state, action) {},
+
     setStatus(state, action) {
       state.status.type = action.payload.type;
       state.status.message = action.payload.message;
@@ -44,6 +46,7 @@ export const {
   getPosts,
   postDetails,
   likeAndDislike,
+  deletePost,
   setStatus,
   clearAllErrors,
 } = postSlice.actions;
@@ -145,7 +148,35 @@ export function like_and_dislike(postID) {
       });
       dispatch(likeAndDislike());
 
-      dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
+      dispatch(setStatus({ type: STATUS.IDLE, message: null }));
+    } catch (error) {
+      if (error) {
+        dispatch(
+          setStatus({
+            type: STATUS.ERROR,
+            message: error.response.data.message,
+          })
+        );
+      }
+    }
+  };
+}
+
+//delete post
+export function delete_post(postID) {
+  return async function deletePostThunk(dispatch, getState) {
+    dispatch(setStatus({ type: STATUS.LOADING, message: "Loading" }));
+    try {
+      const token = await getToken();
+
+      const { data } = await api.delete(`/post/${postID}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(likeAndDislike());
+
+      dispatch(setStatus({ type: STATUS.IDLE, message: null }));
     } catch (error) {
       if (error) {
         dispatch(
