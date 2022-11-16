@@ -16,6 +16,7 @@ import { get_posts } from "../slices/postSlice";
 import { clear_all_errors } from "../slices/whislistSlice";
 import PostCard from "../components/PostCard";
 import Loader from "../components/loader";
+import logo2 from "../assets/images/logo2.png";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -60,7 +61,6 @@ const Home = ({ navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {/* <FocusedStatusBar backgroundColor={COLORS.primary} /> */}
         <View style={styles.container}>
           <Image source={circle} style={{ width: 200, height: 150 }} />
           <View
@@ -73,20 +73,15 @@ const Home = ({ navigation }) => {
               alignContent: "center",
             }}
           >
-            <Text
+            <Image source = {logo2}
               style={{
-                fontSize: 30,
-                marginLeft: "19%",
-                color: "#363488",
-                fontWeight: "500",
+                marginLeft:'auto',
+                marginRight:'auto',
+                marginTop:'27%',
+                width:'70%',
+                height:110,
               }}
-            >
-              Artify
-            </Text>
-
-            {/* <View style={{ width: "95%", marginRight: 30 }}>
-              <SearchComponent />
-            </View> */}
+            />
           </View>
 
           {/* Card starts from here */}
