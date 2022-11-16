@@ -26,7 +26,7 @@ const SellerProfile = ({ navigation, route }) => {
 
   const {
     artistProfile,
-    myPosts,
+    sellerPosts,
     artist,
     status: artistStatus,
   } = useSelector((state) => state.artist);
@@ -55,10 +55,11 @@ const SellerProfile = ({ navigation, route }) => {
   return artistStatus.type === "loading" ? (
     <Loader />
   ) : (
-    <ScrollView 
-    refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }r
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      r
     >
       <View style={styles.container}>
         <CircleVector />
@@ -97,10 +98,10 @@ const SellerProfile = ({ navigation, route }) => {
             alignItems: "center",
             marginTop: "5%",
             height: "4%",
-            width:'50%',
+            width: "50%",
             backgroundColor: "#363488",
-            borderRadius:13,
-            marginLeft:'25%'
+            borderRadius: 13,
+            marginLeft: "25%",
             // marginBottom: "-5%",
             // borderRadius:10
           }}
@@ -108,23 +109,23 @@ const SellerProfile = ({ navigation, route }) => {
           <Text
             style={{
               fontSize: 20,
-              color:'white',
+              color: "white",
               textAlign: "center",
               height: 60,
-              marginTop:'2%'
-              }}
+              marginTop: "2%",
+            }}
           >
             Products
           </Text>
         </View>
 
-        {myPosts &&
-          myPosts.map((post) => {
+        {sellerPosts &&
+          sellerPosts.map((post) => {
             return (
               <View
                 style={{
                   width: "90%",
-                  height: 'auto',
+                  height: "auto",
                   backgroundColor: "#E6E6EB",
                   borderRadius: 20,
                   marginLeft: "7%",
@@ -134,7 +135,7 @@ const SellerProfile = ({ navigation, route }) => {
               >
                 <Image
                   source={{ uri: post.image.url }}
-                  style={{ width: 120, height: 'auto', borderRadius: 20 }}
+                  style={{ width: 120, height: "auto", borderRadius: 20 }}
                 />
                 <View>
                   <Text
@@ -157,36 +158,35 @@ const SellerProfile = ({ navigation, route }) => {
                         marginTop: "5%",
                       }}
                     >
-                      💰  {post.amount}
+                      💰 {post.amount}
                     </Text>
-                    
                   </View>
                   <TouchableOpacity
+                    style={{
+                      backgroundColor: "#363488",
+                      width: "50%",
+                      height: 30,
+                      marginLeft: "50%",
+                      borderRadius: 15,
+                      marginTop: "4%",
+                      marginBottom: "3%",
+                    }}
+                    onPress={() =>
+                      navigation.navigate("Details", {
+                        postId: post._id,
+                      })
+                    }
+                  >
+                    <Text
                       style={{
-                        backgroundColor: "#363488",
-                        width: "50%",
-                        height: 30,
-                        marginLeft: "50%",
-                        borderRadius: 15,
+                        color: "white",
+                        textAlign: "center",
                         marginTop: "4%",
-                        marginBottom:'3%'
                       }}
-                      onPress={() =>
-                        navigation.navigate("Details", {
-                          postId: post._id,
-                        })
-                      }
                     >
-                      <Text
-                        style={{
-                          color: "white",
-                          textAlign: "center",
-                          marginTop: "4%",
-                        }}
-                      >
-                        View
-                      </Text>
-                    </TouchableOpacity>
+                      View
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             );

@@ -42,7 +42,7 @@ export const get_categories = () => {
       dispatch(
         setStatus({
           type: STATUES.IDLE,
-          message: "categories fetched Succesfully",
+          message: null,
         })
       );
     } catch (error) {
@@ -61,6 +61,6 @@ export const get_categories = () => {
 // clear Users
 export function clear_all_errors() {
   return async function clearErrorsThunk(dispatch, getState) {
-    dispatch(setStatus({ type: STATUES.Idle, message: null }));
+    dispatch(setStatus({ type: STATUES.ERROR, message: null }));
   };
 }

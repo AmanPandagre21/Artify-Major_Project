@@ -6,7 +6,7 @@ import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { COLORS, NFTData, SHADOWS, SIZES } from "../constants/Theme";
 import Loader from "./loader";
 import { useDispatch, useSelector } from "react-redux";
-import { clearAllErrors, update_order } from "../slices/orderSlice";
+import { clear_all_errors, update_order } from "../slices/orderSlice";
 
 const BuyProduct = ({ order, userId, status }) => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const BuyProduct = ({ order, userId, status }) => {
   useEffect(() => {
     if (orderStat.type === "error") {
       Alert.alert(orderStat.message);
-      dispatch(clearAllErrors());
+      dispatch(clear_all_errors());
     }
   }, [dispatch]);
 

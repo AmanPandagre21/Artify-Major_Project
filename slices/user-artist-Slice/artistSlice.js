@@ -21,6 +21,7 @@ const initialState = {
   },
   artistProfile: null,
   myPosts: [],
+  sellerPosts: [],
   status: { type: STATUES.IDLE, message: null },
 };
 
@@ -53,7 +54,7 @@ export const artistSlice = createSlice({
       state.myPosts = action.payload;
     },
     getArtistPosts(state, action) {
-      state.myPosts = action.payload;
+      state.sellerPosts = action.payload;
     },
     getArtistProfile(state, action) {
       state.artistProfile = action.payload;
@@ -177,7 +178,7 @@ export function loggedArtist() {
       dispatch(
         setStatus({
           type: STATUES.IDLE,
-          message: "artist details",
+          message: null,
         })
       );
     } catch (error) {
@@ -355,7 +356,7 @@ export function my_posts() {
       dispatch(
         setStatus({
           type: STATUES.IDLE,
-          message: "Posts",
+          message: null,
         })
       );
     } catch (error) {
@@ -385,7 +386,7 @@ export function artist_profile(id) {
       dispatch(
         setStatus({
           type: STATUES.IDLE,
-          message: "Posts",
+          message: null,
         })
       );
     } catch (error) {
@@ -410,7 +411,7 @@ export function artist_posts(id) {
       dispatch(
         setStatus({
           type: STATUES.IDLE,
-          message: "Posts",
+          message: null,
         })
       );
     } catch (error) {

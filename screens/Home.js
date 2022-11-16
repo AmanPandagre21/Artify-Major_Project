@@ -49,7 +49,7 @@ const Home = ({ navigation }) => {
     dispatch(loggedArtist());
 
     dispatch(get_posts());
-  }, [Alert, dispatch, whishliststatus]);
+  }, [Alert, dispatch]);
 
   return !posts ? (
     <Loader />

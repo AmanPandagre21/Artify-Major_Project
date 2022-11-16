@@ -14,7 +14,6 @@ import { TextInput, Button } from "react-native-paper";
 import Profile from "../components/Profile";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clearAllErrors,
   clear_all_errors,
   send_otp,
 } from "../slices/user-artist-Slice/artistSlice";
@@ -31,12 +30,12 @@ const ForgotPassword = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (status.type === "error") {
+    if (status.type === "error" && status.message !== null) {
       Alert.alert(status.message);
       dispatch(clear_all_errors());
     }
 
-    if (status.type === "idle") {
+    if (status.type === "idle" && status.message !== null) {
       navigation.navigate("OTP");
     }
   }, [status.type, Alert, dispatch]);

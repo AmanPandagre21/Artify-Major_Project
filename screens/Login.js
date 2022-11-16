@@ -22,6 +22,8 @@ import {
   loggedArtist,
 } from "../slices/user-artist-Slice/artistSlice";
 
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
+
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -54,7 +56,11 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (artistStatus && artistStatus.type === "error") {
+    if (
+      artistStatus &&
+      artistStatus.type === "error" &&
+      artistStatus.message !== null
+    ) {
       Alert.alert(artistStatus.message);
       dispatch(clear_all_errors());
     }
@@ -137,9 +143,14 @@ const Login = () => {
               textAlign: "center",
             }}
             style={styles.loginBtn}
+            disabled={artistStatus.type === "loading" ? "disabled" : ""}
             onPress={() => onLogin(username, password)}
           >
-            SIGN IN
+            {artistStatus.type === "loading" ? (
+              <ActivityIndicator animating={true} color={MD2Colors.red800} />
+            ) : (
+              "SIGN IN"
+            )}
           </Button>
 
           <View

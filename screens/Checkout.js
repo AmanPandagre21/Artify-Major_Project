@@ -50,11 +50,19 @@ const Checkout = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (orderStatus && orderStatus.type === "error") {
+    if (
+      orderStatus &&
+      orderStatus.type === "error" &&
+      orderStatus.message !== null
+    ) {
       Alert.alert(orderStatus.message);
       dispatch(clear_all_errors());
     }
-    if (orderStatus && orderStatus.type === "idle") {
+    if (
+      orderStatus &&
+      orderStatus.type === "idle" &&
+      orderStatus.message !== null
+    ) {
       Alert.alert(orderStatus.message);
     }
   }, [dispatch]);

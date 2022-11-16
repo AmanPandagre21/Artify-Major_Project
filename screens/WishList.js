@@ -19,7 +19,7 @@ import { COLORS } from "../constants/Theme";
 import Loader from "../components/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clear_all_errors, get_items } from "../slices/whislistSlice";
-import WishlistImage from "../assets/addWishList.png"
+import WishlistImage from "../assets/addWishList.png";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -83,9 +83,7 @@ const Wishlist = () => {
           <View style={{ flex: 1 }}>
             <View style={{ zIndex: 0 }}>
               {list === [] ? (
-               
-                <Image source={WishlistImage}/>
-              
+                <Image source={WishlistImage} />
               ) : (
                 <FlatList
                   data={list && list}

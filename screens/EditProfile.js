@@ -29,7 +29,7 @@ import {
 } from "../slices/user-artist-Slice/artistSlice";
 
 const EditProfile = ({ navigation, route }) => {
-  const { artist, status :artStat } = useSelector((state) => state.artist);
+  const { artist, status: artStat } = useSelector((state) => state.artist);
   const url = artist.image && artist.image.url;
 
   const [userAvatar, setUserAvatar] = useState(url);
@@ -64,19 +64,19 @@ const EditProfile = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (artStat && artStat.type === "error") {
+    if (artStat && artStat.type === "error" && artStat.message !== null) {
       Alert.alert(artStat.message);
       dispatch(clear_all_errors());
     }
-    if (artStat && artStat.type === "idle") {
-      // Alert.alert(status.message);
+    if (artStat && artStat.type === "idle" && artStat.message !== null) {
+      Alert.alert(artStat.message);
     }
     if (route.params) {
       if (route.params.image) {
         setUserAvatar(route.params.image);
       }
     }
-  }, [status, route]);
+  }, [artStat, route]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -149,7 +149,7 @@ const EditProfile = ({ navigation, route }) => {
             mode="contained"
             buttonColor="#363488"
             textColor="white"
-            disabled={artStat && artStat.type ==="loading" ? true : false}
+            disabled={artStat && artStat.type === "loading" ? true : false}
             labelStyle={{
               fontSize: 16,
               textTransform: "uppercase",
@@ -159,11 +159,11 @@ const EditProfile = ({ navigation, route }) => {
             style={styles.btn}
             onPress={profileUpdateHandler}
           >
-          {artStat && artStat.type === "loading"? <ActivityIndicator
-                      animating={true}
-                      color={MD2Colors.red800}
-                    />:"Edit Profile"}
-            
+            {artStat && artStat.type === "loading" ? (
+              <ActivityIndicator animating={true} color={MD2Colors.red800} />
+            ) : (
+              "Edit Profile"
+            )}
           </Button>
           <View style={{ marginTop: 20, height: 80 }}></View>
         </View>

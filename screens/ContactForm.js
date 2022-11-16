@@ -19,7 +19,6 @@ import {
 import { Alert } from "react-native";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
-
 const ContactForm = ({ navigation }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
@@ -41,11 +40,11 @@ const ContactForm = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (status && status.type === "error") {
+    if (status && status.type === "error" && status.message !== null) {
       Alert.alert(status.message);
       dispatch(clear_all_errors());
     }
-    if (status && status.type === "idle") {
+    if (status && status.type === "idle" && status.message !== null) {
       Alert.alert(status.message);
     }
   }, [status]);
@@ -117,7 +116,7 @@ const ContactForm = ({ navigation }) => {
             mode="contained"
             buttonColor="#363488"
             textColor="white"
-            disabled={status&& status.type === "loading"?true:false}
+            disabled={status && status.type === "loading" ? true : false}
             labelStyle={{
               fontSize: 16,
               textTransform: "uppercase",
@@ -127,10 +126,11 @@ const ContactForm = ({ navigation }) => {
             onPress={contactHandler}
             style={styles.btn}
           >
-          {status && status.type === "loading"?  <ActivityIndicator
-                      animating={true}
-                      color={MD2Colors.red800}
-                    />:"Send Message"}
+            {status && status.type === "loading" ? (
+              <ActivityIndicator animating={true} color={MD2Colors.red800} />
+            ) : (
+              "Send Message"
+            )}
           </Button>
           <View style={{ height: 150, marginTop: 10 }}>
             <Text style={{ fontWeight: "bold", fontSize: 20 }}>

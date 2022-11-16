@@ -84,12 +84,20 @@ const AddPost = ({ navigation, route }) => {
 
   // useEffect
   useEffect(() => {
-    if (postStatus_ && postStatus_.type === "error") {
+    if (
+      postStatus_ &&
+      postStatus_.type === "error" &&
+      postStatus_.message !== null
+    ) {
       Alert.alert(postStatus_.message);
       dispatch(clear_all_errors());
     }
-    if (postStatus_ && postStatus_.type === "idle") {
-      // Alert.alert(postStatus_.message);
+    if (
+      postStatus_ &&
+      postStatus_.type === "idle" &&
+      postStatus_.message !== null
+    ) {
+      Alert.alert(postStatus_.message);
       setPost("");
       setTitle("");
       setDescription("");

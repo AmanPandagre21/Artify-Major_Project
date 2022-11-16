@@ -89,7 +89,7 @@ export function get_posts(keyword = "") {
         },
       });
       dispatch(getPosts(data.posts));
-      dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
+      dispatch(setStatus({ type: STATUS.IDLE, message: null }));
     } catch (error) {
       if (error) {
         dispatch(
@@ -162,6 +162,6 @@ export function like_and_dislike(postID) {
 // clear Users
 export function clear_all_errors() {
   return async function clearErrorsThunk(dispatch, getState) {
-    dispatch(setStatus({ type: STATUS.Idle, message: null }));
+    dispatch(setStatus({ type: STATUES.ERROR, message: null }));
   };
 }

@@ -32,11 +32,11 @@ const EnterOtp = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (status && status.type === "error") {
+    if (status && status.type === "error" && status.message !== null) {
       Alert.alert(status.message);
       dispatch(clear_all_errors());
     }
-    if (status && status.type === "idle") {
+    if (status && (status.type === "idle") & (status.message !== null)) {
       navigation.navigate("ResetPassword");
     }
   }, [status.type, Alert, dispatch]);

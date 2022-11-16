@@ -83,7 +83,7 @@ export function get_items() {
       dispatch(
         setStatus({
           type: STATUES.IDLE,
-          message: "data get Successfully",
+          message: null,
         })
       );
     } catch (error) {

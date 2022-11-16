@@ -20,7 +20,6 @@ import {
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { getToken } from "../services/AsyncStorageService";
 
-
 const ChangePassword = () => {
   const [oldPass, setOldPass] = useState("");
   const [pass, setPass] = useState("");
@@ -42,19 +41,19 @@ const ChangePassword = () => {
       Alert.alert(artistStatus.message);
       dispatch(clear_all_errors());
     }
-    if (artistStatus.type === "idle") {
+    if (artistStatus.type === "idle" && artistStatus.message !== null) {
       Alert.alert(artistStatus.message);
       setOldPass("");
       setPass("");
       setConfirmPass("");
     }
-  }, [artistStatus]);
+  }, [artistStatus, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <CircleVector />
-        <View style={{ marginTop:'-25%',alignItems: "center" }}>
+        <View style={{ marginTop: "-25%", alignItems: "center" }}>
           <Text style={styles.headerText}>Change Password</Text>
         </View>
 
@@ -100,7 +99,9 @@ const ChangePassword = () => {
             mode="contained"
             buttonColor="#363488"
             textColor="white"
-            disabled = {artistStatus && artistStatus.type==="loading"?true:false}
+            disabled={
+              artistStatus && artistStatus.type === "loading" ? true : false
+            }
             labelStyle={{
               fontSize: 16,
               textTransform: "uppercase",
@@ -110,11 +111,11 @@ const ChangePassword = () => {
             style={styles.btn}
             onPress={changePassHandler}
           >
-          {artistStatus && artistStatus.type==="loading"? <ActivityIndicator
-                      animating={true}
-                      color={MD2Colors.red800}
-                    />:"Change Password"}
-            
+            {artistStatus && artistStatus.type === "loading" ? (
+              <ActivityIndicator animating={true} color={MD2Colors.red800} />
+            ) : (
+              "Change Password"
+            )}
           </Button>
         </View>
       </ScrollView>
@@ -156,8 +157,8 @@ const styles = StyleSheet.create({
 
   footer: {
     width: "100%",
-    height: 'auto',
-    marginTop:20,
+    height: "auto",
+    marginTop: 20,
     backgroundColor: "white",
     borderTopEndRadius: 30,
     borderTopStartRadius: 30,

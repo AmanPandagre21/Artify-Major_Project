@@ -18,8 +18,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { get_categories } from "../slices/categorySlice";
 import mime from "mime";
-import { add_post } from "../slices/postSlice";
+import { add_post, clear_all_errors } from "../slices/postSlice";
+
 import postPhoto from "../assets/images/avtar.jpg";
+
 const AddPost = ({ navigation, route }) => {
   // use State
   const [selected, setSelected] = React.useState("");
@@ -33,8 +35,6 @@ const AddPost = ({ navigation, route }) => {
   // Store
   const dispatch = useDispatch();
   const { category } = useSelector((state) => state.category);
-  const { status } = useSelector((state) => state.posts);
-
   // handlers
 
   const postHandler = async () => {
@@ -62,13 +62,15 @@ const AddPost = ({ navigation, route }) => {
 
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
+  const { status } = useSelector((state) => state.posts);
+
   // useEffect
   useEffect(() => {
-    if (status && status.type === "error") {
+    if (status && status.type === "error" && status.message !== null) {
       Alert.alert(status.message);
       dispatch(clear_all_errors());
     }
-    if (status && status.type === "idle") {
+    if (status && status.type === "idle" && status.message !== null) {
       Alert.alert(status.message);
       setPost("");
       setTitle("");

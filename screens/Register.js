@@ -18,6 +18,7 @@ import {
   artistRegister,
   clear_all_errors,
 } from "../slices/user-artist-Slice/artistSlice";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -54,16 +55,17 @@ const Register = () => {
 
   const { status } = useSelector((state) => state.artist);
   useEffect(() => {
-    if (status && status.type === "error") {
+    if (status && status.type === "error" && status.message !== null) {
       Alert.alert(status.message);
-      // dispatch(clear_all_errors());
+      dispatch(clear_all_errors());
     }
 
-    if (status && status.type === "idle") {
+    if (status && status.type === "idle" && status.message !== null) {
       Alert.alert(status.message);
+
       navigation.navigate("Login");
     }
-  }, [status.type, Alert, navigation, dispatch]);
+  }, [status, Alert, navigation, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -136,8 +138,13 @@ const Register = () => {
             }}
             style={styles.loginBtn}
             onPress={onRegister}
+            disabled={status.type === "loading" ? "disabled" : ""}
           >
-            SIGN UP
+            {status.type === "loading" ? (
+              <ActivityIndicator animating={true} color={MD2Colors.red800} />
+            ) : (
+              "SIGN UP"
+            )}
           </Button>
 
           <View
@@ -175,10 +182,7 @@ const Register = () => {
             }}
           >
             <Text>Dont have any account ? </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Login")}
-              disabled={status.type === "loading" ? "disabled" : ""}
-            >
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
               <Text style={{ color: "#AD40AF", fontWeight: "700" }}>
                 Sign In
               </Text>
