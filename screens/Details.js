@@ -25,6 +25,7 @@ import Accordion from "../components/Accordion";
 import { useDispatch, useSelector } from "react-redux";
 import { get_post_details } from "../slices/postSlice";
 import Loader from "../components/loader";
+import ReadMore from 'react-native-read-more-text';
 const Details = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
@@ -96,34 +97,47 @@ const Details = ({ navigation, route }) => {
           </View>
 
           <View style={{ alignItems: "center", marginTop: "5%" }}>
+
             <Image
               source={{ uri: post && post.image.url }}
               style={styles.productImage}
             />
-            <Text style={styles.productTitle}>{post && post.title}</Text>
+
+           
+
           </View>
+          <View style={{width:"90%",marginLeft:"auto",marginRight:"auto"}}>
+          <Text style={styles.productTitle}>{post && post.title}</Text>
+          </View>
+          <Divider
+              style={{ backgroundColor: COLORS.PrimaryColor, height: 2 ,width:"90%",marginRight:"auto",marginLeft:"auto",marginTop:"4%"}}
+            />
           {/* <View> */}
           <View
             style={{
               width: "100%",
               flex: 1,
-              flexDirection: "row",
+              flexDirection: "column",
               justifyContent: "space-evenly",
+              marginTop:"5%"
             }}
           >
             <View
               style={{
-                width: "40%",
-                height: 150,
-                borderRadius: 10,
-                ...SHADOWS.dark,
+                width: "90%",
+                // height: 150,
+                // borderRadius: 10,
+                // ...SHADOWS.dark,
                 opacity: 2,
-                paddingTop: 10,
-                backgroundColor: "#fceabb",
-                background: "linear-gradient(to right, #fceabb, #f8b500)",
+                // paddingTop: 10,
+                
+                marginLeft:"auto",
+                marginRight:"auto",
+                flexDirection:"row"
+                // background: "linear-gradient(to right, #fceabb, #f8b500)",
               }}
             >
-              <Image
+              {/* <Image
                 source={ArtWork}
                 style={{
                   width: 90,
@@ -131,37 +145,70 @@ const Details = ({ navigation, route }) => {
                   marginLeft: "auto",
                   marginRight: "auto",
                 }}
-              />
+              /> */}
+              {/* <Text
+              style={{
+                  fontSize: 20,
+                  color: "#363488",
+                  // textAlign: "center",
+                  // letterSpacing: 1,
+                  fontWeight: "bold",
+                 backgroundColor:"black",
+                  textTransform: "capitalize",
+                  marginLeft:"auto"
+                }}
+              >
+              Product Category :-
+              </Text> */}
               <Text
                 style={{
-                  fontSize: 22,
+                  fontSize: 20,
                   color: "#363488",
-                  textAlign: "center",
+                  // textAlign: "center",
                   letterSpacing: 1,
                   fontWeight: "bold",
                   margin: "2%",
                   textTransform: "capitalize",
+                  //marginLeft:"auto"
+                }}
+              >
+                product Details :-  
+              </Text>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "#363488",
+                  // textAlign: "center",
+                  letterSpacing: 1,
+                  fontWeight: "bold",
+                  margin: "2%",
+                  textTransform: "capitalize",
+                   marginRight:400,
+                   width:"50%"
                 }}
               >
                 {post && post.category.name}
               </Text>
             </View>
-            <Divider
+            {/* <Divider
               style={{ backgroundColor: COLORS.PrimaryColor, height: 2 }}
-            />
+            /> */}
 
             <View
               style={{
-                width: "40%",
-                height: 150,
-                borderRadius: 10,
-                ...SHADOWS.dark,
-                paddingTop: 10,
-                backgroundColor: "#f7971e",
-                background: "linear-gradient(to right, #f7971e, #ffd200)",
+                 width: "90%",
+                // height: 150,
+                // borderRadius: 10,
+                // ...SHADOWS.dark,
+                // paddingTop: 10,
+                // backgroundColor: "#f7971e",
+                // background: "linear-gradient(to right, #f7971e, #ffd200)",
+                marginLeft:"auto",
+                marginRight:"auto",
+                flexDirection:"row"
               }}
             >
-              <Image
+              {/* <Image
                 source={Rupee}
                 style={{
                   width: 90,
@@ -169,37 +216,62 @@ const Details = ({ navigation, route }) => {
                   marginLeft: "auto",
                   marginRight: "auto",
                 }}
-              />
+              /> */}
               <Text
                 style={{
-                  fontSize: 26,
+                  fontSize: 20,
                   color: "#363488",
-                  textAlign: "center",
+                  // textAlign: "center",
                   letterSpacing: 1,
                   fontWeight: "bold",
+                  margin: "2%",
+                  textTransform: "capitalize",
+                 
+                  
+                }}
+              >
+                Price :-
+              </Text>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "#363488",
+                  // textAlign: "center",
+                  letterSpacing: 1,
+                  fontWeight: "bold",
+                 
+                  textTransform: "capitalize",
+                  
+                   
                 }}
               >
                 {post && post.amount}$
               </Text>
             </View>
-          </View>
+            {/* ///end1 */}
+         
           {/* </View> */}
+
           <View style={styles.descriptionCard}>
             <View
               style={{
-                marginTop: "6%",
+                // marginTop: "4%",
                 width: "95%",
                 marginLeft: "3.5%",
                 marginRight: "auto",
               }}
             >
-              <Accordion
+        <Text style={{color:"#363488",fontWeight:"bold",fontSize:20}}>Description 📄</Text>
+        <ReadMore numberOfLines={4}  >
+          {post && post.description}
+        </ReadMore>
+              {/* <Accordion
                 title={"Description"}
                 bodyText={post && post.description}
-              />
+              /> */}
             </View>
 
-            {post && post.amount !== 0 ? (
+            {/* {post && post.amount !== 0 ? (
               <TouchableOpacity
                 style={{ height: 100 }}
                 disabled={artist._id === post.artist._id ? true : false}
@@ -237,9 +309,58 @@ const Details = ({ navigation, route }) => {
                 </View>
               </TouchableOpacity>
             ) : (
-              <Text></Text>
-            )}
+              <TouchableOpacity style={{backgroundColor:"grey"}}>
+              <Text>Proceed to pay</Text>
+              </TouchableOpacity>
+              
+            )} */}
+            
           </View>
+          </View>
+          {post && post.amount !== 0 ? (
+              <TouchableOpacity
+                style={{ height: 100 }}
+                disabled={artist._id === post.artist._id ? true : false}
+                onPress={() =>
+                  navigation.navigate("ShippingAddress", {
+                    sellerId: post.artist._id,
+                    itemId: post._id,
+                    amount: post.amount,
+                  })
+                }
+              >
+                <View
+                  style={{
+                    backgroundColor:
+                      artist._id === post.artist._id ? "#808080" : "#363488",
+                    width: "80%",
+                    height: 50,
+                    borderRadius: 5,
+                    marginLeft: "10%",
+                    // marginTop: "7%",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      marginTop: "auto",
+                      marginBottom:"auto",
+                      textAlign: "center",
+                    }}
+                  >
+                    {artist._id === post.artist._id
+                      ? " Its your product"
+                      : "Proceed to pay"}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <View style={{backgroundColor:"#D8D8D8",width:"85%",marginBottom:"20%",marginLeft:"auto",marginRight:"auto",height:"5%",borderRadius:5}}>
+              <Text style={{textAlign:"center",marginBottom:"auto",marginTop:"auto",color:"grey"}}>Proceed to pay</Text>
+              </View>
+              
+            )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -279,23 +400,24 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   productTitle: {
-    fontSize: 30,
-    marginTop: "3%",
-    marginBottom: "3%",
+    fontSize: 25,
+    marginTop: "6%",
+   
     textTransform: "capitalize",
     color: "#363488",
     fontWeight: "bold",
+    marginLeft:25
   },
   descriptionCard: {
     width: "90%",
     height: "auto",
     padding: "4%",
-    marginLeft: "6%",
-    marginTop: "8%",
+    // marginLeft: "5%",
+   
     marginBottom: "8%",
-    backgroundColor: COLORS.PrimaryColor,
-    ...SHADOWS.dark,
+    // backgroundColor: COLORS.PrimaryColor,
+    // ...SHADOWS.dark,
     borderRadius: 12,
-    border: "1px solid rgba(255, 255, 255, 0.125)",
+    // border: "1px solid rgba(255, 255, 255, 0.125)",
   },
 });
