@@ -9,8 +9,11 @@ import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { get_items, remove_item } from "../slices/whislistSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ReadMore from 'react-native-read-more-text';
+
 
 const Wishlistcard = ({ data }) => {
+ 
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const deleteItemHandler = async (id) => {
@@ -47,7 +50,7 @@ const Wishlistcard = ({ data }) => {
           style={{
             width: "35%",
             borderRadius: 20,
-            height: 106,
+            height: "95%",
           }}
         />
         {/* <View style={{marginRight:'24.5%'}}>
@@ -64,7 +67,7 @@ const Wishlistcard = ({ data }) => {
           </View> */}
 
         {/* </View> */}
-        <View style={{ marginRight: "auto", marginLeft: "5%" }}>
+        <View style={{ marginRight: "auto", marginLeft: "5%",marginBottom:"13%" }}>
           <Text
             style={{
               color: "#363488",
@@ -73,14 +76,20 @@ const Wishlistcard = ({ data }) => {
           >
             {data.postId && data.postId.title}
           </Text>
-          <Text style={{ fontWeight: "bold" }}>
+          <View style={{width:200,marginTop:"1%",marginBottom:"1%"}}>
+          <ReadMore numberOfLines={1}  renderTruncatedFooter={()=>{<Text></Text>}} >
+          📄 {data.postId && data.postId.description}
+        </ReadMore>
+          {/* <Text style={{ fontWeight: "bold" ,flex: 1, flexWrap: 'wrap'}}>
+           
             📄 {data.postId && data.postId.description}
-          </Text>
-          <Text>💰 {data.postId && data.postId.amount} ₹</Text>
+          </Text> */}
+          </View>
+          <Text style={{marginBottom:"1%"}}>💰 {data.postId && data.postId.amount} ₹</Text>
         </View>
 
         <View
-          style={{ marginLeft: "50%", marginTop: "19%", flexDirection: "row" }}
+          style={{ marginLeft: "25%",marginTop:"auto",position:"relative", flexDirection: "row" }}
         >
           <TouchableOpacity
             style={{ marginRight: "5%" }}
