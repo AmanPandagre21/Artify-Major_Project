@@ -35,7 +35,7 @@ export const RectButton = ({ minWidth, fontSize, handlePress, ...props }) => {
         backgroundColor: "#363488",
         width: "59%",
         height: 40,
-        padding: SIZES.small,
+        // padding: SIZES.small,
         borderRadius: SIZES.extraLarge,
         ...props,
       }}
@@ -47,6 +47,8 @@ export const RectButton = ({ minWidth, fontSize, handlePress, ...props }) => {
           fontSize: fontSize,
           color: "white",
           textAlign: "center",
+          marginTop:"auto",
+          marginBottom:"auto"
         }}
       >
         View
