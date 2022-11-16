@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from "react-native";
+import ReadMore from 'react-native-read-more-text';
 import { Text, Button } from "react-native-paper";
 import CircleVector from "../components/CircleVector";
 import Avtar from "../assets/images/avtar.jpg";
 import Loader from "../components/loader";
 import { useDispatch, useSelector } from "react-redux";
+import {  Divider } from "react-native-paper";
 import {
   artist_posts,
   artist_profile,
@@ -70,11 +72,11 @@ const SellerProfile = ({ navigation, route }) => {
             lineHeight: 48,
             color: "#363488",
             position: "absolute",
-            marginLeft: "35%",
+            marginLeft: "30%",
             marginTop: "16%",
           }}
         >
-          Profile
+        Seller's Profile
         </Text>
         {/* <View style = {{ alignItems: 'center', height:100, width:"100%",position:'absolute'}}>
       </View> */}
@@ -99,7 +101,7 @@ const SellerProfile = ({ navigation, route }) => {
             marginTop: "5%",
             height: "4%",
             width: "50%",
-            backgroundColor: "#363488",
+            // backgroundColor: "#363488",
             borderRadius: 13,
             marginLeft: "25%",
             // marginBottom: "-5%",
@@ -108,9 +110,10 @@ const SellerProfile = ({ navigation, route }) => {
         >
           <Text
             style={{
-              fontSize: 20,
-              color: "white",
+              fontSize: 30,
+            
               textAlign: "center",
+              color:"#363488",
               height: 60,
               marginTop: "2%",
             }}
@@ -118,7 +121,9 @@ const SellerProfile = ({ navigation, route }) => {
             Products
           </Text>
         </View>
-
+        <Divider
+              style={{ backgroundColor: "#363488", height: 2 ,width:"90%",marginRight:"auto",marginLeft:"auto",marginTop:"4%",marginBottom:"3%"}}
+            />
         {sellerPosts &&
           sellerPosts.map((post) => {
             return (
@@ -137,24 +142,31 @@ const SellerProfile = ({ navigation, route }) => {
                   source={{ uri: post.image.url }}
                   style={{ width: 120, height: "auto", borderRadius: 20 }}
                 />
-                <View>
+                <View style={{marginLeft:"5%"}}>
                   <Text
                     style={{
-                      marginLeft: "5%",
+                      // marginLeft: "5%",
                       fontSize: 20,
                       fontWeight: "bold",
                     }}
                   >
                     {post.title}
                   </Text>
-                  <Text style={{ width: "70%", marginLeft: "4%" }}>
+                  <View style={{width:200,marginTop:"1%",marginBottom:"1%"}}>
+                  <ReadMore numberOfLines={1}  renderTruncatedFooter={()=>{<Text></Text>}} >
+          📄 {post.description}
+        </ReadMore></View>
+                  {/* <ReadMore numberOfLines={4}  >
+                  {post.description}
+                   </ReadMore> */}
+                  {/* <Text style={{ width: "70%", marginLeft: "4%" }}>
                     {post.description}
-                  </Text>
+                  </Text> */}
                   <View style={{ flexDirection: "row" }}>
                     <Text
                       style={{
                         fontSize: 15,
-                        marginLeft: "5%",
+                        // marginLeft: "5%",
                         marginTop: "5%",
                       }}
                     >
@@ -165,11 +177,11 @@ const SellerProfile = ({ navigation, route }) => {
                     style={{
                       backgroundColor: "#363488",
                       width: "50%",
-                      height: 30,
-                      marginLeft: "50%",
+                      height: 35,
+                      // marginLeft: "50%",
                       borderRadius: 15,
                       marginTop: "4%",
-                      marginBottom: "3%",
+                      marginBottom: "5%",
                     }}
                     onPress={() =>
                       navigation.navigate("Details", {
@@ -181,7 +193,8 @@ const SellerProfile = ({ navigation, route }) => {
                       style={{
                         color: "white",
                         textAlign: "center",
-                        marginTop: "4%",
+                        marginTop: "auto",
+                        marginBottom:"auto"
                       }}
                     >
                       View
@@ -217,6 +230,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     marginLeft: "40%",
     marginTop: "3%",
+    width:"30%"
+    
   },
   profileButton: {
     width: "90%",
