@@ -32,7 +32,9 @@ const Post = ({ post, status }) => {
                 <Col key={ele._id}>
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate("EditPost2", { postId: ele._id })
+                      navigation.navigate("EditPost2", {
+                        postId: ele._id,
+                      })
                     }
                   >
                     <Image source={{ uri: ele.image.url }} style={styles.img} />

@@ -23,6 +23,7 @@ const initialState = {
   myPosts: [],
   sellerPosts: [],
   status: { type: STATUES.IDLE, message: null },
+  sendingStatus: { type: STATUES.IDLE, message: null },
 };
 
 export const artistSlice = createSlice({
@@ -64,6 +65,10 @@ export const artistSlice = createSlice({
       state.isAuth = false;
       state.artist = null;
     },
+    setSendingStatus(state, action) {
+      state.sendingStatus.type = action.payload.type;
+      state.sendingStatus.message = action.payload.message;
+    },
     setStatus(state, action) {
       state.status.type = action.payload.type;
       state.status.message = action.payload.message;
@@ -89,6 +94,7 @@ export const {
   getArtistProfile,
   logout,
   setStatus,
+  setSendingStatus,
   clearAllErrors,
 } = artistSlice.actions;
 export default artistSlice.reducer;
@@ -178,7 +184,7 @@ export function loggedArtist() {
       dispatch(
         setStatus({
           type: STATUES.IDLE,
-          message: null,
+          message: "Logged user details",
         })
       );
     } catch (error) {
@@ -223,19 +229,22 @@ export function change_password(passInfo) {
 // get logged user
 export function send_otp(email) {
   return async function sendOTPThunk(dispatch, getState) {
-    dispatch(setStatus({ type: STATUES.LOADING, message: "Loading" }));
+    dispatch(setSendingStatus({ type: STATUES.LOADING, message: "Loading" }));
     try {
       const { data } = await api.post("/send-otp", { email });
       dispatch(sendOtp(data));
       dispatch(
-        setStatus({
+        setSendingStatus({
           type: STATUES.IDLE,
           message: `OTP send Successfully to the ${email}`,
         })
       );
     } catch (error) {
       dispatch(
-        setStatus({ type: STATUES.ERROR, message: error.response.data.message })
+        setSendingStatus({
+          type: STATUES.ERROR,
+          message: error.response.data.message,
+        })
       );
     }
   };
@@ -243,39 +252,49 @@ export function send_otp(email) {
 
 export function verify_otp(info) {
   return async function verifyOTPThunk(dispatch, getState) {
-    dispatch(setStatus({ type: STATUES.LOADING, message: "Loading" }));
+    dispatch(setSendingStatus({ type: STATUES.LOADING, message: "Loading" }));
     try {
       const { data } = await api.post("/verify-otp", info);
       dispatch(verifyOtp());
       dispatch(
-        setStatus({
+        setSendingStatus({
           type: STATUES.IDLE,
           message: `OTP Verified`,
         })
       );
     } catch (error) {
       dispatch(
-        setStatus({ type: STATUES.ERROR, message: error.response.data.message })
+        setSendingStatus({
+          type: STATUES.ERROR,
+          message: error.response.data.message,
+        })
       );
     }
   };
 }
 
-export function reset_password(info) {
+export function reset_password(newPass, confirmPass, email) {
   return async function resetPasswordThunk(dispatch, getState) {
-    dispatch(setStatus({ type: STATUES.LOADING, message: "Loading" }));
+    dispatch(setSendingStatus({ type: STATUES.LOADING, message: "Loading" }));
     try {
-      const { data } = await api.post("/resetPassword", info);
+      const { data } = await api.put("/resetPassword", {
+        password: newPass,
+        confirmPassword: confirmPass,
+        email,
+      });
       dispatch(resetPassword());
       dispatch(
-        setStatus({
+        setSendingStatus({
           type: STATUES.IDLE,
-          message: `Password Updated Successfully`,
+          message: "Password Updated Successfully",
         })
       );
     } catch (error) {
       dispatch(
-        setStatus({ type: STATUES.ERROR, message: error.response.data.message })
+        setSendingStatus({
+          type: STATUES.ERROR,
+          message: error.response.data.message,
+        })
       );
     }
   };
@@ -371,6 +390,7 @@ export function my_posts() {
     }
   };
 }
+
 export function artist_profile(id) {
   return async function artistProfileThunk(dispatch, getState) {
     dispatch(setStatus({ type: STATUES.LOADING, message: "Loading" }));

@@ -82,9 +82,8 @@ export function place_order(
           },
         }
       );
-      console.log(data);
       dispatch(placeOrder());
-      dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
+      dispatch(setStatus({ type: STATUS.IDLE, message: "Order Placed" }));
     } catch (error) {
       if (error.response.data) {
         dispatch(

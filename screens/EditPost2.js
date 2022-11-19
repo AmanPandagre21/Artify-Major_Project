@@ -28,9 +28,13 @@ import ArtWork from "../assets/images/artwork.png";
 // import { CircleButton, RectButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "../components";
 import Accordion from "../components/Accordion";
 import { useDispatch, useSelector } from "react-redux";
-import { delete_post, get_post_details } from "../slices/postSlice";
+import {
+  clear_all_errors,
+  delete_post,
+  get_post_details,
+} from "../slices/postSlice";
 import Loader from "../components/loader";
-import ReadMore from 'react-native-read-more-text';
+import ReadMore from "react-native-read-more-text";
 const EditPost2 = ({ route, navigation }) => {
   const [isPriceOn, setIsPriceOn] = useState(false);
 
@@ -38,8 +42,14 @@ const EditPost2 = ({ route, navigation }) => {
 
   const { post, status: post_Status } = useSelector((state) => state.posts);
 
-  const onDeletehandler = () => {
-    dispatch(delete_post(route.params.postId));
+  const onDeletehandler = async () => {
+    await dispatch(delete_post(route.params.postId));
+
+    if (post_Status && post_Status.type === "idle") {
+      Alert.alert(post_Status.message);
+    }
+
+    navigation.navigate("UserProfile");
   };
 
   useEffect(() => {
@@ -49,10 +59,7 @@ const EditPost2 = ({ route, navigation }) => {
 
     if (post_Status && post_Status.type === "error") {
       Alert.alert(post_Status.message);
-    }
-
-    if (post_Status && post_Status.type === "idle") {
-      Alert.alert(post_Status.message);
+      dispatch(clear_all_errors());
     }
   }, [route, dispatch]);
 
@@ -144,8 +151,7 @@ const EditPost2 = ({ route, navigation }) => {
               marginRight: "auto",
             }}
           >
-
-<View
+            <View
               style={{
                 // marginTop: "4%",
                 width: "95%",
@@ -153,10 +159,12 @@ const EditPost2 = ({ route, navigation }) => {
                 marginRight: "auto",
               }}
             >
-        <Text style={{color:"#363488",fontWeight:"bold",fontSize:20}}>Description 📄</Text>
-        <ReadMore numberOfLines={4}  >
-          {post && post.description}
-        </ReadMore>
+              <Text
+                style={{ color: "#363488", fontWeight: "bold", fontSize: 20 }}
+              >
+                Description 📄
+              </Text>
+              <ReadMore numberOfLines={4}>{post && post.description}</ReadMore>
               {/* <Accordion
                 title={"Description"}
                 bodyText={post && post.description}
@@ -174,7 +182,15 @@ const EditPost2 = ({ route, navigation }) => {
               justifyContent: "center",
               flexDirection: "row",
             }}
-            onPress={() => navigation.navigate("EditPost")}
+            onPress={() =>
+              navigation.navigate("EditPost", {
+                postId: route.params.postId,
+                image: post.image.url,
+                title: post.title,
+                description: post.description,
+                sell: post.isForSell,
+              })
+            }
           >
             <AntDesign
               name="edit"
@@ -207,7 +223,7 @@ const EditPost2 = ({ route, navigation }) => {
               height: "auto",
               justifyContent: "center",
               flexDirection: "row",
-              marginBottom:"7%"
+              marginBottom: "7%",
             }}
             onPress={onDeletehandler}
           >

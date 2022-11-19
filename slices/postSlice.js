@@ -23,6 +23,8 @@ export const postSlice = createSlice({
       state.posts = action.payload;
     },
 
+    updatePost(state, action) {},
+
     postDetails(state, action) {
       state.post = action.payload;
     },
@@ -47,6 +49,7 @@ export const {
   postDetails,
   likeAndDislike,
   deletePost,
+  updatePost,
   setStatus,
   clearAllErrors,
 } = postSlice.actions;
@@ -66,7 +69,9 @@ export function add_post(formData) {
       });
 
       dispatch(addPost());
-      dispatch(setStatus({ type: STATUS.IDLE, message: data.status }));
+      dispatch(
+        setStatus({ type: STATUS.IDLE, message: "Post added Successfully" })
+      );
     } catch (error) {
       if (error) {
         dispatch(
@@ -92,9 +97,9 @@ export function get_posts(keyword = "") {
         },
       });
       dispatch(getPosts(data.posts));
-      dispatch(setStatus({ type: STATUS.IDLE, message: null }));
+      dispatch(setStatus({ type: STATUS.IDLE, message: "get posts" }));
     } catch (error) {
-      if (error) {
+      if (error.response.data) {
         dispatch(
           setStatus({
             type: STATUS.ERROR,
@@ -119,6 +124,38 @@ export function get_post_details(id) {
       });
 
       dispatch(postDetails(data.post));
+      dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
+    } catch (error) {
+      if (error) {
+        dispatch(
+          setStatus({
+            type: STATUS.ERROR,
+            message: error.response.data.message,
+          })
+        );
+      }
+    }
+  };
+}
+
+// update post
+export function update_artist_post(postId, title, description, outOfStock) {
+  return async function updateArtistPostThunk(dispatch, getState) {
+    dispatch(setStatus({ type: STATUS.LOADING, message: "Loading" }));
+    try {
+      // update post
+      const token = await getToken();
+      const { data } = await api.put(
+        `/post/${postId}`,
+        { title, description, outOfStock },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      dispatch(updatePost());
       dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
     } catch (error) {
       if (error) {

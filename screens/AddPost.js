@@ -92,11 +92,7 @@ const AddPost = ({ navigation, route }) => {
       Alert.alert(postStatus_.message);
       dispatch(clear_all_errors());
     }
-    if (
-      postStatus_ &&
-      postStatus_.type === "idle" &&
-      postStatus_.message !== null
-    ) {
+    if (postStatus_.message === "Post added Successfully") {
       Alert.alert(postStatus_.message);
       setPost("");
       setTitle("");
@@ -239,10 +235,22 @@ const AddPost = ({ navigation, route }) => {
               marginTop: "5%",
             }}
           />
-           <View style={{width:"88%",marginTop:"2%",flexDirection:"row",marginLeft:"auto",marginRight:"auto"}}>
-           <Text style={{marginTop:"3%"}}>Do You Want to add pricing</Text>
-          <Switch value={isSwitchOn} style={{marginLeft:"auto"}} onValueChange={onToggleSwitch}></Switch>
-          {/* {isSwitchOn ? (
+          <View
+            style={{
+              width: "88%",
+              marginTop: "2%",
+              flexDirection: "row",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            <Text style={{ marginTop: "3%" }}>Do You Want to add pricing</Text>
+            <Switch
+              value={isSwitchOn}
+              style={{ marginLeft: "auto" }}
+              onValueChange={onToggleSwitch}
+            ></Switch>
+            {/* {isSwitchOn ? (
             <TextInput
               label="Price of Your Product"
               multiline={true}
@@ -255,8 +263,7 @@ const AddPost = ({ navigation, route }) => {
           ) : (
             ""
           )} */}
-           </View>
-          
+          </View>
 
           {isSwitchOn ? (
             <TextInput

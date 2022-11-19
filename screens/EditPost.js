@@ -18,46 +18,30 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { get_categories } from "../slices/categorySlice";
 import mime from "mime";
-import { add_post, clear_all_errors } from "../slices/postSlice";
+import {
+  add_post,
+  clear_all_errors,
+  update_artist_post,
+  update_post,
+} from "../slices/postSlice";
 
 import postPhoto from "../assets/images/avtar.jpg";
 
 const AddPost = ({ navigation, route }) => {
+  const { postId, sell, description, title, image } = route.params;
   // use State
-  const [selected, setSelected] = React.useState("");
-  const [post, setPost] = React.useState("");
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  // const [categoryId, setCategoryId] = React.useState("");
-  const [amount, setAmount] = React.useState("");
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const [editTitle, setEditTitle] = React.useState(title);
+  const [editDescription, setEditDescription] = React.useState(description);
+  const [isSwitchOn, setIsSwitchOn] = React.useState(sell);
 
   // Store
   const dispatch = useDispatch();
-  const { category } = useSelector((state) => state.category);
+
   // handlers
-
   const postHandler = async () => {
-    const myForm = new FormData();
-
-    myForm.append("title", title);
-    myForm.append("description", description);
-    myForm.append("category", selected);
-    myForm.append("isForSell", isSwitchOn ? true : false);
-    if (isSwitchOn) myForm.append("amount", amount);
-    myForm.append("image", {
-      uri: post,
-      type: mime.getType(post),
-      name: post.split("/").pop(),
-    });
-
-    await dispatch(add_post(myForm));
-  };
-
-  const imageHandler = () => {
-    navigation.navigate("camera", {
-      updateProfile: false,
-    });
+    await dispatch(
+      update_artist_post(postId, editTitle, editDescription, isSwitchOn)
+    );
   };
 
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
@@ -72,29 +56,9 @@ const AddPost = ({ navigation, route }) => {
     }
     if (status && status.type === "idle" && status.message !== null) {
       Alert.alert(status.message);
-      setPost("");
-      setTitle("");
-      setDescription("");
-      setSelected("Categories");
-      setAmount("");
-      setIsSwitchOn(false);
       navigation.navigate("Home");
     }
-
-    dispatch(get_categories());
-
-    if (route.params) {
-      if (route.params.image) {
-        setPost(route.params.image);
-      }
-    }
-  }, [status, dispatch, route]);
-
-  // set Categories
-  const catArr = [];
-  category.map((ele, ind) => {
-    catArr.push({ key: ele._id, value: ele.name });
-  });
+  }, [status, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -121,29 +85,19 @@ const AddPost = ({ navigation, route }) => {
           </Text>
         </View>
         <View style={styles.profileView}>
-          <TouchableOpacity onPress={imageHandler}>
-            {/* <Avatar.Image
-                size={100}
-                source={{ uri: post ? post : null }}
-                style={{ marginLeft: 20 }}
-              /> */}
-            <Image
-              // size={100}
-              source={postPhoto}
-              style={{ width: 300, height: 300, borderRadius: 6 }}
-            />
-          </TouchableOpacity>
-          {/* <TouchableOpacity onPress={imageHandler}>
-              <Text style={{ color: "#900" }}>Change Photo</Text>
-            </TouchableOpacity> */}
+          <Image
+            // size={100}
+            source={{ uri: image }}
+            style={{ width: 300, height: 300, borderRadius: 6 }}
+          />
         </View>
 
         <View style={styles.footer}>
           <TextInput
             label="Title Of Your Post"
             name="title"
-            value={title}
-            onChangeText={(title) => setTitle(title)}
+            value={editTitle}
+            onChangeText={(editTitle) => setEditTitle(editTitle)}
             style={styles.loginInput}
             underlineColor="transparent"
           />
@@ -152,75 +106,33 @@ const AddPost = ({ navigation, route }) => {
             label="Description"
             multiline={true}
             name="description"
-            value={description}
-            onChangeText={(description) => setDescription(description)}
+            value={editDescription}
+            onChangeText={(editDescription) =>
+              setEditDescription(editDescription)
+            }
             style={styles.loginInput}
             underlineColor="transparent"
           />
 
-          <SelectList
-            // onSelect={(selected) => setCategoryId(selected)}
-            setSelected={setSelected}
-            data={catArr}
-            placeholder="Categories"
-            arrowicon={
-              <FontAwesome
-                name="chevron-down"
-                size={15}
-                color={"black"}
-                style={{ marginLeft: "auto" }}
-              />
-            }
-            searchicon={<FontAwesome name="search" size={12} color={"black"} />}
-            search={false}
-            dropdownStyles={{
-              borderColor: "white",
-              backgroundColor: "#F5F5F5",
+          <View
+            style={{
+              height: 200,
               width: "90%",
+              flexDirection: "row",
               marginLeft: "auto",
-              marginRight: "auto",
+              marginRight: "40%",
             }}
-            dropdownTextStyles={{ color: "#363488" }}
-            boxStyles={{
-              fontSize: 40,
-              height: 65,
-              borderColor: "white",
-              backgroundColor: "#F5F5F5",
-              width: "90%",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginTop: "5%",
-            }}
-          />
-
-          {/* <Text>Do You Want to add pricing</Text>
-            <Switch value={isSwitchOn} onValueChange={onToggleSwitch}></Switch>
-  
-            {isSwitchOn ? (
-              <TextInput
-                label="Price of Your Product"
-                multiline={true}
-                name="amount"
-                value={amount}
-                onChangeText={(amount) => setAmount(amount)}
-                style={styles.loginInput}
-                underlineColor="transparent"
-              />
-            ) : (
-              ""
-            )}
-   */}
-          <View style={{ height: 200, width: "90%",flexDirection:"row",marginLeft:"auto",marginRight:"40%" }}>
-          <TouchableOpacity
+          >
+            <TouchableOpacity
               style={{
                 width: "45%",
                 height: 50,
-                backgroundColor: "#363488",
+                backgroundColor: isSwitchOn ? "green" : "red",
                 borderRadius: 10,
                 marginTop: "10%",
                 marginLeft: "6%",
               }}
-              onPress={postHandler}
+              onPress={onToggleSwitch}
             >
               <View>
                 <Text
@@ -231,7 +143,7 @@ const AddPost = ({ navigation, route }) => {
                     marginTop: "7%",
                   }}
                 >
-                 Not for Sale
+                  Not for Sale
                 </Text>
               </View>
             </TouchableOpacity>

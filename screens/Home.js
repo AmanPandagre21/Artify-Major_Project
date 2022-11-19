@@ -26,8 +26,6 @@ const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { posts, status: postStatus } = useSelector((state) => state.posts);
 
-  const { artist } = useSelector((state) => state.artist);
-
   const { list, status: whishliststatus } = useSelector(
     (state) => state.wishlist
   );
@@ -43,14 +41,14 @@ const Home = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (whishliststatus.type === "error") {
-      Alert.alert(whishliststatus.message);
-      dispatch(clear_all_errors());
-    }
+    // if (whishliststatus.type === "error") {
+    //   Alert.alert(whishliststatus.message);
+    //   dispatch(clear_all_errors());
+    // }
     dispatch(loggedArtist());
 
     dispatch(get_posts());
-  }, [Alert, dispatch]);
+  }, [dispatch]);
 
   return !posts ? (
     <Loader />
@@ -73,13 +71,14 @@ const Home = ({ navigation }) => {
               alignContent: "center",
             }}
           >
-            <Image source = {logo2}
+            <Image
+              source={logo2}
               style={{
-                marginLeft:'auto',
-                marginRight:'auto',
-                marginTop:'27%',
-                width:'70%',
-                height:110,
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: "27%",
+                width: "70%",
+                height: 110,
               }}
             />
           </View>

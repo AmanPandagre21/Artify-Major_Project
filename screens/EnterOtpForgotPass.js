@@ -18,28 +18,31 @@ import {
   verify_otp,
 } from "../slices/user-artist-Slice/artistSlice";
 
-const EnterOtp = ({ navigation }) => {
+const EnterOtp = ({ navigation, route }) => {
   const [passOtp, setPassOTP] = useState("");
 
   const dispatch = useDispatch();
 
-  const { otp, status } = useSelector((state) => state.artist);
+  const { otp, sendingStatus } = useSelector((state) => state.artist);
 
   const data = { otp: passOtp, hash: otp.hash, email: otp.email };
   const otpHandler = () => {
     dispatch(verify_otp(data));
-    navigation.navigate("ResetPassword");
   };
 
   useEffect(() => {
-    if (status && status.type === "error" && status.message !== null) {
-      Alert.alert(status.message);
+    if (
+      sendingStatus &&
+      sendingStatus.type === "error" &&
+      sendingStatus.message !== null
+    ) {
+      Alert.alert(sendingStatus.message);
       dispatch(clear_all_errors());
     }
-    if (status && (status.type === "idle") & (status.message !== null)) {
-      navigation.navigate("ResetPassword");
+    if (sendingStatus.message === "OTP Verified") {
+      navigation.navigate("ResetPassword", { email: route.params.email });
     }
-  }, [status.type, Alert, dispatch]);
+  }, [sendingStatus.type, Alert, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>

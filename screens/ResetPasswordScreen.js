@@ -18,28 +18,32 @@ import {
   reset_password,
 } from "../slices/user-artist-Slice/artistSlice";
 
-const ResetPasswordScreen = ({ navigation }) => {
+const ResetPasswordScreen = ({ navigation, route }) => {
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
 
   const dispatch = useDispatch();
 
   const resetPasswordHandler = (newPass, confirmPass) => {
-    dispatch(reset_password(newPass, confirmPass));
-    navigation.navigate("Login");
+    dispatch(reset_password(newPass, confirmPass, route.params.email));
   };
 
-  const { isAuth, status } = useSelector((state) => state.artist);
+  const { isAuth, sendingStatus } = useSelector((state) => state.artist);
 
   useEffect(() => {
-    if (status && status.type === "error" && status.message !== null) {
-      Alert.alert(status.message);
+    if (
+      sendingStatus &&
+      sendingStatus.type === "error" &&
+      sendingStatus.message !== null
+    ) {
+      Alert.alert(sendingStatus.message);
       dispatch(clear_all_errors());
     }
-    if (status && status.type === "idle" && status.type !== null) {
-      Alert.alert(status.message);
+    if (sendingStatus.message === "Password Updated Successfully") {
+      Alert.alert(sendingStatus.message);
+      navigation.navigate("Login");
     }
-  }, [status.type, Alert, dispatch]);
+  }, [sendingStatus.type, Alert, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>

@@ -21,24 +21,24 @@ import {
 const ForgotPassword = ({ navigation }) => {
   const [email, setEmail] = useState("");
 
-  const { status } = useSelector((state) => state.artist);
+  const { sendingStatus } = useSelector((state) => state.artist);
 
   const dispatch = useDispatch();
 
-  const nextHandler = async () => {
-    await dispatch(send_otp(email));
+  const nextHandler = () => {
+    dispatch(send_otp(email));
   };
 
   useEffect(() => {
-    if (status.type === "error" && status.message !== null) {
-      Alert.alert(status.message);
+    if (sendingStatus.type === "error" && sendingStatus.message !== null) {
+      Alert.alert(sendingStatus.message);
       dispatch(clear_all_errors());
     }
-
-    if (status.type === "idle" && status.message !== null) {
-      navigation.navigate("OTP");
+    if (sendingStatus.type === "idle" && sendingStatus.message !== null) {
+      Alert.alert(sendingStatus.message);
+      navigation.navigate("OTP", { email: email });
     }
-  }, [status.type, Alert, dispatch]);
+  }, [sendingStatus.type, Alert, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>

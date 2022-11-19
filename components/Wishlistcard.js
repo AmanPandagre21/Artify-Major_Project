@@ -9,11 +9,9 @@ import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { get_items, remove_item } from "../slices/whislistSlice";
 import { useDispatch, useSelector } from "react-redux";
-import ReadMore from 'react-native-read-more-text';
-
+import ReadMore from "react-native-read-more-text";
 
 const Wishlistcard = ({ data }) => {
- 
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const deleteItemHandler = async (id) => {
@@ -35,7 +33,7 @@ const Wishlistcard = ({ data }) => {
         height: "auto",
       }}
     >
-      <View style={{ flexDirection: "row", width: "100%" }}>
+      <View style={{ flexDirection: "row", width: "95%" }}>
         {/* <View
           style={{
             marginTop: SIZES.font,
@@ -67,7 +65,9 @@ const Wishlistcard = ({ data }) => {
           </View> */}
 
         {/* </View> */}
-        <View style={{ marginRight: "auto", marginLeft: "5%",marginBottom:"13%" }}>
+        <View
+          style={{ marginRight: "auto", marginLeft: "5%", marginBottom: "13%" }}
+        >
           <Text
             style={{
               color: "#363488",
@@ -76,20 +76,32 @@ const Wishlistcard = ({ data }) => {
           >
             {data.postId && data.postId.title}
           </Text>
-          <View style={{width:200,marginTop:"1%",marginBottom:"1%"}}>
-          <ReadMore numberOfLines={1}  renderTruncatedFooter={()=>{<Text></Text>}} >
-          📄 {data.postId && data.postId.description}
-        </ReadMore>
-          {/* <Text style={{ fontWeight: "bold" ,flex: 1, flexWrap: 'wrap'}}>
+          <View style={{ width: 200, marginTop: "1%", marginBottom: "1%" }}>
+            <ReadMore
+              numberOfLines={1}
+              renderTruncatedFooter={() => {
+                <Text></Text>;
+              }}
+            >
+              📄 {data.postId && data.postId.description}
+            </ReadMore>
+            {/* <Text style={{ fontWeight: "bold" ,flex: 1, flexWrap: 'wrap'}}>
            
             📄 {data.postId && data.postId.description}
           </Text> */}
           </View>
-          <Text style={{marginBottom:"1%"}}>💰 {data.postId && data.postId.amount} ₹</Text>
+          <Text style={{ marginBottom: "1%" }}>
+            💰 {data.postId && data.postId.amount} ₹
+          </Text>
         </View>
 
         <View
-          style={{ marginLeft: "25%",marginTop:"auto",position:"relative", flexDirection: "row" }}
+          style={{
+            marginLeft: "25%",
+            marginTop: "auto",
+            position: "relative",
+            flexDirection: "row",
+          }}
         >
           <TouchableOpacity
             style={{ marginRight: "5%" }}

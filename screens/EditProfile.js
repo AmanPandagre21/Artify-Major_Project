@@ -1,11 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { firebase } from "../firebase/config";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import {
   Text,
@@ -21,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { TextInput, Button } from "react-native-paper";
 import graphics from "../assets/circleVector_1.png";
 import { Avatar } from "react-native-paper";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 import mime from "mime";
 import {
   clear_all_errors,
@@ -108,26 +101,33 @@ const EditProfile = ({ navigation, route }) => {
               style={{ marginLeft: 20 }}
             />
           </TouchableOpacity>
-        
-         <TouchableOpacity onPress={handleImage} style={{
-            height: "80%",
-           width:"100%",
-            position: "absolute",
-            borderRadius: 24,
-            marginLeft: "49%",
-            marginTop: "15%",
-            //  backgroundColor:"#363488",
-            alignItems:"center"}}>
-          
-          <FontAwesome name="camera" size={30} color="#363488" style={{marginTop:"auto",marginBottom:"auto",marginLeft:"23%"}} />
-          
-         
+
+          <TouchableOpacity
+            onPress={handleImage}
+            style={{
+              height: "80%",
+              width: "100%",
+              position: "absolute",
+              borderRadius: 24,
+              marginLeft: "49%",
+              marginTop: "15%",
+              //  backgroundColor:"#363488",
+              alignItems: "center",
+            }}
+          >
+            <FontAwesome
+              name="camera"
+              size={30}
+              color="#363488"
+              style={{
+                marginTop: "auto",
+                marginBottom: "auto",
+                marginLeft: "23%",
+              }}
+            />
+
             {/* <Text style={{ color: "#900" }}>Change Photo</Text> */}
           </TouchableOpacity>
-       
-         
-          
-         
         </View>
         <View style={styles.footer}>
           <TextInput

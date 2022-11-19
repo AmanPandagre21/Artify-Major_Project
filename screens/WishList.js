@@ -40,12 +40,11 @@ const Wishlist = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(get_items());
-
     if (whishliststatus.type === "error") {
       Alert.alert(whishliststatus.message);
       dispatch(clear_all_errors());
     }
+    dispatch(get_items());
   }, [dispatch]);
 
   return whishliststatus.type === "loading" ? (
@@ -80,23 +79,30 @@ const Wishlist = () => {
               Wishlist
             </Text>
           </View>
-          <View style={{ flex: 1 }}>
-            <View style={{ zIndex: 0 }}>
-              {list === [] ? (
-                <Image source={WishlistImage} />
-              ) : (
-                <FlatList
-                  data={list && list}
-                  renderItem={({ item }) => (
-                    <Wishlistcard data={item && item} />
-                  )}
-                  keyExtractor={(item) => item._id}
-                  showsVerticalScrollIndicator={false}
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            {/* <View
+              style={{
+                zIndex: 0,
+              }}
+            > */}
+            {list === [] ? (
+              <Image
+                source={WishlistImage}
+                style={{ width: 200, height: 100 }}
+              />
+            ) : (
+              <FlatList
+                data={list && list}
+                renderItem={({ item }) => <Wishlistcard data={item && item} />}
+                keyExtractor={(item) => item._id}
+                showsVerticalScrollIndicator={false}
 
-                  // ListHeaderComponent={<Wishlistheader onSearch={} />}
-                />
-              )}
-            </View>
+                // ListHeaderComponent={<Wishlistheader onSearch={} />}
+              />
+            )}
+            {/* </View> */}
 
             <View
               style={{

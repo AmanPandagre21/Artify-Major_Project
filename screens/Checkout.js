@@ -47,6 +47,11 @@ const Checkout = ({ navigation, route }) => {
         shippingInfo
       )
     );
+
+    if (orderStatus.message === "Order Placed") {
+      Alert.alert(orderStatus.message);
+      navigation.navigate("UserProfile");
+    }
   };
 
   useEffect(() => {
@@ -57,13 +62,6 @@ const Checkout = ({ navigation, route }) => {
     ) {
       Alert.alert(orderStatus.message);
       dispatch(clear_all_errors());
-    }
-    if (
-      orderStatus &&
-      orderStatus.type === "idle" &&
-      orderStatus.message !== null
-    ) {
-      Alert.alert(orderStatus.message);
     }
   }, [dispatch]);
 
