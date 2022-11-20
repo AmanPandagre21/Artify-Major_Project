@@ -62,7 +62,7 @@ const EditProfile = ({ navigation, route }) => {
       Alert.alert(artStat.message);
       dispatch(clear_all_errors());
     }
-    if (artStat && artStat.type === "idle" && artStat.message !== null) {
+    if (artStat && artStat.message === "Profile Updated") {
       Alert.alert(artStat.message);
     }
     if (route.params) {

@@ -12,21 +12,8 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import * as Linking from "expo-linking";
-import goku from "../assets/images/goku.jpg";
 import CircleVector from "../components/CircleVector";
-import { Avatar, Divider } from "react-native-paper";
-import { ActivityIndicator, MD2Colors, Switch } from "react-native-paper";
-import Rupee from "../assets/images/rupee.png";
-import { COLORS, SIZES, assets, SHADOWS, FONTS } from "../constants/Theme";
-import {
-  Ionicons,
-  AntDesign,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
-import ArtWork from "../assets/images/artwork.png";
-// import { CircleButton, RectButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "../components";
-import Accordion from "../components/Accordion";
+import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clear_all_errors,
@@ -35,6 +22,7 @@ import {
 } from "../slices/postSlice";
 import Loader from "../components/loader";
 import ReadMore from "react-native-read-more-text";
+
 const EditPost2 = ({ route, navigation }) => {
   const [isPriceOn, setIsPriceOn] = useState(false);
 
@@ -45,7 +33,7 @@ const EditPost2 = ({ route, navigation }) => {
   const onDeletehandler = async () => {
     await dispatch(delete_post(route.params.postId));
 
-    if (post_Status && post_Status.type === "idle") {
+    if (post_Status && post_Status.message === "Post Deleted") {
       Alert.alert(post_Status.message);
     }
 
@@ -64,7 +52,9 @@ const EditPost2 = ({ route, navigation }) => {
   }, [route, dispatch]);
 
   const onToggleSwitch = () => setIsPriceOn(!isPriceOn);
-  return (
+  return post_Status.type === "loading" ? (
+    <Loader />
+  ) : (
     <SafeAreaView>
       <ScrollView>
         <View>

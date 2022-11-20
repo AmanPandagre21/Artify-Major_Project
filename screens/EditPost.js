@@ -54,7 +54,7 @@ const AddPost = ({ navigation, route }) => {
       Alert.alert(status.message);
       dispatch(clear_all_errors());
     }
-    if (status && status.type === "idle" && status.message !== null) {
+    if (status && status.message === "Post updated") {
       Alert.alert(status.message);
       navigation.navigate("Home");
     }

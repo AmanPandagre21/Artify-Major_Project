@@ -25,7 +25,7 @@ import Accordion from "../components/Accordion";
 import { useDispatch, useSelector } from "react-redux";
 import { get_post_details } from "../slices/postSlice";
 import Loader from "../components/loader";
-import ReadMore from 'react-native-read-more-text';
+import ReadMore from "react-native-read-more-text";
 const Details = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ const Details = ({ navigation, route }) => {
 
   return !post || postStatus.type === "loading" ? (
     // <ActivityIndicator animating={true} color={MD2Colors.red800} />
-    <Loader/>
+    <Loader />
   ) : (
     <SafeAreaView>
       <ScrollView>
@@ -97,21 +97,26 @@ const Details = ({ navigation, route }) => {
           </View>
 
           <View style={{ alignItems: "center", marginTop: "5%" }}>
-
             <Image
               source={{ uri: post && post.image.url }}
               style={styles.productImage}
             />
-
-           
-
           </View>
-          <View style={{width:"90%",marginLeft:"auto",marginRight:"auto"}}>
-          <Text style={styles.productTitle}>{post && post.title}</Text>
+          <View
+            style={{ width: "90%", marginLeft: "auto", marginRight: "auto" }}
+          >
+            <Text style={styles.productTitle}>{post && post.title}</Text>
           </View>
           <Divider
-              style={{ backgroundColor: COLORS.PrimaryColor, height: 2 ,width:"90%",marginRight:"auto",marginLeft:"auto",marginTop:"4%"}}
-            />
+            style={{
+              backgroundColor: COLORS.PrimaryColor,
+              height: 2,
+              width: "90%",
+              marginRight: "auto",
+              marginLeft: "auto",
+              marginTop: "4%",
+            }}
+          />
           {/* <View> */}
           <View
             style={{
@@ -119,7 +124,7 @@ const Details = ({ navigation, route }) => {
               flex: 1,
               flexDirection: "column",
               justifyContent: "space-evenly",
-              marginTop:"5%"
+              marginTop: "5%",
             }}
           >
             <View
@@ -130,10 +135,10 @@ const Details = ({ navigation, route }) => {
                 // ...SHADOWS.dark,
                 opacity: 2,
                 // paddingTop: 10,
-                
-                marginLeft:"auto",
-                marginRight:"auto",
-                flexDirection:"row"
+
+                marginLeft: "auto",
+                marginRight: "auto",
+                flexDirection: "row",
                 // background: "linear-gradient(to right, #fceabb, #f8b500)",
               }}
             >
@@ -172,7 +177,7 @@ const Details = ({ navigation, route }) => {
                   //marginLeft:"auto"
                 }}
               >
-                product Details :-  
+                product Details :-
               </Text>
               <Text
                 style={{
@@ -183,8 +188,8 @@ const Details = ({ navigation, route }) => {
                   fontWeight: "bold",
                   margin: "2%",
                   textTransform: "capitalize",
-                   marginRight:400,
-                   width:"50%"
+                  marginRight: 400,
+                  width: "50%",
                 }}
               >
                 {post && post.category.name}
@@ -196,16 +201,16 @@ const Details = ({ navigation, route }) => {
 
             <View
               style={{
-                 width: "90%",
+                width: "90%",
                 // height: 150,
                 // borderRadius: 10,
                 // ...SHADOWS.dark,
                 // paddingTop: 10,
                 // backgroundColor: "#f7971e",
                 // background: "linear-gradient(to right, #f7971e, #ffd200)",
-                marginLeft:"auto",
-                marginRight:"auto",
-                flexDirection:"row"
+                marginLeft: "auto",
+                marginRight: "auto",
+                flexDirection: "row",
               }}
             >
               {/* <Image
@@ -226,8 +231,6 @@ const Details = ({ navigation, route }) => {
                   fontWeight: "bold",
                   margin: "2%",
                   textTransform: "capitalize",
-                 
-                  
                 }}
               >
                 Price :-
@@ -239,39 +242,41 @@ const Details = ({ navigation, route }) => {
                   // textAlign: "center",
                   letterSpacing: 1,
                   fontWeight: "bold",
-                 
+
                   textTransform: "capitalize",
-                  
-                   
                 }}
               >
-                {post && post.amount}$
+                {post && post.outOfStock ? "0" : post.amount} 💰
               </Text>
             </View>
             {/* ///end1 */}
-         
-          {/* </View> */}
 
-          <View style={styles.descriptionCard}>
-            <View
-              style={{
-                // marginTop: "4%",
-                width: "95%",
-                marginLeft: "3.5%",
-                marginRight: "auto",
-              }}
-            >
-        <Text style={{color:"#363488",fontWeight:"bold",fontSize:20}}>Description 📄</Text>
-        <ReadMore numberOfLines={4}  >
-          {post && post.description}
-        </ReadMore>
-              {/* <Accordion
+            {/* </View> */}
+
+            <View style={styles.descriptionCard}>
+              <View
+                style={{
+                  // marginTop: "4%",
+                  width: "95%",
+                  marginLeft: "3.5%",
+                  marginRight: "auto",
+                }}
+              >
+                <Text
+                  style={{ color: "#363488", fontWeight: "bold", fontSize: 20 }}
+                >
+                  Description 📄
+                </Text>
+                <ReadMore numberOfLines={4}>
+                  {post && post.description}
+                </ReadMore>
+                {/* <Accordion
                 title={"Description"}
                 bodyText={post && post.description}
               /> */}
-            </View>
+              </View>
 
-            {/* {post && post.amount !== 0 ? (
+              {/* {post && post.amount !== 0 ? (
               <TouchableOpacity
                 style={{ height: 100 }}
                 disabled={artist._id === post.artist._id ? true : false}
@@ -314,21 +319,23 @@ const Details = ({ navigation, route }) => {
               </TouchableOpacity>
               
             )} */}
-            
-          </View>
+            </View>
           </View>
           {post && post.amount !== 0 ? (
-              <TouchableOpacity
-                style={{ height: 100 }}
-                disabled={artist._id === post.artist._id ? true : false}
-                onPress={() =>
-                  navigation.navigate("ShippingAddress", {
-                    sellerId: post.artist._id,
-                    itemId: post._id,
-                    amount: post.amount,
-                  })
-                }
-              >
+            <TouchableOpacity
+              style={{ height: 100 }}
+              disabled={artist._id === post.artist._id ? true : false}
+              onPress={() =>
+                navigation.navigate("ShippingAddress", {
+                  sellerId: post.artist._id,
+                  itemId: post._id,
+                  amount: post.amount,
+                })
+              }
+            >
+              {post && post.outOfStock ? (
+                ""
+              ) : (
                 <View
                   style={{
                     backgroundColor:
@@ -345,7 +352,7 @@ const Details = ({ navigation, route }) => {
                       color: "white",
                       fontWeight: "bold",
                       marginTop: "auto",
-                      marginBottom:"auto",
+                      marginBottom: "auto",
                       textAlign: "center",
                     }}
                   >
@@ -354,13 +361,32 @@ const Details = ({ navigation, route }) => {
                       : "Proceed to pay"}
                   </Text>
                 </View>
-              </TouchableOpacity>
-            ) : (
-              <View style={{backgroundColor:"#D8D8D8",width:"85%",marginBottom:"20%",marginLeft:"auto",marginRight:"auto",height:"5%",borderRadius:5}}>
-              <Text style={{textAlign:"center",marginBottom:"auto",marginTop:"auto",color:"grey"}}>Proceed to pay</Text>
-              </View>
-              
-            )}
+              )}
+            </TouchableOpacity>
+          ) : (
+            <View
+              style={{
+                backgroundColor: "#D8D8D8",
+                width: "85%",
+                marginBottom: "20%",
+                marginLeft: "auto",
+                marginRight: "auto",
+                height: "5%",
+                borderRadius: 5,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  marginBottom: "auto",
+                  marginTop: "auto",
+                  color: "grey",
+                }}
+              >
+                Proceed to pay
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -402,18 +428,18 @@ const styles = StyleSheet.create({
   productTitle: {
     fontSize: 25,
     marginTop: "6%",
-   
+
     textTransform: "capitalize",
     color: "#363488",
     fontWeight: "bold",
-    marginLeft:25
+    marginLeft: 25,
   },
   descriptionCard: {
     width: "90%",
     height: "auto",
     padding: "4%",
     // marginLeft: "5%",
-   
+
     marginBottom: "8%",
     // backgroundColor: COLORS.PrimaryColor,
     // ...SHADOWS.dark,

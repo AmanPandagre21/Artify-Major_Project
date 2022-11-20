@@ -85,7 +85,10 @@ const BottomTab = ({ navigation }) => {
         component={AddPostScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={{ marginBottom: "100%", height: "70%" }}>
+            <View
+              style={{ marginBottom: "100%", height: "70%" }}
+              onPress={() => navigation.navigate("AddPost")}
+            >
               <AddPost />
 
               {/* <FontAwesome5 name="shopping-cart" size={26} color={focused?"blue":"black"} /> */}

@@ -347,7 +347,7 @@ export function report_query(queryData) {
       dispatch(
         setStatus({
           type: STATUES.IDLE,
-          message: data.message,
+          message: "Your query successfully send",
         })
       );
     } catch (error) {
@@ -401,7 +401,7 @@ export function artist_profile(id) {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
+
       dispatch(getArtistProfile(data.artist));
       dispatch(
         setStatus({

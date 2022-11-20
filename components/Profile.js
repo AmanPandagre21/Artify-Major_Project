@@ -10,13 +10,14 @@ import {
 import { Avatar } from "react-native-paper";
 import AvtarImg from "../assets/avtar.jpg";
 import { useSelector } from "react-redux";
+import Loader from "./loader";
 import { useState } from "react";
 
 const Profile = () => {
   const { artist, status } = useSelector((state) => state.artist);
 
   return status.type === "loading" ? (
-    <Text>Loading</Text>
+    <Loader />
   ) : (
     <View style={styles.profileView}>
       {artist ? (

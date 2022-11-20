@@ -20,13 +20,13 @@ import { Alert } from "react-native";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 const ContactForm = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [query, setQuery] = useState("");
+  const { artist, status } = useSelector((state) => state.artist);
 
-  const { status } = useSelector((state) => state.artist);
+  const dispatch = useDispatch();
+  const [name, setName] = useState(artist && artist.name);
+  const [number, setNumber] = useState(artist && artist.phone);
+  const [email, setEmail] = useState(artist && artist.email);
+  const [query, setQuery] = useState("");
 
   const dataInfo = {
     name,
@@ -40,14 +40,14 @@ const ContactForm = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (status && status.type === "error" && status.message !== null) {
+    if (status && status.type === "error") {
       Alert.alert(status.message);
       dispatch(clear_all_errors());
     }
-    if (status && status.type === "idle" && status.message !== null) {
+    if (status && status.message === "Your query successfully send") {
       Alert.alert(status.message);
     }
-  }, [status]);
+  }, [status, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>

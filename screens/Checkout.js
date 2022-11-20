@@ -17,6 +17,7 @@ import api from "../services/apiService";
 import { getToken } from "../services/AsyncStorageService";
 import { useDispatch, useSelector } from "react-redux";
 import { place_order } from "../slices/orderSlice";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 const Checkout = ({ navigation, route }) => {
   const { shipping } = route.params;
@@ -35,8 +36,8 @@ const Checkout = ({ navigation, route }) => {
     shippingInfo,
   } = shipping;
 
-  const payHandler = () => {
-    dispatch(
+  const payHandler = async () => {
+    await dispatch(
       place_order(
         seller,
         orderItem,
@@ -55,11 +56,7 @@ const Checkout = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (
-      orderStatus &&
-      orderStatus.type === "error" &&
-      orderStatus.message !== null
-    ) {
+    if (orderStatus.type === "error") {
       Alert.alert(orderStatus.message);
       dispatch(clear_all_errors());
     }
@@ -191,7 +188,11 @@ const Checkout = ({ navigation, route }) => {
                 marginTop: "3%",
               }}
             >
-              Pay
+              {orderStatus.type === "loading" ? (
+                <ActivityIndicator animating={true} color={MD2Colors.red800} />
+              ) : (
+                "Pay"
+              )}
             </Text>
           </TouchableOpacity>
         </View>

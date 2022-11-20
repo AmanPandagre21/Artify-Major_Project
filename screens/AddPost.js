@@ -84,11 +84,7 @@ const AddPost = ({ navigation, route }) => {
 
   // useEffect
   useEffect(() => {
-    if (
-      postStatus_ &&
-      postStatus_.type === "error" &&
-      postStatus_.message !== null
-    ) {
+    if (postStatus_.type === "error" && postStatus_.message !== null) {
       Alert.alert(postStatus_.message);
       dispatch(clear_all_errors());
     }

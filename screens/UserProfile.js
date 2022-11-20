@@ -184,11 +184,15 @@ const UserProfile = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-        
+
         {showpost ? (
           <Post post={myPosts} status={status} />
         ) : currBuyProduct ? (
-          <BuyProduct order={orders} userId={artist._id} status={orderStatus} />
+          <BuyProduct
+            order={orders && orders}
+            userId={artist._id}
+            status={orderStatus}
+          />
         ) : buyingHistory ? (
           <BuyingHistory history={ordersHistory} status={orderStatus} />
         ) : (

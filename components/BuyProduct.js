@@ -1,20 +1,18 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
-import Goku from "../assets/images/goku.jpg";
 import { Button, Divider } from "react-native-paper";
-import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { COLORS, NFTData, SHADOWS, SIZES } from "../constants/Theme";
 import Loader from "./loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clear_all_errors, update_order } from "../slices/orderSlice";
 
-const BuyProduct = ({ order, userId, status }) => {
+const BuyProduct = ({ order, userId }) => {
   const dispatch = useDispatch();
 
   const { status: orderStat } = useSelector((state) => state.order);
 
-  const updateOrderHandler = (orderId) => {
-    dispatch(update_order(orderId));
+  const updateOrderHandler = async (orderId) => {
+    await dispatch(update_order(orderId));
   };
 
   useEffect(() => {
@@ -24,7 +22,7 @@ const BuyProduct = ({ order, userId, status }) => {
     }
   }, [dispatch]);
 
-  return status === "loading" ? (
+  return orderStat.type === "loading" ? (
     <Loader />
   ) : (
     <>
@@ -69,7 +67,7 @@ const BuyProduct = ({ order, userId, status }) => {
                   <Text
                     style={{
                       width: "100%",
-                      height: "20%",
+                      height: "14%",
                       backgroundColor: COLORS.White,
                       borderRadius: 10,
                       fontWeight: "bold",
@@ -150,7 +148,7 @@ const BuyProduct = ({ order, userId, status }) => {
                     <Button
                       style={{
                         width: "80%",
-                        height: "18%",
+                        height: "14%",
                         borderRadius: 15,
                         backgroundColor: COLORS.White,
                         marginTop: "5%",

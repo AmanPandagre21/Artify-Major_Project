@@ -14,7 +14,6 @@ import circle from "../assets/images/circleVector_1.png";
 import CircleVector from "../components/CircleVector";
 import { FocusedStatusBar } from "../components/FocusedStatusBar";
 import Wishlistcard from "../components/Wishlistcard";
-import Wishlistheader from "../components/Wishlistheader";
 import { COLORS } from "../constants/Theme";
 import Loader from "../components/loader";
 import { useDispatch, useSelector } from "react-redux";

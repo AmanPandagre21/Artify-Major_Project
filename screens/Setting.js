@@ -71,34 +71,6 @@ const Setting = ({ navigation }) => {
       <Profile />
 
       <View style={{ position: "relative", marginTop: 34 }}>
-        <View
-          style={{
-            // backgroundColor:'red',
-            height: "auto",
-            justifyContent: "center",
-            flexDirection: "row",
-          }}
-        >
-          <Ionicons
-            name="moon"
-            size={35}
-            color="#363488"
-            style={{ marginTop: "4%" }}
-          />
-          <Text
-            style={{
-              // fontFamily:FONTS.bold,
-              marginTop: "5%",
-              fontSize: 18,
-              marginRight: "40%",
-              marginLeft: "5%",
-            }}
-          >
-            Dark Mode
-          </Text>
-          <Switch value={isSwitchOn} onValueChange={onToggleSwitch}></Switch>
-        </View>
-
         <TouchableOpacity onPress={() => navigation.navigate("ChangePassword")}>
           <View
             style={{
@@ -122,7 +94,7 @@ const Setting = ({ navigation }) => {
                 marginTop: 19,
                 fontSize: 18,
                 marginRight: "26%",
-                marginLeft: "5%",
+                marginLeft: "6%",
               }}
             >
               Change Password
@@ -264,7 +236,6 @@ const Setting = ({ navigation }) => {
                 fontSize: 18,
                 marginRight: "62%",
               }}
-              
             >
               <Text>Logout</Text>
             </TouchableOpacity>

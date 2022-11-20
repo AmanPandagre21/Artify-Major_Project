@@ -41,7 +41,7 @@ const ChangePassword = () => {
       Alert.alert(artistStatus.message);
       dispatch(clear_all_errors());
     }
-    if (artistStatus.type === "idle" && artistStatus.message !== null) {
+    if (artistStatus.message === "Password Reset Successfully") {
       Alert.alert(artistStatus.message);
       setOldPass("");
       setPass("");
@@ -75,7 +75,7 @@ const ChangePassword = () => {
             name="oldPassword"
             value={oldPass}
             onChangeText={(oldPass) => setOldPass(oldPass)}
-            style={[styles.loginInput,{marginTop:"15%"}]}
+            style={[styles.loginInput, { marginTop: "15%" }]}
             underlineColor="transparent"
           />
           <TextInput

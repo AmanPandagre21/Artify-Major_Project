@@ -10,13 +10,12 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { COLORS, NFTData, SHADOWS, SIZES } from "../constants/Theme";
-import eth from "../assets/icon/eth.png";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { get_posts, like_and_dislike } from "../slices/postSlice";
 import { add_item_to_wishlist } from "../slices/whislistSlice";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 const PostCard = ({
   postID,
   postImg,
@@ -49,13 +48,15 @@ const PostCard = ({
     dispatch(get_posts());
   };
 
-  const shareData = async () => {
+  const shareData = async (postImg) => {
+    const options = {
+      // title: "Sharing image file from awesome share app",
+      url: "https://unsplash.com/photos/1xvs_DMQxQY",
+      message: "Please take a look at this post",
+    };
+
     try {
-      await Share.share({
-        title: "Sharing image file from awesome share app",
-        message: "Please take a look at this post",
-        url: route.name,
-      });
+      await Share.share(options);
     } catch (error) {
       alert(error.message);
     }
@@ -65,9 +66,9 @@ const PostCard = ({
     if (status.type === "error") {
       Alert.alert(status.message);
     }
-    if (status.type === "idle") {
-      Alert.alert(status.message);
-    }
+    // if (status.type === "idle") {
+    //   Alert.alert(status.message);
+    // }
   }, [status.type, Alert, dispatch]);
 
   useEffect(() => {
@@ -90,21 +91,27 @@ const PostCard = ({
         marginBottom: SIZES.extraLarge,
         margin: SIZES.base,
         ...SHADOWS.dark,
-        backgroundColor:"white",
-        width:"92%",
-        marginLeft:"auto",
-        marginRight:"auto"
-
+        backgroundColor: "white",
+        width: "92%",
+        marginLeft: "auto",
+        marginRight: "auto",
       }}
     >
-      <View style={{ width: "100%", height: 250,marginLeft:"auto",marginRight:"auto" }}>
+      <View
+        style={{
+          width: "100%",
+          height: 250,
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
         <Image
           source={{ uri: postImg }}
           resizeMode="cover"
           style={{
             width: "100%",
             height: "100%",
-           
+
             borderTopLeftRadius: SIZES.font,
             borderTopRightRadius: SIZES.font,
           }}
@@ -118,8 +125,8 @@ const PostCard = ({
             borderRadius: 24,
             marginLeft: "89%",
             marginTop: "3%",
-            backgroundColor:"#363488",
-            alignItems:"center"
+            backgroundColor: "#363488",
+            alignItems: "center",
           }}
           onPress={() => addWishlistHandler(postID)}
         >
@@ -134,7 +141,12 @@ const PostCard = ({
              
             }}
           /> */}
-          <MaterialCommunityIcons name="cart-heart" size={26} color="white" style={{marginTop:"auto",marginBottom:"auto"}} />
+          <MaterialCommunityIcons
+            name="cart-heart"
+            size={26}
+            color="white"
+            style={{ marginTop: "auto", marginBottom: "auto" }}
+          />
         </TouchableOpacity>
         <View style={{ flexDirection: "row" }}>
           <View>
@@ -161,8 +173,7 @@ const PostCard = ({
                 marginLeft: "15%",
                 flexDirection: "column",
                 marginTop: "12%",
-                width:"75%"
-                
+                width: "75%",
               }}
             >
               <TouchableOpacity onPress={() => likeDislikeHandler(postID)}>
@@ -175,21 +186,19 @@ const PostCard = ({
               <Text>{likes.length}</Text>
 
               <View
-              style={{
-                marginTop:"2%",
-                flexDirection: "row",
-                // marginTop: "12%",
-              }}
-            >
-              <Ionicons
-                name="ios-pricetags-outline"
-                size={24}
-                color="#363488"
-              />
-              <Text style={{  color: "#363488" }}>
-                {amount}💰
-              </Text>
-            </View>
+                style={{
+                  marginTop: "2%",
+                  flexDirection: "row",
+                  // marginTop: "12%",
+                }}
+              >
+                <Ionicons
+                  name="ios-pricetags-outline"
+                  size={24}
+                  color="#363488"
+                />
+                <Text style={{ color: "#363488" }}>{amount}💰</Text>
+              </View>
             </View>
             {/* <View
               style={{
@@ -208,10 +217,10 @@ const PostCard = ({
               </Text>
             </View> */}
           </View>
-          <View style={{width:"40%",marginTop:"10%" ,marginLeft:"auto"}} >
+          <View style={{ width: "40%", marginTop: "10%", marginLeft: "auto" }}>
             <TouchableOpacity
-              style={{ marginTop: "2%",marginLeft:"auto",marginRight:"8%" }}
-              onPress={shareData}
+              style={{ marginTop: "2%", marginLeft: "auto", marginRight: "8%" }}
+              onPress={() => shareData(postImg)}
             >
               <Ionicons
                 name="ios-share-social-sharp"
@@ -224,11 +233,11 @@ const PostCard = ({
                 width: "40%",
                 height: 40,
                 backgroundColor: "#363488",
-                 marginLeft: "auto",
-                
+                marginLeft: "auto",
+
                 borderRadius: 18,
                 marginTop: "15%",
-                marginRight:"8%"
+                marginRight: "8%",
               }}
               onPress={() =>
                 navigation.navigate("Details", {
@@ -239,11 +248,10 @@ const PostCard = ({
               <Text
                 style={{
                   fontSize: 15,
-                  marginTop:"auto",
-                  marginBottom:"auto",  
+                  marginTop: "auto",
+                  marginBottom: "auto",
                   color: "white",
                   textAlign: "center",
-                  
                 }}
               >
                 View
