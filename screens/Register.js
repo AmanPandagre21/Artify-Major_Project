@@ -60,11 +60,7 @@ const Register = () => {
       dispatch(clear_all_errors());
     }
 
-    if (status && status.type === "idle" && status.message !== null) {
-      Alert.alert(status.message);
-
-      navigation.navigate("Login");
-    }
+    
   }, [status, Alert, navigation, dispatch]);
 
   return (
@@ -158,21 +154,6 @@ const Register = () => {
             <Text style={{ marginLeft: 10, marginRight: 10 }}>OR</Text>
             <Text style={styles.orclass}></Text>
           </View>
-          {/* <Button
-            mode="contained"
-            buttonColor={COLORS.PrimaryColor}
-            textColor={COLORS.White}
-            labelStyle={{
-              fontSize: 20,
-              textTransform: "uppercase",
-              letterSpacing: 1,
-              textAlign: "center",
-            }}
-            style={styles.loginBtn}
-            onPress={() => console.log("hello")}
-          >
-            SIGN IN
-          </Button> */}
 
           <View
             style={{

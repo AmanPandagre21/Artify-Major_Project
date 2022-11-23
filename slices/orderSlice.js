@@ -164,7 +164,7 @@ export function update_order(id) {
         }
       );
       dispatch(updateOrder(data.order));
-      dispatch(setStatus({ type: STATUS.IDLE, message: data.message }));
+      dispatch(setStatus({ type: STATUS.IDLE, message: "Order Delivered" }));
     } catch (error) {
       if (error) {
         dispatch(

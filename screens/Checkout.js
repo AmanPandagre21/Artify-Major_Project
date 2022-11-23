@@ -10,11 +10,6 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import CircleVector from "../components/CircleVector";
-import SelectList from "react-native-dropdown-select-list";
-import { FontAwesome } from "@expo/vector-icons";
-import { useStripe } from "@stripe/stripe-react-native";
-import api from "../services/apiService";
-import { getToken } from "../services/AsyncStorageService";
 import { useDispatch, useSelector } from "react-redux";
 import { place_order } from "../slices/orderSlice";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
@@ -56,7 +51,7 @@ const Checkout = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (orderStatus.type === "error") {
+    if (orderStatus.type === "error" && orderStatus.message !== null) {
       Alert.alert(orderStatus.message);
       dispatch(clear_all_errors());
     }

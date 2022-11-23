@@ -40,7 +40,7 @@ const ContactForm = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (status && status.type === "error") {
+    if (status.type === "error" && status.message !== null) {
       Alert.alert(status.message);
       dispatch(clear_all_errors());
     }

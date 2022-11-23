@@ -50,7 +50,7 @@ const PostCard = ({
 
   const shareData = async (postImg) => {
     const options = {
-      // title: "Sharing image file from awesome share app",
+      title: "Sharing image file from awesome share app",
       url: "https://unsplash.com/photos/1xvs_DMQxQY",
       message: "Please take a look at this post",
     };
@@ -63,12 +63,9 @@ const PostCard = ({
   };
 
   useEffect(() => {
-    if (status.type === "error") {
+    if (status.type === "error" && status.type !== null) {
       Alert.alert(status.message);
     }
-    // if (status.type === "idle") {
-    //   Alert.alert(status.message);
-    // }
   }, [status.type, Alert, dispatch]);
 
   useEffect(() => {
@@ -130,17 +127,6 @@ const PostCard = ({
           }}
           onPress={() => addWishlistHandler(postID)}
         >
-          {/* <Image
-            source={eth}
-            resizeMode="contain"
-            style={{
-              width: 24,
-              height: 24,
-              marginTop: "17%",
-              marginLeft: "23%",
-             
-            }}
-          /> */}
           <MaterialCommunityIcons
             name="cart-heart"
             size={26}
@@ -200,22 +186,6 @@ const PostCard = ({
                 <Text style={{ color: "#363488" }}>{amount}💰</Text>
               </View>
             </View>
-            {/* <View
-              style={{
-                marginLeft: "15%",
-                flexDirection: "row",
-                marginTop: "12%",
-              }}
-            >
-              <Ionicons
-                name="ios-pricetags-outline"
-                size={24}
-                color="#363488"
-              />
-              <Text style={{ marginLeft: "9%", color: "#363488" }}>
-                {amount}💰
-              </Text>
-            </View> */}
           </View>
           <View style={{ width: "40%", marginTop: "10%", marginLeft: "auto" }}>
             <TouchableOpacity

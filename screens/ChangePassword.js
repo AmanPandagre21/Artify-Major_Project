@@ -37,7 +37,7 @@ const ChangePassword = () => {
   };
 
   useEffect(() => {
-    if (artistStatus.type === "error") {
+    if (artistStatus.type === "error" && artistStatus.message !== null) {
       Alert.alert(artistStatus.message);
       dispatch(clear_all_errors());
     }

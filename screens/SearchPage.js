@@ -16,7 +16,7 @@ import SearchPost from "../components/SearchPost";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { get_posts } from "../slices/postSlice";
+import { get_search_posts } from "../slices/postSlice";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -33,15 +33,17 @@ const SearchPage = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(get_posts());
+    dispatch(get_search_posts(""));
     setSearchQuery("");
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  const { posts, status: postStatus } = useSelector((state) => state.posts);
+  const { searchPosts, status: postStatus } = useSelector(
+    (state) => state.posts
+  );
 
   useEffect(() => {
-    dispatch(get_posts(searchQuery));
+    dispatch(get_search_posts(searchQuery));
   }, [searchQuery, dispatch]);
 
   return (
@@ -125,7 +127,7 @@ const SearchPage = () => {
         </TouchableOpacity>
     </View> */}
         <View style={{ marginBottom: "15%", alignItems: "center" }}>
-          <SearchPost posts={posts} />
+          <SearchPost posts={searchPosts} />
         </View>
       </View>
     </ScrollView>

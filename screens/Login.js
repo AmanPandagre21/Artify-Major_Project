@@ -56,13 +56,12 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (
-      artistStatus &&
-      artistStatus.type === "error" &&
-      artistStatus.message !== null
-    ) {
+    if (artistStatus.type === "error" && artistStatus.message !== null) {
       Alert.alert(artistStatus.message);
       dispatch(clear_all_errors());
+    }
+    if (artistStatus.message === "Artist register Successfully") {
+      Alert.alert(status.message);
     }
 
     if (isAuth) {

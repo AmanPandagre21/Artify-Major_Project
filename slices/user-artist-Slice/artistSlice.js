@@ -115,7 +115,7 @@ export function artistRegister(name, email, password, confirmPassword) {
       dispatch(
         setStatus({
           type: STATUES.IDLE,
-          message: "artist register Successfully",
+          message: "Artist register Successfully",
         })
       );
     } catch (error) {

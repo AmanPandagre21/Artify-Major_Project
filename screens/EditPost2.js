@@ -45,7 +45,7 @@ const EditPost2 = ({ route, navigation }) => {
       dispatch(get_post_details(route.params.postId));
     }
 
-    if (post_Status && post_Status.type === "error") {
+    if (post_Status.type === "error" && post_Status.message !== null) {
       Alert.alert(post_Status.message);
       dispatch(clear_all_errors());
     }

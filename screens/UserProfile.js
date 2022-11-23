@@ -13,8 +13,6 @@ import CircleVector from "../components/CircleVector";
 import AvtarImg from "../assets/avtar.jpg";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-
 import Post from "../components/Posts";
 import BuyProduct from "../components/BuyProduct";
 import BuyingHistory from "../components/BuyingHistory";

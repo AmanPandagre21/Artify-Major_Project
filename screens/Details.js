@@ -324,7 +324,7 @@ const Details = ({ navigation, route }) => {
           {post && post.amount !== 0 ? (
             <TouchableOpacity
               style={{ height: 100 }}
-              disabled={artist._id === post.artist._id ? true : false}
+              disabled={artist && artist._id === post.artist._id ? true : false}
               onPress={() =>
                 navigation.navigate("ShippingAddress", {
                   sellerId: post.artist._id,
@@ -339,7 +339,9 @@ const Details = ({ navigation, route }) => {
                 <View
                   style={{
                     backgroundColor:
-                      artist._id === post.artist._id ? "#808080" : "#363488",
+                      artist && artist._id === post.artist._id
+                        ? "#808080"
+                        : "#363488",
                     width: "80%",
                     height: 50,
                     borderRadius: 5,
@@ -356,7 +358,7 @@ const Details = ({ navigation, route }) => {
                       textAlign: "center",
                     }}
                   >
-                    {artist._id === post.artist._id
+                    {artist && artist._id === post.artist._id
                       ? " Its your product"
                       : "Proceed to pay"}
                   </Text>

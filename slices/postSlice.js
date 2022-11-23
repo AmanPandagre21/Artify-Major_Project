@@ -11,6 +11,7 @@ export const STATUS = Object.freeze({
 const initialState = {
   posts: [],
   post: null,
+  searchPosts: null,
   status: { type: STATUS.IDLE, message: null },
 };
 
@@ -27,6 +28,10 @@ export const postSlice = createSlice({
 
     postDetails(state, action) {
       state.post = action.payload;
+    },
+
+    getSearchPosts(state, action) {
+      state.searchPosts = action.payload;
     },
 
     likeAndDislike(state, action) {},
@@ -50,6 +55,7 @@ export const {
   likeAndDislike,
   deletePost,
   updatePost,
+  getSearchPosts,
   setStatus,
   clearAllErrors,
 } = postSlice.actions;
@@ -86,17 +92,43 @@ export function add_post(formData) {
 }
 
 //get Post
-export function get_posts(keyword = "") {
+export function get_posts() {
   return async function getPostsThunk(dispatch, getState) {
     dispatch(setStatus({ type: STATUS.LOADING, message: "Loading" }));
     try {
       const token = await getToken();
-      const { data } = await api.get(`/posts?keyword=${keyword}`, {
+      const { data } = await api.get(`/posts`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       dispatch(getPosts(data.posts));
+      dispatch(setStatus({ type: STATUS.IDLE, message: "get posts" }));
+    } catch (error) {
+      if (error.response.data) {
+        dispatch(
+          setStatus({
+            type: STATUS.ERROR,
+            message: error.response.data.message,
+          })
+        );
+      }
+    }
+  };
+}
+
+//get Searched Post
+export function get_search_posts(keyword = "") {
+  return async function getSearchPostsThunk(dispatch, getState) {
+    dispatch(setStatus({ type: STATUS.LOADING, message: "Loading" }));
+    try {
+      const token = await getToken();
+      const { data } = await api.get(`/search/post?keyword=${keyword}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(getSearchPosts(data.posts));
       dispatch(setStatus({ type: STATUS.IDLE, message: "get posts" }));
     } catch (error) {
       if (error.response.data) {

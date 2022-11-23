@@ -5,177 +5,185 @@ import { COLORS, NFTData, SHADOWS, SIZES } from "../constants/Theme";
 import Loader from "./loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clear_all_errors, update_order } from "../slices/orderSlice";
+import { useNavigation } from "@react-navigation/native";
 
 const BuyProduct = ({ order, userId }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const { status: orderStat } = useSelector((state) => state.order);
 
   const updateOrderHandler = async (orderId) => {
     await dispatch(update_order(orderId));
+    navigation.navigate("UserProfile");
   };
 
   useEffect(() => {
-    if (orderStat.type === "error") {
+    if (orderStat.type === "error" && orderState.message !== null) {
       Alert.alert(orderStat.message);
       dispatch(clear_all_errors());
     }
-  }, [dispatch]);
+
+    if (orderStat.message === "Order Delivered") {
+      Alert.alert(orderStat.message);
+    }
+  }, [orderStat.message]);
 
   return orderStat.type === "loading" ? (
     <Loader />
   ) : (
     <>
-      {order &&
+      {Array.isArray(order) ? (
         order.map((order) => {
           return (
-            <>
-              <View style={styles.container} key={order._id}>
-                <View style={styles.postHeader}>
-                  {order.orderItem === null ? (
-                    <Image source={"Goku"} style={styles.image} />
-                  ) : (
-                    <Image
-                      source={{
-                        uri: order.orderItem.image.url,
-                      }}
-                      style={styles.image}
-                    />
-                  )}
+            <View style={styles.container} key={order._id}>
+              <View style={styles.postHeader}>
+                {order.orderItem === null ? (
+                  <Image source={"Goku"} style={styles.image} />
+                ) : (
+                  <Image
+                    source={{
+                      uri: order.orderItem.image.url,
+                    }}
+                    style={styles.image}
+                  />
+                )}
 
-                  <View style={styles.headerText}>
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                        fontSize: 25,
-                        color: COLORS.White,
-                      }}
-                    >
-                      {order.orderItem === null
-                        ? "Post deleted"
-                        : order.orderItem.title}
-                    </Text>
-                    <Text style={{ fontSize: 14, color: COLORS.White }}>
-                      {order.orderItem === null
-                        ? "Post Deleted"
-                        : order.orderItem.description}
-                    </Text>
-                  </View>
-                </View>
-                <Divider style={{ backgroundColor: COLORS.White, height: 2 }} />
-                <View style={styles.orderDetails}>
+                <View style={styles.headerText}>
                   <Text
                     style={{
-                      width: "100%",
-                      height: "14%",
-                      backgroundColor: COLORS.White,
-                      borderRadius: 10,
                       fontWeight: "bold",
-                      color: COLORS.PrimaryColor,
-                      fontSize: 24,
-                      textAlign: "center",
-                      marginTop: "2%",
-                      marginBottom: "2%",
-                      ...SHADOWS.dark,
+                      fontSize: 25,
+                      color: COLORS.White,
                     }}
                   >
-                    Details
+                    {order.orderItem === null
+                      ? "Post deleted"
+                      : order.orderItem.title}
                   </Text>
-
-                  <View style={styles.productDetails1}>
-                    <Text style={styles.productDetails}>Buyer Name </Text>
-                    <Text
-                      style={{ ...styles.productDetails, marginLeft: "auto" }}
-                    >
-                      {order && order.buyer.name}
-                    </Text>
-                  </View>
-
-                  <View style={styles.productDetails1}>
-                    <Text style={styles.productDetails}>buyer's Contact </Text>
-                    <Text
-                      style={{ ...styles.productDetails, marginLeft: "auto" }}
-                    >
-                      {order && order.buyer.phone}
-                    </Text>
-                  </View>
-
-                  <View style={styles.productDetails1}>
-                    <Text style={styles.productDetails}>Product Price </Text>
-                    <Text
-                      style={{ ...styles.productDetails, marginLeft: "auto" }}
-                    >
-                      {order && order.itemsPrice}
-                    </Text>
-                  </View>
-
-                  <View style={styles.productDetails1}>
-                    <Text style={styles.productDetails}>Tax Price </Text>
-                    <Text
-                      style={{ ...styles.productDetails, marginLeft: "auto" }}
-                    >
-                      {order && order.taxPrice}
-                    </Text>
-                  </View>
-
-                  <View style={styles.productDetails1}>
-                    <Text style={styles.productDetails}>Shipping Price </Text>
-                    <Text
-                      style={{ ...styles.productDetails, marginLeft: "auto" }}
-                    >
-                      {order && order.shippingPrice}
-                    </Text>
-                  </View>
-
-                  <View style={styles.productDetails1}>
-                    <Text style={styles.productDetails}>total Price </Text>
-                    <Text
-                      style={{ ...styles.productDetails, marginLeft: "auto" }}
-                    >
-                      {order && order.totalPrice}
-                    </Text>
-                  </View>
-
-                  <View style={styles.productDetails1}>
-                    <Text style={styles.productDetails}>Delivery Status</Text>
-                    <Text
-                      style={{ ...styles.productDetails, marginLeft: "auto" }}
-                    >
-                      {order && order.orderStatus}
-                    </Text>
-                  </View>
-                  {order.seller._id !== userId ? (
-                    <Button
-                      style={{
-                        width: "80%",
-                        height: "14%",
-                        borderRadius: 15,
-                        backgroundColor: COLORS.White,
-                        marginTop: "5%",
-                        marginBottom: "2%",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                      }}
-                      onPress={() => updateOrderHandler(order._id)}
-                    >
-                      <Text
-                        style={{
-                          color: COLORS.PrimaryColor,
-                          fontWeight: "bold",
-                          marginTop: "2%",
-                          textAlign: "center",
-                          fontSize: 20,
-                        }}
-                      >
-                        Delivered
-                      </Text>
-                    </Button>
-                  ) : null}
+                  <Text style={{ fontSize: 14, color: COLORS.White }}>
+                    {order.orderItem === null
+                      ? "Post Deleted"
+                      : order.orderItem.description}
+                  </Text>
                 </View>
               </View>
-            </>
+              <Divider style={{ backgroundColor: COLORS.White, height: 2 }} />
+              <View style={styles.orderDetails}>
+                <Text
+                  style={{
+                    width: "100%",
+                    height: "14%",
+                    backgroundColor: COLORS.White,
+                    borderRadius: 10,
+                    fontWeight: "bold",
+                    color: COLORS.PrimaryColor,
+                    fontSize: 24,
+                    textAlign: "center",
+                    marginTop: "2%",
+                    marginBottom: "2%",
+                    ...SHADOWS.dark,
+                  }}
+                >
+                  Details
+                </Text>
+
+                <View style={styles.productDetails1}>
+                  <Text style={styles.productDetails}>Buyer Name </Text>
+                  <Text
+                    style={{ ...styles.productDetails, marginLeft: "auto" }}
+                  >
+                    {order && order.buyer.name}
+                  </Text>
+                </View>
+
+                <View style={styles.productDetails1}>
+                  <Text style={styles.productDetails}>buyer's Contact </Text>
+                  <Text
+                    style={{ ...styles.productDetails, marginLeft: "auto" }}
+                  >
+                    {order && order.buyer.phone}
+                  </Text>
+                </View>
+
+                <View style={styles.productDetails1}>
+                  <Text style={styles.productDetails}>Product Price </Text>
+                  <Text
+                    style={{ ...styles.productDetails, marginLeft: "auto" }}
+                  >
+                    {order && order.itemsPrice}
+                  </Text>
+                </View>
+
+                <View style={styles.productDetails1}>
+                  <Text style={styles.productDetails}>Tax Price </Text>
+                  <Text
+                    style={{ ...styles.productDetails, marginLeft: "auto" }}
+                  >
+                    {order && order.taxPrice}
+                  </Text>
+                </View>
+
+                <View style={styles.productDetails1}>
+                  <Text style={styles.productDetails}>Shipping Price </Text>
+                  <Text
+                    style={{ ...styles.productDetails, marginLeft: "auto" }}
+                  >
+                    {order && order.shippingPrice}
+                  </Text>
+                </View>
+
+                <View style={styles.productDetails1}>
+                  <Text style={styles.productDetails}>total Price </Text>
+                  <Text
+                    style={{ ...styles.productDetails, marginLeft: "auto" }}
+                  >
+                    {order && order.totalPrice}
+                  </Text>
+                </View>
+
+                <View style={styles.productDetails1}>
+                  <Text style={styles.productDetails}>Delivery Status</Text>
+                  <Text
+                    style={{ ...styles.productDetails, marginLeft: "auto" }}
+                  >
+                    {order && order.orderStatus}
+                  </Text>
+                </View>
+                {order.seller._id !== userId ? (
+                  <Button
+                    style={{
+                      width: "80%",
+                      height: "14%",
+                      borderRadius: 15,
+                      backgroundColor: COLORS.White,
+                      marginTop: "5%",
+                      marginBottom: "2%",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }}
+                    onPress={() => updateOrderHandler(order._id)}
+                  >
+                    <Text
+                      style={{
+                        color: COLORS.PrimaryColor,
+                        fontWeight: "bold",
+                        marginTop: "2%",
+                        textAlign: "center",
+                        fontSize: 20,
+                      }}
+                    >
+                      Delivered
+                    </Text>
+                  </Button>
+                ) : null}
+              </View>
+            </View>
           );
-        })}
+        })
+      ) : (
+        <></>
+      )}
     </>
   );
 };

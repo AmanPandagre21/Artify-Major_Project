@@ -38,8 +38,7 @@ const StartScreen = () => {
       <View>
         <Text style={styles.app_name}>Artify</Text>
         <Text style={styles.small_discription}>
-          Lorem Ispeum jba anaobnfaf najabv ihoboifbuB Obob Lorem Ispeum jba
-          anaobnfaf
+          An artist is not paid for his labor but for his vision.
         </Text>
         <Button
           mode="contained"

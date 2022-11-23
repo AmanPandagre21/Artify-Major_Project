@@ -26,10 +26,6 @@ const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { posts, status: postStatus } = useSelector((state) => state.posts);
 
-  const { list, status: whishliststatus } = useSelector(
-    (state) => state.wishlist
-  );
-
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -41,10 +37,6 @@ const Home = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    // if (whishliststatus.type === "error") {
-    //   Alert.alert(whishliststatus.message);
-    //   dispatch(clear_all_errors());
-    // }
     dispatch(loggedArtist());
 
     dispatch(get_posts());
