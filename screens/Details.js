@@ -71,7 +71,7 @@ const Details = ({ navigation, route }) => {
             <View style={{ flexDirection: "row" }}>
               <Avatar.Image
                 size={30}
-                source={{ uri: post && post.artist.avatar.url }}
+                source={{ uri: post.artist.avatar && post.artist.avatar.url }}
                 style={{ marginLeft: 20 }}
               />
 

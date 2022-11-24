@@ -61,7 +61,7 @@ const Login = () => {
       dispatch(clear_all_errors());
     }
     if (artistStatus.message === "Artist register Successfully") {
-      Alert.alert(status.message);
+      Alert.alert(artistStatus.message);
     }
 
     if (isAuth) {
