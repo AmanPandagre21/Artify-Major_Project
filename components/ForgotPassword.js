@@ -8,11 +8,10 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import graphics from "../assets/circleVector_1.png";
-import { Avatar } from "react-native-paper";
-import AvtarImg from "../images/avtar.jpg";
+import graphic from "../assets/circleVector_1.png";
 import { TextInput, Button } from "react-native-paper";
 import Profile from "./Profile";
+
 const ForgotPassword = () => {
   return (
     <SafeAreaView style={styles.container}>
@@ -35,20 +34,11 @@ const ForgotPassword = () => {
           <Text style={styles.headerText}>Forgot Password</Text>
         </View>
 
-        {/* <View style={styles.profileView}>
-   <Avatar.Image size={90} source={AvtarImg} style={{marginLeft:20}}  />
-   
-   <Text style={styles.ProfileName}>Muskan Mishra</Text>
-   </View> */}
         <View style={{ marginTop: 40 }}>
           <Profile />
         </View>
 
         <View style={styles.footer}>
-          {/* <View style={styles.textboxAndbtn}>
-
-   </View> */}
-
           <TextInput
             label="Enter your mail id"
             name="mailId"
@@ -74,13 +64,7 @@ const ForgotPassword = () => {
             Next
           </Button>
 
-          <View style={{ marginTop: 20, height: 70 }}>
-            {/* <TouchableOpacity>
-              <Text style={{ color: "#363488", fontWeight: "bold",fontSize:17 }}>
-                Forgot Password
-              </Text>
-   </TouchableOpacity> */}
-          </View>
+          <View style={{ marginTop: 20, height: 70 }}></View>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -21,7 +21,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { get_categories } from "../slices/categorySlice";
 import mime from "mime";
 import { add_post, get_posts, clear_all_errors } from "../slices/postSlice";
-import * as FileSystem from "expo-file-system";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 const wait = (timeout) => {
@@ -246,19 +245,6 @@ const AddPost = ({ navigation, route }) => {
               style={{ marginLeft: "auto" }}
               onValueChange={onToggleSwitch}
             ></Switch>
-            {/* {isSwitchOn ? (
-            <TextInput
-              label="Price of Your Product"
-              multiline={true}
-              name="amount"
-              value={amount}
-              onChangeText={(amount) => setAmount(amount)}
-              style={styles.loginInput}
-              underlineColor="transparent"
-            />
-          ) : (
-            ""
-          )} */}
           </View>
 
           {isSwitchOn ? (

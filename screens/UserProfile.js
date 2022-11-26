@@ -7,10 +7,10 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from "react-native";
-import { Text, Button, Modal, Portal, Provider } from "react-native-paper";
+import { Text, Button } from "react-native-paper";
 import HeaderText from "../components/HeaderText";
 import CircleVector from "../components/CircleVector";
-import AvtarImg from "../assets/avtar.jpg";
+import AvtarImg from "../assets/images/_avatar_.png";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Post from "../components/Posts";

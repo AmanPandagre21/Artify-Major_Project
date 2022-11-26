@@ -1,30 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
   SafeAreaView,
   Image,
-  StatusBar,
-  FlatList,
   StyleSheet,
-  Button,
   ScrollView,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import * as Linking from "expo-linking";
 import CircleVector from "../components/CircleVector";
+import { Chip } from "react-native-paper";
 import { Avatar, Divider } from "react-native-paper";
-import { ActivityIndicator, MD2Colors } from "react-native-paper";
-import Rupee from "../assets/images/rupee.png";
-import { COLORS, SIZES, assets, SHADOWS, FONTS } from "../constants/Theme";
+import { COLORS, SHADOWS } from "../constants/Theme";
 import { Ionicons } from "@expo/vector-icons";
-import ArtWork from "../assets/images/artwork.png";
-import AvatarLogo from "../assets/images/goku.jpg";
+import AvatarLogo from "../assets/images/_avatar_.png";
 import { useDispatch, useSelector } from "react-redux";
 import { get_post_details } from "../slices/postSlice";
 import Loader from "../components/loader";
 import ReadMore from "react-native-read-more-text";
+
 const Details = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
@@ -39,7 +34,6 @@ const Details = ({ navigation, route }) => {
   }, [route, dispatch]);
 
   return !post || postStatus.type === "loading" ? (
-    // <ActivityIndicator animating={true} color={MD2Colors.red800} />
     <Loader />
   ) : (
     <SafeAreaView>
@@ -253,7 +247,35 @@ const Details = ({ navigation, route }) => {
                   textTransform: "capitalize",
                 }}
               >
-                {post && post.outOfStock ? "0" : post.amount} 💰
+                {(post && post.outOfStock) || (post && post.amount === 0) ? (
+                  <Chip
+                    icon="information"
+                    style={{
+                      marginTop: 16,
+                      width: "35%",
+                      height: "5%",
+                      marginLeft: 18,
+                      backgroundColor: "orange",
+                      ...SHADOWS.dark,
+                    }}
+                  >
+                    Not For Sell
+                  </Chip>
+                ) : (
+                  <Chip
+                    icon="information"
+                    style={{
+                      marginTop: 16,
+                      width: "35%",
+                      height: "5%",
+                      marginLeft: 17,
+                      backgroundColor: "lightblue",
+                      ...SHADOWS.dark,
+                    }}
+                  >
+                    {post.amount} ₹
+                  </Chip>
+                )}
               </Text>
             </View>
             {/* ///end1 */}

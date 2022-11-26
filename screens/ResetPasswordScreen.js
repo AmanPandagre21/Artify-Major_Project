@@ -31,11 +31,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
   const { isAuth, sendingStatus } = useSelector((state) => state.artist);
 
   useEffect(() => {
-    if (
-      sendingStatus &&
-      sendingStatus.type === "error" &&
-      sendingStatus.message !== null
-    ) {
+    if (sendingStatus.type === "error" && sendingStatus.message !== null) {
       Alert.alert(sendingStatus.message);
       dispatch(clear_all_errors());
     }

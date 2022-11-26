@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
-  TouchableOpacity,
 } from "react-native";
 import graphics from "../assets/circleVector_1.png";
 import { TextInput, Button } from "react-native-paper";

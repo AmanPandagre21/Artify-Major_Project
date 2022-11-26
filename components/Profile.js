@@ -1,17 +1,8 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
-import { Avatar } from "react-native-paper";
-import AvatarLogo from "../assets/images/goku.jpg";
+import { StyleSheet, Text, View } from "react-native";
+// import { Avatar } from "react-native-paper";
 import { useSelector } from "react-redux";
 import Loader from "./loader";
-import { useState } from "react";
 
 const Profile = () => {
   const { artist, status } = useSelector((state) => state.artist);
@@ -20,20 +11,6 @@ const Profile = () => {
     <Loader />
   ) : (
     <View style={styles.profileView}>
-      {artist.avatar ? (
-        <Avatar.Image
-          size={90}
-          source={{ uri: artist.avatar && artist.avatar.url }}
-          style={{ marginLeft: 20 }}
-        />
-      ) : (
-        <Avatar.Image
-          size={90}
-          source={AvatarLogo}
-          style={{ marginLeft: 20 }}
-        />
-      )}
-
       <Text style={styles.ProfileName}>{artist && artist.name}</Text>
     </View>
   );

@@ -2,13 +2,11 @@ import { View, Image, Text, TouchableOpacity } from "react-native";
 import { COLORS, SIZES, SHADOWS } from "../constants/Theme";
 import { RectButton } from "../components/Button";
 import { WishlistTitle } from "../components/SubInfo";
-import person04 from "../assets/images/person04.png";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useState, useEffect } from "react";
 import { get_items, remove_item } from "../slices/whislistSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ReadMore from "react-native-read-more-text";
 
 const Wishlistcard = ({ data }) => {

@@ -91,6 +91,7 @@ const Home = ({ navigation }) => {
                     artistName={ele.artist.name}
                     artistId={ele.artist._id}
                     amount={ele.amount}
+                    notForSell={ele.outOfStock}
                   />
                 );
               })}

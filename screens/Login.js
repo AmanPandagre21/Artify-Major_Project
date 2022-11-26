@@ -143,7 +143,7 @@ const Login = () => {
             }}
             style={styles.loginBtn}
             disabled={artistStatus.type === "loading" ? "disabled" : ""}
-            onPress={() => onLogin(username, password)}
+            onPress={() => onLogin(username.trim(), password)}
           >
             {artistStatus.type === "loading" ? (
               <ActivityIndicator animating={true} color={MD2Colors.red800} />

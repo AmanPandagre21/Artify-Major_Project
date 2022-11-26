@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { Button, Divider } from "react-native-paper";
-import { COLORS, NFTData, SHADOWS, SIZES } from "../constants/Theme";
+import { COLORS, SHADOWS } from "../constants/Theme";
 import Loader from "./loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clear_all_errors, update_order } from "../slices/orderSlice";
 import { useNavigation } from "@react-navigation/native";
+import Avatar_ from "../assets/images/_avatar_.png";
 
 const BuyProduct = ({ order, userId }) => {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const BuyProduct = ({ order, userId }) => {
             <View style={styles.container} key={order._id}>
               <View style={styles.postHeader}>
                 {order.orderItem === null ? (
-                  <Image source={"Goku"} style={styles.image} />
+                  <Image source={Avatar_} style={styles.image} />
                 ) : (
                   <Image
                     source={{

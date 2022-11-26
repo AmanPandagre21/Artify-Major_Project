@@ -15,7 +15,7 @@ import Wishlistcard from "../components/Wishlistcard";
 import Loader from "../components/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clear_all_errors, get_items } from "../slices/whislistSlice";
-import WishlistImage from "../assets/addWishList.png";
+import WishlistImage from "../assets/images/w.png";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -83,10 +83,14 @@ const Wishlist = () => {
                 zIndex: 0,
               }}
             > */}
-            {list === [] ? (
+            {!list.length ? (
               <Image
                 source={WishlistImage}
-                style={{ width: 200, height: 100 }}
+                style={{
+                  width: 300,
+                  height: 300,
+                  marginTop: "40%",
+                }}
               />
             ) : (
               <FlatList

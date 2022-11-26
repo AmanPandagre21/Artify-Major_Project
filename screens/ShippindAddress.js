@@ -5,8 +5,6 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  Image,
-  TouchableOpacity,
   Alert,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";

@@ -1,5 +1,5 @@
 import { View, Text, Image } from "react-native";
-import { COLORS, assets } from "../constants/Index";
+import { assets } from "../constants/Index";
 
 const CircleVector = () => {
   return (

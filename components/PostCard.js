@@ -1,20 +1,19 @@
 import {
   View,
   Image,
-  StyleSheet,
   Text,
   TouchableOpacity,
-  ScrollView,
   Alert,
   Share,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { COLORS, NFTData, SHADOWS, SIZES } from "../constants/Theme";
+import { COLORS, SHADOWS, SIZES } from "../constants/Theme";
+import { Chip } from "react-native-paper";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { get_posts, like_and_dislike } from "../slices/postSlice";
 import { add_item_to_wishlist } from "../slices/whislistSlice";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 const PostCard = ({
   postID,
@@ -25,13 +24,11 @@ const PostCard = ({
   artistName,
   artistId,
   amount,
+  notForSell,
 }) => {
   const [liked, setLiked] = useState(false);
-  const [likesUser, setLikesUser] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const route = useRoute();
 
   const { artist } = useSelector((state) => state.artist);
 
@@ -178,12 +175,37 @@ const PostCard = ({
                   // marginTop: "12%",
                 }}
               >
-                <Ionicons
-                  name="ios-pricetags-outline"
-                  size={24}
-                  color="#363488"
-                />
-                <Text style={{ color: "#363488" }}>{amount}💰</Text>
+                <Text style={{ color: "#363488" }}>
+                  {notForSell || amount === 0 ? (
+                    <Chip
+                      icon="information"
+                      style={{
+                        marginTop: 16,
+                        width: "35%",
+                        height: "5%",
+                        marginLeft: 17,
+                        backgroundColor: "orange",
+                        ...SHADOWS.dark,
+                      }}
+                    >
+                      Not For Sell
+                    </Chip>
+                  ) : (
+                    <Chip
+                      icon="information"
+                      style={{
+                        marginTop: 16,
+                        width: "35%",
+                        height: "5%",
+                        marginLeft: 17,
+                        backgroundColor: "lightblue",
+                        ...SHADOWS.dark,
+                      }}
+                    >
+                      {amount} ₹
+                    </Chip>
+                  )}
+                </Text>
               </View>
             </View>
           </View>

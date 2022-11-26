@@ -10,7 +10,8 @@ import {
 import ReadMore from "react-native-read-more-text";
 import { Text, Button } from "react-native-paper";
 import CircleVector from "../components/CircleVector";
-import Avtar from "../assets/images/avtar.jpg";
+import { SHADOWS } from "../constants/Theme";
+import { Chip } from "react-native-paper";
 import Loader from "../components/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "react-native-paper";
@@ -18,7 +19,7 @@ import {
   artist_posts,
   artist_profile,
 } from "../slices/user-artist-Slice/artistSlice";
-import AvatarLogo from "../assets/images/goku.jpg";
+import AvatarLogo from "../assets/images/_avatar_.png";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -192,7 +193,23 @@ const SellerProfile = ({ navigation, route }) => {
                         marginTop: "5%",
                       }}
                     >
-                      💰 {post.amount}
+                      {post.outOfStock || post.amount === 0 ? (
+                        <Chip
+                          icon="information"
+                          style={{
+                            marginTop: 16,
+                            width: "35%",
+                            height: "5%",
+                            marginLeft: 18,
+                            backgroundColor: "orange",
+                            ...SHADOWS.dark,
+                          }}
+                        >
+                          Not For Sell
+                        </Chip>
+                      ) : (
+                        post.amount + " ₹"
+                      )}
                     </Text>
                   </View>
                   <TouchableOpacity

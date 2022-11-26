@@ -1,15 +1,6 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  Image,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 
-import { FocusedStatusBar } from "../components/FocusedStatusBar";
 import { COLORS, FONTS } from "../constants/Theme";
 import {
   Ionicons,

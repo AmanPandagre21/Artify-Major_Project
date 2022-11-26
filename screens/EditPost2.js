@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { Chip } from "react-native-paper";
 import {
   View,
   Text,
   SafeAreaView,
   Image,
-  StatusBar,
-  FlatList,
   StyleSheet,
-  Button,
   ScrollView,
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { SHADOWS } from "../constants/Theme";
 import CircleVector from "../components/CircleVector";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -122,13 +121,13 @@ const EditPost2 = ({ route, navigation }) => {
             >
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 20,
                   color: "white",
                   textAlign: "center",
-                  marginTop: "10%",
+                  marginTop: "8%",
                 }}
               >
-                {post && post.amount} 💰
+                {post && post.amount} ₹
               </Text>
             </View>
           </View>
@@ -165,12 +164,32 @@ const EditPost2 = ({ route, navigation }) => {
               bodyText={post && post.description}
             /> */}
           </View>
+          {(post && post.outOfStock) || (post && post.amount === 0) ? (
+            <Chip
+              icon="information"
+              style={{
+                marginTop: 16,
+                width: "35%",
+                height: "5%",
+                marginLeft: 18,
+                backgroundColor: "orange",
+                ...SHADOWS.dark,
+              }}
+            >
+              Not For Sell
+            </Chip>
+          ) : (
+            ""
+          )}
+
           <TouchableOpacity
             style={{
               // backgroundColor:'red',
               height: "auto",
               justifyContent: "center",
               flexDirection: "row",
+              marginTop: "4%",
+              marginBottom: "2%",
             }}
             onPress={() =>
               navigation.navigate("EditPost", {
@@ -178,7 +197,7 @@ const EditPost2 = ({ route, navigation }) => {
                 image: post.image.url,
                 title: post.title,
                 description: post.description,
-                sell: post.isForSell,
+                outOfStock: post.outOfStock,
               })
             }
           >
@@ -220,7 +239,7 @@ const EditPost2 = ({ route, navigation }) => {
             <AntDesign
               name="delete"
               size={35}
-              color="#363488"
+              color="red"
               style={{ marginTop: "4%", marginRight: "3%" }}
             />
             <Text

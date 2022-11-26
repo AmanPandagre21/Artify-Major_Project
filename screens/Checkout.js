@@ -8,14 +8,17 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import CircleVector from "../components/CircleVector";
 import { useDispatch, useSelector } from "react-redux";
 import { place_order } from "../slices/orderSlice";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
-const Checkout = ({ navigation, route }) => {
+const Checkout = ({ route }) => {
   const { shipping } = route.params;
+
+  const navigation = useNavigation();
 
   const dispatch = useDispatch();
 

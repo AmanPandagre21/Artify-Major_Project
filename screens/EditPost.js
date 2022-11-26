@@ -8,31 +8,19 @@ import {
   SafeAreaView,
   Alert,
 } from "react-native";
-import { TextInput, Button } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import React from "react";
 import CircleVector from "../components/CircleVector";
-import SelectList from "react-native-dropdown-select-list";
-import { Avatar, Switch } from "react-native-paper";
-import { FontAwesome } from "@expo/vector-icons";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { get_categories } from "../slices/categorySlice";
-import mime from "mime";
-import {
-  add_post,
-  clear_all_errors,
-  update_artist_post,
-  update_post,
-} from "../slices/postSlice";
-
-import postPhoto from "../assets/images/avtar.jpg";
+import { clear_all_errors, update_artist_post } from "../slices/postSlice";
 
 const AddPost = ({ navigation, route }) => {
-  const { postId, sell, description, title, image } = route.params;
+  const { postId, description, title, image, outOfStock } = route.params;
   // use State
   const [editTitle, setEditTitle] = React.useState(title);
   const [editDescription, setEditDescription] = React.useState(description);
-  const [isSwitchOn, setIsSwitchOn] = React.useState(sell);
+  const [isSwitchOn, setIsSwitchOn] = React.useState(outOfStock);
 
   // Store
   const dispatch = useDispatch();

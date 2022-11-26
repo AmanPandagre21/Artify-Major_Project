@@ -1,15 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
-import {
-  ActivityIndicator,
-  MD2Colors,
-  Modal,
-  Text,
-  Provider,
-  Portal,
-  Button,
-} from "react-native-paper";
+import { ActivityIndicator, MD2Colors, Text } from "react-native-paper";
 
 const Row = ({ children }) => {
   return <View style={styles.row}>{children}</View>;
@@ -20,6 +12,7 @@ const Col = ({ children }) => {
 const Post = ({ post, status }) => {
   {
     const navigation = useNavigation();
+
     return post ? (
       <View style={styles.app}>
         <View
@@ -54,8 +47,7 @@ const Post = ({ post, status }) => {
         </View>
       </View>
     ) : (
-      // <Image source="" />
-      <Text>ttt</Text>
+      ""
     );
   }
 };

@@ -7,7 +7,6 @@ import {
   ScrollView,
   Image,
   Alert,
-  TouchableOpacity,
 } from "react-native";
 import graphic from "../assets/circleVector_1.png";
 import { useDispatch, useSelector } from "react-redux";

@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
-  TouchableOpacity,
   Alert,
 } from "react-native";
 import graphic from "../assets/images/circleVector_1.png";

@@ -44,7 +44,7 @@ const Register = () => {
 
   const data = {
     name,
-    email,
+    email: email.trim(),
     // phone,
     password,
     confirmPassword,
@@ -59,9 +59,7 @@ const Register = () => {
       Alert.alert(status.message);
       dispatch(clear_all_errors());
     }
-
-    
-  }, [status, Alert, navigation, dispatch]);
+  }, [status, Alert, dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>

@@ -5,10 +5,9 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  TouchableOpacity,
   Alert,
 } from "react-native";
-import { COLORS, assets } from "../constants/Index";
+import { COLORS } from "../constants/Index";
 import CircleVector from "../components/CircleVector";
 import { Avatar } from "react-native-paper";
 import { TextInput, Button } from "react-native-paper";
@@ -18,7 +17,7 @@ import {
   clear_all_errors,
 } from "../slices/user-artist-Slice/artistSlice";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
-import AvatarLogo from "../assets/images/goku.jpg";
+import AvatarLogo from "../assets/images/_avatar_.png";
 
 const ChangePassword = () => {
   const [oldPass, setOldPass] = useState("");
@@ -75,9 +74,6 @@ const ChangePassword = () => {
           <Text style={styles.ProfileName}>{artist && artist.name}</Text>
         </View>
         <View style={styles.footer}>
-          {/* <View style={styles.textboxAndbtn}>
-   </View> */}
-
           <TextInput
             label="Old Password"
             name="oldPassword"
