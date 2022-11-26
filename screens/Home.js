@@ -68,9 +68,9 @@ const Home = ({ navigation }) => {
               style={{
                 marginLeft: "auto",
                 marginRight: "auto",
-                marginTop: "27%",
+                marginTop: "16%",
                 width: "70%",
-                height: 110,
+                height: 150,
               }}
             />
           </View>

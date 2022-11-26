@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import CircleVector from "../components/CircleVector";
@@ -16,10 +17,10 @@ import CircleVector from "../components/CircleVector";
 // import COLORS from '../constants';
 
 const ShippingAddress = ({ route, navigation }) => {
-  const [address, setAddress] = useState();
-  const [city, setCity] = useState();
-  const [state, setState] = useState();
-  const [pinCode, setPinCode] = useState();
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [pinCode, setPinCode] = useState("");
 
   const { sellerId, itemId, amount } = route.params;
 
@@ -44,6 +45,14 @@ const ShippingAddress = ({ route, navigation }) => {
       state,
       pinCode,
     },
+  };
+
+  const addressHandler = () => {
+    if (!address || !city || !state || !pinCode) {
+      Alert.alert("All Fields are Mandatory");
+    } else {
+      navigation.navigate("Checkout", { shipping: shipping });
+    }
   };
 
   return (
@@ -125,9 +134,7 @@ const ShippingAddress = ({ route, navigation }) => {
                 textAlign: "center",
               }}
               style={styles.btn}
-              onPress={() =>
-                navigation.navigate("Checkout", { shipping: shipping })
-              }
+              onPress={addressHandler}
             >
               Pay
             </Button>

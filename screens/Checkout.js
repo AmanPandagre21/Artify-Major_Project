@@ -31,8 +31,8 @@ const Checkout = ({ navigation, route }) => {
     shippingInfo,
   } = shipping;
 
-  const payHandler = async () => {
-    await dispatch(
+  const payHandler = () => {
+    dispatch(
       place_order(
         seller,
         orderItem,
@@ -46,8 +46,8 @@ const Checkout = ({ navigation, route }) => {
 
     if (orderStatus.message === "Order Placed") {
       Alert.alert(orderStatus.message);
-      navigation.navigate("UserProfile");
     }
+    navigation.navigate("UserProfile");
   };
 
   useEffect(() => {

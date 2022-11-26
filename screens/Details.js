@@ -20,8 +20,7 @@ import Rupee from "../assets/images/rupee.png";
 import { COLORS, SIZES, assets, SHADOWS, FONTS } from "../constants/Theme";
 import { Ionicons } from "@expo/vector-icons";
 import ArtWork from "../assets/images/artwork.png";
-// import { CircleButton, RectButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "../components";
-import Accordion from "../components/Accordion";
+import AvatarLogo from "../assets/images/goku.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { get_post_details } from "../slices/postSlice";
 import Loader from "../components/loader";
@@ -69,11 +68,19 @@ const Details = ({ navigation, route }) => {
           </View>
           <View style={styles.profileView}>
             <View style={{ flexDirection: "row" }}>
-              <Avatar.Image
-                size={30}
-                source={{ uri: post.artist.avatar && post.artist.avatar.url }}
-                style={{ marginLeft: 20 }}
-              />
+              {post.artist.avatar ? (
+                <Avatar.Image
+                  size={30}
+                  source={{ uri: post.artist.avatar && post.artist.avatar.url }}
+                  style={{ marginLeft: 20 }}
+                />
+              ) : (
+                <Avatar.Image
+                  size={30}
+                  source={AvatarLogo}
+                  style={{ marginLeft: 20 }}
+                />
+              )}
 
               <TouchableOpacity
                 onPress={() =>

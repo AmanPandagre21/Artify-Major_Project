@@ -6,6 +6,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
 import SettingsScreen, {
@@ -16,8 +17,9 @@ import SettingsScreen, {
 } from "./CustomNavigation";
 
 const AddPost = () => {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate("AddPost")}>
       <View
         style={{
           backgroundColor: "#363488",
@@ -27,7 +29,7 @@ const AddPost = () => {
           alignItems: "center",
         }}
       >
-        <Ionicons name="add-sharp" size={50} color="white" />
+        <Ionicons name="add-sharp" size={20} color="white" />
       </View>
     </TouchableOpacity>
   );
@@ -89,7 +91,23 @@ const BottomTab = ({ navigation }) => {
               style={{ marginBottom: "100%", height: "70%" }}
               onPress={() => navigation.navigate("AddPost")}
             >
-              <AddPost />
+              {/* <AddPost /> */}
+              <View
+                style={{
+                  backgroundColor: "#363488",
+                  width: 61,
+                  height: 57,
+                  borderRadius: 20,
+                  alignItems: "center",
+                }}
+              >
+                <Ionicons
+                  name="add-sharp"
+                  style={{ marginTop: 3 }}
+                  size={45}
+                  color="white"
+                />
+              </View>
 
               {/* <FontAwesome5 name="shopping-cart" size={26} color={focused?"blue":"black"} /> */}
             </View>

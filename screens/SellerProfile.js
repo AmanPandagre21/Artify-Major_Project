@@ -18,6 +18,7 @@ import {
   artist_posts,
   artist_profile,
 } from "../slices/user-artist-Slice/artistSlice";
+import AvatarLogo from "../assets/images/goku.jpg";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -80,10 +81,15 @@ const SellerProfile = ({ navigation, route }) => {
         {/* <View style = {{ alignItems: 'center', height:100, width:"100%",position:'absolute'}}>
       </View> */}
         <View style={styles.profileInfo}>
-          <Image
-            source={{ uri: artistProfile && artistProfile.avatar.url }}
-            style={styles.avtar}
-          />
+          {artistProfile && artistProfile.avatar ? (
+            <Image
+              source={{ uri: artistProfile.avatar && artistProfile.avatar.url }}
+              style={styles.avtar}
+            />
+          ) : (
+            <Image source={AvatarLogo} style={styles.avtar} />
+          )}
+
           <View style={styles.profileText}>
             <Text style={{ fontWeight: "bold", fontSize: 19 }}>
               {artistProfile && artistProfile.name}

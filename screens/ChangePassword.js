@@ -18,7 +18,7 @@ import {
   clear_all_errors,
 } from "../slices/user-artist-Slice/artistSlice";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
-import { getToken } from "../services/AsyncStorageService";
+import AvatarLogo from "../assets/images/goku.jpg";
 
 const ChangePassword = () => {
   const [oldPass, setOldPass] = useState("");
@@ -58,11 +58,19 @@ const ChangePassword = () => {
         </View>
 
         <View style={styles.profileView}>
-          <Avatar.Image
-            size={90}
-            source={{ uri: artist.avatar && artist.avatar.url }}
-            style={{ marginLeft: 20 }}
-          />
+          {artist.avatar ? (
+            <Avatar.Image
+              size={90}
+              source={{ uri: artist.avatar && artist.avatar.url }}
+              style={{ marginLeft: 20 }}
+            />
+          ) : (
+            <Avatar.Image
+              size={90}
+              source={AvatarLogo}
+              style={{ marginLeft: 20 }}
+            />
+          )}
 
           <Text style={styles.ProfileName}>{artist && artist.name}</Text>
         </View>

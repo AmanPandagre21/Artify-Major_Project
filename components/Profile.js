@@ -8,7 +8,7 @@ import {
   ImageBackground,
 } from "react-native";
 import { Avatar } from "react-native-paper";
-import AvtarImg from "../assets/avtar.jpg";
+import AvatarLogo from "../assets/images/goku.jpg";
 import { useSelector } from "react-redux";
 import Loader from "./loader";
 import { useState } from "react";
@@ -20,14 +20,18 @@ const Profile = () => {
     <Loader />
   ) : (
     <View style={styles.profileView}>
-      {artist ? (
+      {artist.avatar ? (
         <Avatar.Image
           size={90}
           source={{ uri: artist.avatar && artist.avatar.url }}
           style={{ marginLeft: 20 }}
         />
       ) : (
-        <Avatar.Image size={90} source={AvtarImg} style={{ marginLeft: 20 }} />
+        <Avatar.Image
+          size={90}
+          source={AvatarLogo}
+          style={{ marginLeft: 20 }}
+        />
       )}
 
       <Text style={styles.ProfileName}>{artist && artist.name}</Text>
