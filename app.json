@@ -4,7 +4,7 @@
     "slug": "artify",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/mainLogo.png",
+    "icon": "./assets/logo2.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splashLogo.png",

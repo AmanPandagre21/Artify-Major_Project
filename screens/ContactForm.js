@@ -23,7 +23,7 @@ const ContactForm = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const [name, setName] = useState(artist && artist.name);
-  const [number, setNumber] = useState(artist && artist.phone);
+  const [number, setNumber] = useState(artist && artist.phone.toString());
   const [email, setEmail] = useState(artist && artist.email);
   const [query, setQuery] = useState("");
 
