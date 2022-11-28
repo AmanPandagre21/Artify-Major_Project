@@ -90,6 +90,15 @@ const ChangePassword = () => {
             style={styles.loginInput}
             underlineColor="transparent"
           />
+          <View style={{ marginLeft: -100 }}>
+            <Text style={{ color: "red", fontWeight: "600" }}>
+              Password Must
+            </Text>
+            <Text> - Have at least 8 characters</Text>
+            <Text> - Have at least 1 Lowercase Letter</Text>
+            <Text> - Have at least 1 Uppercase Letter</Text>
+            <Text> - Have at least 1 Special Character</Text>
+          </View>
           <TextInput
             label="Confirm Password"
             name="confirmPassword"

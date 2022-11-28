@@ -181,6 +181,6 @@ export function update_order(id) {
 // clear Users
 export function clear_all_errors() {
   return async function clearErrorsThunk(dispatch, getState) {
-    dispatch(setStatus({ type: STATUES.ERROR, message: null }));
+    dispatch(setStatus({ type: STATUS.ERROR, message: null }));
   };
 }

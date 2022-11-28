@@ -28,7 +28,7 @@ const EditProfile = ({ navigation, route }) => {
 
   const [userAvatar, setUserAvatar] = useState(url);
   const [name, setName] = useState(artist && artist.name);
-  const [phone, setPhone] = useState(artist && artist.phone.toString());
+  const [phone, setPhone] = useState(artist.phone && artist.phone.toString());
   const [bio, setBio] = useState(artist && artist.bio);
   const dispatch = useDispatch();
 

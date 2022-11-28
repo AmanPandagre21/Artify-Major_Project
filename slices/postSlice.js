@@ -79,7 +79,7 @@ export function add_post(formData) {
         setStatus({ type: STATUS.IDLE, message: "Post added Successfully" })
       );
     } catch (error) {
-      if (error) {
+      if (error.response) {
         dispatch(
           setStatus({
             type: STATUS.ERROR,
@@ -261,6 +261,6 @@ export function delete_post(postID) {
 // clear Users
 export function clear_all_errors() {
   return async function clearErrorsThunk(dispatch, getState) {
-    dispatch(setStatus({ type: STATUES.ERROR, message: null }));
+    dispatch(setStatus({ type: STATUS.ERROR, message: null }));
   };
 }

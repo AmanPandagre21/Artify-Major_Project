@@ -25,7 +25,7 @@ const ForgotPassword = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const nextHandler = () => {
-    dispatch(send_otp(email));
+    dispatch(send_otp(email.trim()));
   };
 
   useEffect(() => {

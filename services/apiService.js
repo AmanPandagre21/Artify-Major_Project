@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://artify-backend.onrender.com/api/v1",
+  baseURL:
+    "https://artify-major-project-backend-production.up.railway.app/api/v1",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
