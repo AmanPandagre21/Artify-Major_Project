@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/splashLogo.png",
+        "foregroundImage": "./assets/logo2.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "artify.apk"
